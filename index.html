@@ -4,7 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <!-- [إصلاح] بعض بيئات WebView توفّر console ناقصاً (بلا assert/info/group/table) فيتوقف السكربت كاملاً. هذا الـ shim يكمّل الدوال الناقصة. -->
-  <script>
+  
+<script>
+/* [SAFARI] decodeAudioData في سفاري القديم لا يرجع Promise: نغلّفه ليعمل بالنمطين */
+(function () {
+  var AC = window.AudioContext || window.webkitAudioContext; if (!AC || !AC.prototype.decodeAudioData) return;
+  var orig = AC.prototype.decodeAudioData;
+  AC.prototype.decodeAudioData = function (data, ok, fail) {
+    var self = this;
+    return new Promise(function (res, rej) {
+      var p; try { p = orig.call(self, data, function (b) { res(b); if (ok) ok(b); }, function (e) { rej(e); if (fail) fail(e); }); } catch (e) { rej(e); return; }
+      if (p && p.then) p.then(res, rej);
+    });
+  };
+})();
+</script>
+<script>
   (function () {
     var c = window.console; if (!c) { c = window.console = {}; }
     var noop = function () {};
@@ -6051,11 +6066,13 @@ window.LoudMaster = (function () {
 function getAudioCtx() {
   if (!audioCtx) {
     try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'interactive', sampleRate: 44100 });
+      const AC = window.AudioContext || window.webkitAudioContext;
+      /* سفاري قد يرفض خيار sampleRate أو latencyHint، فنجرّب بدونهما بدل أن نفقد الصوت كله */
+      try { audioCtx = new AC({ latencyHint: 'interactive' }); } catch (e1) { audioCtx = new AC(); }
       try { window.LoudMaster && window.LoudMaster.attach(audioCtx); } catch (e) { console.warn('LoudMaster', e); }
     } catch (e) { console.error('❌ فشل إنشاء AudioContext:', e); return null; }
   }
-  if (audioCtx.state === 'suspended') { audioCtx.resume().catch(() => {}); }
+  if (audioCtx.state !== 'running') { try { const p = audioCtx.resume(); if (p && p.catch) p.catch(() => {}); } catch (e) {} }
   return audioCtx;
 }
 
@@ -6068,10 +6085,30 @@ let audioUnlocked = false;
    Safari تتجاهل oscillator الصامت ولا "تفتح" مخرج الصوت إلا مع
    buffer حقيقي. كما نستأنف AudioContext و speechSynthesis في كل
    لمسة طالما الحالة لم تصبح "running" بعد (وليس مرة واحدة فقط). */
+/* iOS: زر الصامت يكتم Web Audio، لكن تشغيل عنصر <audio> يحوّل جلسة الصوت إلى "playback" فيعمل الصوت حتى في الوضع الصامت */
+let _silentEl = null;
+function iosSilentSwitchBypass() {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  try {
+    if (!_silentEl) {
+      const n = 4410, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+      const w = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+      w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+      v.setUint32(24, 44100, true); v.setUint32(28, 88200, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+      _silentEl = document.createElement('audio');
+      _silentEl.src = URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+      _silentEl.loop = true; _silentEl.preload = 'auto'; _silentEl.setAttribute('playsinline', ''); _silentEl.setAttribute('x-webkit-airplay', 'deny');
+      _silentEl.style.display = 'none'; document.body.appendChild(_silentEl);
+    }
+    if (_silentEl.paused) { const p = _silentEl.play(); if (p && p.catch) p.catch(() => {}); }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => { if (_silentEl && document.hidden) { try { _silentEl.pause(); } catch (e) {} } });
 function unlockAudio() {
   try {
+    iosSilentSwitchBypass();
     const ctx = getAudioCtx();
-    if (ctx && ctx.state === 'suspended') { ctx.resume().catch(() => {}); }
+    if (ctx && ctx.state !== 'running') { try { const p = ctx.resume(); if (p && p.then) p.then(() => { if (ctx.state === 'running' && !audioUnlocked) { audioUnlocked = true; console.log('🔓 الصوت مُفعّل'); } }).catch(() => {}); } catch (e) {} }
     if ('speechSynthesis' in window && window.speechSynthesis.paused) {
       try { window.speechSynthesis.resume(); } catch (e) {}
     }
