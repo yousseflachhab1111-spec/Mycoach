@@ -13761,7 +13761,7 @@ function setBackground(type) {
   if (!bgCanvas) return;
   if (type === 'none') { if (bgCtx) bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height); return; }
   if (!bgCtx) initBackgroundCanvas();
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { if (bgCtx) bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height); document.querySelectorAll('.bg-option').forEach(opt => opt.classList.toggle('selected', opt.dataset.bg === type)); return; }
+  /* اختيار الخلفية المتحركة قرار صريح من المستخدم، فلا نُلغيه بسبب إعداد «تقليل الحركة» في النظام (شائع على iOS) */
   if (type === 'waves') bgWaves();
   else if (type === 'stars') { bgStarsInit(); bgStars(); }
   else if (type === 'petals') { bgPetalsInit(); bgPetals(); }
