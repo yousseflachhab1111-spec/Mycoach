@@ -15341,7 +15341,12 @@ function setBtnLoading(btn, on) { if (!btn) return; btn.classList.toggle('is-loa
   function onProgress() { var d = document.getElementById('dashboardScreen'); return d && d.classList.contains('active'); }
   function push() { if (!busy) try { history.pushState({ app: 1 }, ''); } catch (e) {} }
   var w = document.getElementById('workoutScreen');
-  if (w) new MutationObserver(function () { if (workoutOpen()) { push(); w.classList.add('screen-fade'); } }).observe(w, { attributes: true, attributeFilter: ['class'] });
+  var wasOpen = false;
+  if (w) new MutationObserver(function () {
+    var now = workoutOpen();
+    if (now && !wasOpen) { push(); if (!w.classList.contains('screen-fade')) { w.classList.add('screen-fade'); setTimeout(function () { w.classList.remove('screen-fade'); }, 400); } }
+    wasOpen = now;
+  }).observe(w, { attributes: true, attributeFilter: ['class'] });
   var origNav = window.switchBottomNav;
   if (origNav) window.switchBottomNav = function (tab) { var was = onProgress(); var r = origNav.apply(this, arguments); if (tab === 'progress' && !was) push(); return r; };
   window.addEventListener('popstate', function () {
