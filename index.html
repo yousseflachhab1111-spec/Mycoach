@@ -2304,7 +2304,6 @@ body[data-theme="rose-gold"] .selected-exercise-item:hover {
 .theme-option[data-theme="frost"] .theme-preview { background: linear-gradient(135deg, #eaf3fb 30%, #7dd3fc 60%, #0ea5e9 100%); }
 .theme-option[data-theme="sakura"] .theme-preview { background: linear-gradient(135deg, #1a0f14 30%, #f472b6 60%, #ffe4ec 100%); }
 .theme-option[data-theme="nebula"] .theme-preview { background: linear-gradient(135deg, #1c1b26 30%, #9a7fc9 60%, #7ea6d6 100%); }
-.theme-option[data-theme="dracula"] .theme-preview { background: linear-gradient(135deg, #1e1e1e 30%, #b5535f 60%, #c3a7b4 100%); }
 .theme-option[data-theme="rose-gold"] .theme-preview { background: linear-gradient(135deg, #f8e5e8 30%, #e8b4b8 50%, #c9a961 70%, #d4af37 100%); }
 .theme-option[data-theme="legendary-gold"] .theme-preview { background: linear-gradient(135deg, #1a1a1a 20%, #d4af37 55%, #c98a3b 80%, #1a1a1a 100%); }
 .theme-option.selected { border-color: var(--accent-hiit); box-shadow: 0 0 0 3px var(--accent-hiit-glow); }
@@ -5216,7 +5215,7 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
       </div>
      </div>
      <div class="settings-section">
-      <div class="settings-section-title">💾 النسخ الاحتياطي <span style="opacity:.6;font-weight:400;font-size:.75em">· إصدار 2026.10.06-r6</span></div>
+      <div class="settings-section-title">💾 النسخ الاحتياطي <span style="opacity:.6;font-weight:400;font-size:.75em">· إصدار 2026.10.06-r10</span></div>
       <div class="settings-item" onclick="exportBackup()"><div class="item-info"><span class="item-icon">⬇️</span><div class="item-text"><span class="item-title">تصدير بياناتي</span> <span class="item-desc">حفظ التقدم والإعدادات في ملف</span></div></div><span class="settings-chevron">‹</span></div>
       <div class="settings-item" onclick="document.getElementById('backupFile').click()"><div class="item-info"><span class="item-icon">⬆️</span><div class="item-text"><span class="item-title">استيراد بياناتي</span> <span class="item-desc">استرجاع من ملف نسخة احتياطية</span></div></div><span class="settings-chevron">‹</span></div>
       <input type="file" id="backupFile" accept="application/json,.json" style="display:none" onchange="importBackup(this)">
@@ -15305,7 +15304,7 @@ html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
 body{font-feature-settings:"kern","liga";text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 
 /* --- الترويسة --- */
-html body .app-header{background:color-mix(in srgb,var(--bg-card) 72%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border:1px solid color-mix(in srgb,var(--border-color) 70%,transparent);border-radius:var(--wow-r);box-shadow:var(--wow-shadow)}
+html body .app-header{background:color-mix(in srgb,var(--bg-card) 88%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border:1px solid color-mix(in srgb,var(--border-color) 70%,transparent);border-radius:var(--wow-r);box-shadow:var(--wow-shadow)}
 html body .app-header h1{color:var(--text-primary);letter-spacing:-.01em;text-shadow:0 2px 14px color-mix(in srgb,var(--accent-hiit) 45%,transparent)}
 html body .main-tab{display:flex;align-items:center;justify-content:center;gap:.4rem}
 html body .pro-board .pro-week span{aspect-ratio:auto;height:34px;border-radius:12px}
@@ -15353,7 +15352,7 @@ html body .boss-battle-btn::after{content:"";position:absolute;inset-block:0;wid
 html body .continue-card{border-radius:var(--wow-r);box-shadow:var(--wow-shadow)}
 
 /* --- الشريط السفلي: كبسولة زجاجية عائمة --- */
-html body .bottom-nav{border-radius:26px;background:color-mix(in srgb,var(--bg-card) 78%,transparent);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);border:1px solid color-mix(in srgb,var(--border-color) 75%,transparent);box-shadow:0 18px 40px -14px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06) inset}
+html body .bottom-nav{border-radius:26px;background:color-mix(in srgb,var(--bg-card) 95%,transparent);-webkit-backdrop-filter:blur(26px) saturate(1.5);backdrop-filter:blur(26px) saturate(1.5);border:1px solid color-mix(in srgb,var(--border-color) 75%,transparent);box-shadow:0 18px 40px -14px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06) inset}
 html body .bottom-nav-item{transition:color .25s,transform .3s var(--wow-ease)}
 html body .bottom-nav-item.active{color:var(--accent-hiit);transform:translateY(-2px)}
 html body .bottom-nav-item.active .icon{filter:drop-shadow(0 4px 10px var(--accent-hiit))}
@@ -15370,9 +15369,10 @@ html body .theme-option.selected,html body .theme-option.active{box-shadow:0 0 0
 
 /* ===================== [PERSONAS] شخصية مستقلة لكل سمة (شكل + خلفية + خط + حدود + ظلال) ===================== */
 /* ---- نظام معاينة السمات في الإعدادات ---- */
-.theme-option .theme-preview{position:relative;overflow:hidden;background:var(--pv-bg,#111);border-radius:14px}
-.theme-option .theme-preview::after{content:"";position:absolute;inset:24% 14% 18%;background:var(--pv-card,#222);border:var(--pv-border,1px solid #444);border-radius:var(--pv-r,10px);box-shadow:var(--pv-sh,none)}
-.theme-option .theme-preview::before{content:"";position:absolute;z-index:1;inset-block-start:34%;inset-inline:26% 46%;height:16%;border-radius:99px;background:var(--pv-acc,#f97316)}
+.theme-option .theme-preview{position:relative;overflow:hidden;border-radius:14px}
+.theme-option:not(.bg-option) .theme-preview{background:var(--pv-bg,#111)}
+.theme-option:not(.bg-option) .theme-preview::after{content:"";position:absolute;inset:24% 14% 18%;background:var(--pv-card,#222);border:var(--pv-border,1px solid #444);border-radius:var(--pv-r,10px);box-shadow:var(--pv-sh,none)}
+.theme-option:not(.bg-option) .theme-preview::before{content:"";position:absolute;z-index:1;inset-block-start:34%;inset-inline:26% 46%;height:16%;border-radius:99px;background:var(--pv-acc,#f97316)}
 .theme-option[data-theme="dark"]{--pv-bg:#0b0d12;--pv-card:#171a22;--pv-border:1px solid #2a2f3b;--pv-r:10px;--pv-acc:#f97316}
 .theme-option[data-theme="light"]{--pv-bg:#f4f2ec;--pv-card:#fff;--pv-border:1px solid #e4dfd2;--pv-r:6px;--pv-acc:#0f766e;--pv-sh:0 4px 8px -4px rgba(0,0,0,.2)}
 .theme-option[data-theme="frost"]{--pv-bg:#e4e9f1;--pv-card:#e4e9f1;--pv-border:0;--pv-r:14px;--pv-acc:#3b82f6;--pv-sh:5px 5px 10px #b9c0cd,-5px -5px 10px #fff}
@@ -15381,7 +15381,6 @@ html body .theme-option.selected,html body .theme-option.active{box-shadow:0 0 0
 .theme-option[data-theme="royal"]{--pv-bg:radial-gradient(circle at 50% 0,#4c2a85,#1a1035 70%);--pv-card:#271750;--pv-border:2px double #d4af37;--pv-r:3px;--pv-acc:#d4af37}
 .theme-option[data-theme="sakura"]{--pv-bg:linear-gradient(160deg,#fff1f5,#ffd6e3);--pv-card:#fff;--pv-border:2px dotted #f9a8c4;--pv-r:20px;--pv-acc:#ec4899}
 .theme-option[data-theme="nebula"]{--pv-bg:radial-gradient(circle at 30% 20%,#3b1a7a,#0a0720 70%);--pv-card:rgba(20,12,50,.8);--pv-border:1px solid #a78bfa;--pv-r:12px;--pv-acc:#c084fc;--pv-sh:0 0 12px #8b5cf6}
-.theme-option[data-theme="dracula"]{--pv-bg:#282a36;--pv-card:#343746;--pv-border:1px solid #44475a;--pv-r:2px;--pv-acc:#ff79c6}
 .theme-option[data-theme="rose-gold"]{--pv-bg:linear-gradient(160deg,#fbe3dc,#e9b8aa);--pv-card:linear-gradient(135deg,#fff3ee,#f3cfc3);--pv-border:1px solid #c98b7b;--pv-r:12px;--pv-acc:#b76e79}
 .theme-option[data-theme="legendary-gold"]{--pv-bg:#0a0804;--pv-card:#14100a;--pv-border:2px solid #d9a93a;--pv-r:4px;--pv-acc:#f5c451;--pv-sh:0 0 10px rgba(245,196,81,.5)}
 .theme-option[data-theme="amoled"]{--pv-bg:#000;--pv-card:transparent;--pv-border:1px solid #2a2a2a;--pv-r:12px;--pv-acc:#2dd4bf}
@@ -15438,13 +15437,6 @@ html body[data-theme="nebula"] :is(.day-card,.pro-board,.settings-section,.conti
 html body[data-theme="nebula"] .day-card::before{display:none}
 
 /* ---- 8) دراكولا «طرفية»: خط أحادي، حواف حادة، مؤشر ---- */
-html body[data-theme="dracula"]{--p-r:3px;--p-border:1px solid #44475a;--p-shadow:none;--p-head-font:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;--p-head-weight:700;--p-head-ls:0;--p-nav-r:3px;--p-bg-img:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px)}
-html body[data-theme="dracula"] :is(.day-card,.pro-board,.settings-section,.continue-card){background:#2e303e}
-html body[data-theme="dracula"] .pro-hd b::before{content:"$ ";color:#50fa7b}
-html body[data-theme="dracula"] .day-card::before{width:3px;border-radius:0;background:#ff79c6}
-html body[data-theme="dracula"] :is(.main-tabs,.main-tab){border-radius:3px}
-html body[data-theme="dracula"] .main-tabs::before{border-radius:2px;background:#44475a;box-shadow:0 2px 0 #ff79c6}
-html body[data-theme="dracula"] .pro-week span{border-radius:2px}
 
 /* ---- 9) روز جولد: معدن وردي ولمعان ---- */
 html body[data-theme="rose-gold"]{--p-r:24px;--p-border:1px solid rgba(183,110,121,.5);--p-shadow:0 14px 30px -14px rgba(150,80,90,.5),0 1px 0 rgba(255,255,255,.7) inset;--p-bg-img:linear-gradient(160deg,#fdf0eb,#f1cfc4 55%,#e6b5a6)}
@@ -15492,8 +15484,6 @@ html body[data-theme="amoled"] :is(.today-card,.boss-battle-btn):is(.today-card,
 html body[data-theme="amoled"] .boss-battle-btn::after{display:none}
 html body[data-theme="contrast"] :is(.today-card,.boss-battle-btn):is(.today-card,.boss-battle-btn){background:#000;border:3px solid #ffd400;box-shadow:6px 6px 0 #ffd400;color:#fff}
 html body[data-theme="contrast"] .boss-battle-btn::after{display:none}
-html body[data-theme="dracula"] :is(.today-card,.boss-battle-btn):is(.today-card,.boss-battle-btn){background:#2e303e;border:1px solid #44475a;border-inline-start:4px solid #ff79c6;box-shadow:none;font-family:ui-monospace,Menlo,Consolas,monospace}
-html body[data-theme="dracula"] .boss-battle-btn{border-inline-start-color:#ff5555}
 html body[data-theme="royal"] :is(.today-card,.boss-battle-btn):is(.today-card,.boss-battle-btn){background:linear-gradient(160deg,#3a2270,#1b1038);border:1px solid rgba(212,175,55,.7);outline:1px solid rgba(212,175,55,.28);outline-offset:-6px;font-family:"Amiri","Noto Naskh Arabic",serif}
 html body[data-theme="legendary-gold"] :is(.today-card,.boss-battle-btn):is(.today-card,.boss-battle-btn){background:linear-gradient(#110c05,#110c05) padding-box,linear-gradient(135deg,#fff1b8,#d9a93a 35%,#7a5a14 60%,#f5c451) border-box;border:1.5px solid transparent;font-family:"Amiri","Noto Naskh Arabic",serif;color:#f5c451}
 html body[data-theme="nebula"] :is(.today-card,.boss-battle-btn):is(.today-card,.boss-battle-btn){background:linear-gradient(#0d0828e6,#0d0828e6) padding-box,linear-gradient(135deg,#a78bfa,#38bdf8,#f472b6,#a78bfa) border-box;background-size:auto,300% 300%;border:1.5px solid transparent;animation:neoBorder 9s linear infinite;box-shadow:0 0 30px -8px rgba(139,92,246,.6)}
@@ -15502,9 +15492,40 @@ html body[data-theme="ocean"] :is(.today-card,.boss-battle-btn):is(.today-card,.
 /* الأزرار الثانوية داخل البطاقات تتبع الشخصية */
 html body[data-theme="frost"] .today-alt{background:#e4e9f1;color:#1e293b;border:0;box-shadow:inset 4px 4px 8px #c3cad8,inset -4px -4px 8px #fff}
 html body[data-theme="contrast"] .today-alt{border:2px solid #fff;border-radius:0;color:#fff}
-html body[data-theme="dracula"] .today-alt{border-radius:2px;border:1px dashed #6272a4}
 html body[data-theme="sakura"] .today-alt{border:2px dotted #ec4899;color:#9d174d;border-radius:99px}
 @media (prefers-reduced-motion:reduce){html body[data-theme="nebula"] :is(.today-card,.boss-battle-btn):is(.today-card,.boss-battle-btn){animation:none}}
+
+/* ---- [DRACULA v2] مصّاص دماء: نبيذ داكن + قرمزي + عظمي، بزوايا حادة وخط أحادي للأرقام ---- */
+.theme-option[data-theme="dracula"]{--pv-bg:radial-gradient(circle at 50% 0,#4a0f14,#0a0505 70%);--pv-card:linear-gradient(160deg,#2a1214,#170a0b);--pv-border:1px solid #6b2229;--pv-r:2px;--pv-acc:#ef4444;--pv-sh:0 0 10px rgba(239,68,68,.35)}
+html body[data-theme="dracula"]{--p-r:3px;--p-border:1px solid #4a1d22;--p-shadow:0 12px 28px -16px #000,0 0 0 1px rgba(239,68,68,.05) inset;--p-head-font:inherit;--p-head-weight:800;--p-head-ls:0;--p-nav-r:3px;--p-bg-img:radial-gradient(900px 420px at 50% -8%,rgba(185,28,28,.30),transparent 65%),radial-gradient(600px 400px at 100% 100%,rgba(127,29,29,.22),transparent 65%),linear-gradient(180deg,#0d0607,#0a0505)}
+html body[data-theme="dracula"] :is(.day-card,.pro-board,.settings-section,.continue-card,.today-card,.boss-battle-btn,.app-header,.stat-card){background:linear-gradient(160deg,#2a1214,#170a0b);color:#ece4e0}
+html body[data-theme="dracula"] .day-card::before{width:3px;border-radius:0;background:linear-gradient(180deg,#ef4444,#7f1d1d)}
+html body[data-theme="dracula"] .day-card:hover{border-color:#ef4444;box-shadow:0 0 22px -6px rgba(239,68,68,.5)}
+html body[data-theme="dracula"] .pro-board::before{background:linear-gradient(135deg,rgba(239,68,68,.7),transparent 45%,rgba(127,29,29,.6))}
+html body[data-theme="dracula"] .pro-hd b::before{content:"† ";color:#ef4444}
+html body[data-theme="dracula"] :is(.stat-card,.pro-streak,.meta-tag,.diff-badge){font-family:ui-monospace,Menlo,Consolas,monospace}
+html body[data-theme="dracula"] :is(.main-tabs,.main-tab){border-radius:3px}
+html body[data-theme="dracula"] .main-tabs{background:#120708;border:1px solid #4a1d22}
+html body[data-theme="dracula"] .main-tabs::before{border-radius:2px;background:linear-gradient(135deg,#b91c1c,#7f1d1d);box-shadow:0 2px 0 #ef4444}
+html body[data-theme="dracula"] .bottom-nav{background:#120708;border:1px solid #4a1d22}
+html body[data-theme="dracula"] .pro-week span{border-radius:2px;background:#2a1214;color:#cdb4b0}
+html body[data-theme="dracula"] .pro-week span.on{background:linear-gradient(135deg,#ef4444,#991b1b);color:#fff;box-shadow:0 4px 12px -4px #ef4444}
+html body[data-theme="dracula"] .pro-week span.today{outline-color:#fca5a5}
+html body[data-theme="dracula"] .pro-chal{border:1px dashed #7f1d1d;background:rgba(127,29,29,.15)}
+html body[data-theme="dracula"] :is(.today-card,.boss-battle-btn){border-inline-start:4px solid #ef4444}
+html body[data-theme="dracula"] .boss-battle-btn{border-inline-start-color:#fca5a5}
+html body[data-theme="dracula"] .today-alt{border-radius:2px;border:1px dashed #7f1d1d;color:#ece4e0}
+html body[data-theme="dracula"] .pro-streak{background:linear-gradient(135deg,#ef4444,#7f1d1d);box-shadow:0 6px 16px -6px rgba(239,68,68,.7)}
+
+/* شريط خلف شارات الترويسة: الحاوية نفسها تُجرَّد من الظل/الخلفية (الشارات تحتفظ بأنماطها) */
+html body .app-header .header-badges{box-shadow:none;background:none;border:0;padding-block:0}
+
+/* ---- أزرار الخلفيات المتحركة ---- */
+html body .bg-option{display:flex;flex-direction:column;align-items:stretch;gap:.55rem;padding:.55rem .55rem .7rem;font-weight:700;border-radius:20px;transition:transform .3s var(--wow-ease),box-shadow .3s,border-color .3s}
+html body .bg-option .theme-preview{height:78px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 8px 18px -10px rgba(0,0,0,.6);filter:saturate(1.1)}
+html body .bg-option .theme-preview .ico{width:1.8rem;height:1.8rem;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+html body .bg-option:active{transform:scale(.96)}
+html body .bg-option.selected{border-color:var(--accent-hiit);box-shadow:0 0 0 2px var(--accent-hiit),0 14px 28px -12px var(--accent-hiit);transform:translateY(-2px)}
 </style>
 <script>
 (function(){var F={dark:'energy',ocean:'energy',frost:'calm',sakura:'calm','rose-gold':'calm',royal:'premium','legendary-gold':'premium',nebula:'premium',emerald:'nature',light:'nature',dracula:'night'};
@@ -15552,7 +15573,7 @@ document.addEventListener('visibilitychange',function(){document.documentElement
 </script>
 
 <script>
-console.log("📦 build 2026.10.06-r6");
+console.log("📦 build 2026.10.06-r10");
 /* ===== [BACKUP] تصدير/استيراد البيانات مع رقم إصدار للصيغة ===== */
 var BACKUP_SCHEMA = 1;
 function exportBackup() {
@@ -15655,6 +15676,28 @@ function setBtnLoading(btn, on) { if (!btn) return; btn.classList.toggle('is-loa
   var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .08 });
   function scan() { document.querySelectorAll('.day-card:not(.wow-reveal),.settings-section:not(.wow-reveal),.pro-board:not(.wow-reveal)').forEach(function (el) { el.classList.add('wow-reveal'); io.observe(el); }); }
   scan(); new MutationObserver(function () { requestAnimationFrame(scan); }).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<script>
+/* [BG-GUARD] أي خطأ في الخلفيات المتحركة لا يُسقط الصفحة: يوقف الخلفية، يحفظ «بدون»، ويعرض سبب الخطأ الحقيقي */
+(function () {
+  var shown = {};
+  function report(e, where) {
+    try { if (typeof bgAnimationId !== 'undefined' && bgAnimationId) { cancelAnimationFrame(bgAnimationId); bgAnimationId = null; } } catch (_) {}
+    try { safeSet('bgAnimationType', 'none'); } catch (_) {}
+    var msg = (e && (e.name ? e.name + ': ' : '') + (e.message || e)) || 'unknown';
+    console.warn('⚠️ خطأ في الخلفية (' + where + '):', e);
+    window.__lastBgError = where + ' → ' + msg;
+    if (!shown[where]) { shown[where] = 1; try { showInAppNotification('⚠️', 'تعذّر تشغيل الخلفية المتحركة — ' + msg.slice(0, 90)); } catch (_) {} }
+    try { document.querySelectorAll('.bg-option').forEach(function (o) { o.classList.toggle('selected', o.dataset.bg === 'none'); }); } catch (_) {}
+  }
+  var orig = window.setBackground;
+  if (typeof orig === 'function') window.setBackground = function (t) { try { return orig.call(this, t); } catch (e) { report(e, 'setBackground(' + t + ')'); } };
+  ['bgWaves', 'bgStars', 'bgPetals', 'bgFlames', 'bgLightning', 'bgStarsInit', 'bgPetalsInit', 'bgFlamesInit', 'bgLightningInit'].forEach(function (n) {
+    var f = window[n]; if (typeof f !== 'function') return;
+    window[n] = function () { try { return f.apply(this, arguments); } catch (e) { report(e, n); } };
+  });
 })();
 </script>
 </body>
