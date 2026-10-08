@@ -327,6 +327,60 @@ padding: 0;
   --section-gradient: var(--gradient-boxing);
   --section-icon: var(--bi-boxing-glove);
 }
+.app-header.section-martial {
+  --section-accent: var(--accent-boxing);
+  --section-glow: var(--accent-boxing-glow);
+  --section-gradient: var(--gradient-boxing);
+  --section-icon: var(--bi-boxing-glove);
+}
+.martial-screen { display: block; padding-bottom: 6.5rem; }
+.martial-result-card .mrc-header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.7rem; margin-bottom: 0.6rem; }
+.martial-result-card .mrc-header h2 { font-size: 1.05rem; font-weight: 800; flex: 1 1 100%; margin: 0; }
+.martial-result-card .mrc-duration, .martial-result-card .mrc-total { font-size: 0.75rem; color: var(--text-secondary); }
+.martial-result-card .mrc-section h3 { margin: 0.9rem 0 0.3rem; }
+.mrc-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+.mrc-btn { padding: 0.7rem; min-height: 44px; border-radius: var(--radius-full); border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-family: inherit; font-size: 0.8rem; font-weight: 800; cursor: pointer; }
+.mrc-btn.primary { grid-column: 1 / -1; background: var(--gradient-boxing); border: none; color: #fff; }
+/* 🧠 المدرب الذكي + أيقونة القفاز الثابتة */
+#nav-martial .icon { transition: none; display: inline-flex; width: 1.4rem; height: 1.4rem; align-items: center; justify-content: center; }
+#nav-martial.active .icon { transform: none; }
+#nav-martial .icon .ico { width: 1.3rem; height: 1.3rem; flex: none; display: block; stroke: currentColor; fill: none; }
+.mrc-linked { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.4rem 0 0.2rem; }
+.mrc-linked span { font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 999px; border: 1px solid var(--border-color); color: var(--text-secondary); }
+.sc-tag { font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 999px; background: var(--gradient-boxing); color: #fff; vertical-align: middle; }
+.sc-banner { margin: 0.5rem 0; padding: 0.7rem 0.8rem; border-radius: var(--radius-md); border: 1.5px solid var(--accent-boxing); font-size: 0.82rem; }
+.sc-banner ul { margin: 0.4rem 1.1rem 0 0; padding: 0; font-size: 0.74rem; color: var(--text-secondary); }
+.sc-sub { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.25rem; }
+.sc-dock { position: fixed; z-index: 100001; inset-inline-start: 12px; bottom: calc(5.6rem + env(safe-area-inset-bottom, 0px)); display: flex; gap: 0.4rem; align-items: center; }
+.sc-fab, .sc-mute { min-height: 44px; border-radius: 999px; font-family: inherit; font-weight: 800; font-size: 0.78rem; cursor: pointer; border: 1.5px solid var(--accent-boxing); color: #fff; padding: 0 0.9rem; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.sc-fab { background: var(--gradient-boxing); }
+.sc-mute { background: var(--bg-card); color: var(--text-primary); }
+.sc-mute.on, .sc-ico.on { border-color: #e53935; color: #ff8a80; }
+.sc-caption { position: fixed; z-index: 100003; inset-inline: 12px; top: calc(0.8rem + env(safe-area-inset-top, 0px)); text-align: center; padding: 0.6rem 0.8rem; border-radius: var(--radius-md); background: rgba(10,10,20,.92); border: 1.5px solid var(--accent-boxing); color: #fff; font-weight: 700; font-size: 0.85rem; opacity: 0; pointer-events: none; }
+.sc-caption.show { opacity: 1; }
+.sc-backdrop { position: fixed; inset: 0; z-index: 100001; background: rgba(0,0,0,.55); display: none; }
+.sc-backdrop.open { display: block; }
+.sc-drawer { position: fixed; z-index: 100002; top: 0; bottom: 0; inset-inline-start: 0; width: min(88vw, 340px); background: var(--bg-card, #14141f); border-inline-end: 1.5px solid var(--accent-boxing); transform: translateX(-110%); visibility: hidden; overflow-y: auto; padding: calc(0.8rem + env(safe-area-inset-top, 0px)) 0.9rem calc(1rem + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; }
+html[dir="rtl"] .sc-drawer { transform: translateX(110%); }
+.sc-drawer.open, html[dir="rtl"] .sc-drawer.open { transform: none; visibility: visible; }
+@media (prefers-reduced-motion: no-preference) { .sc-drawer { transition: transform .25s ease, visibility .25s; } .sc-caption { transition: opacity .2s; } }
+.sc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; font-size: 0.95rem; }
+.sc-ico { background: none; border: 1.5px solid var(--border-color); color: var(--text-primary); border-radius: 999px; min-height: 36px; padding: 0 0.7rem; margin-inline-start: 0.3rem; font-family: inherit; font-size: 0.72rem; cursor: pointer; }
+.sc-sec { padding: 0.7rem 0; border-bottom: 1px solid var(--border-color); }
+.sc-h { font-weight: 800; font-size: 0.8rem; margin-bottom: 0.4rem; color: var(--accent-boxing); }
+.sc-big { font-size: 0.85rem; }
+.sc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 0.4rem; text-align: center; }
+.sc-grid div { padding: 0.45rem 0.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+.sc-grid b { display: block; font-size: 0.95rem; } .sc-grid span { font-size: 0.65rem; color: var(--text-secondary); }
+.sc-ul { margin: 0.2rem 1rem 0 0; padding: 0; font-size: 0.78rem; line-height: 1.7; }
+.sc-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.sc-chip { min-height: 36px; padding: 0 0.8rem; border-radius: 999px; border: 1.5px solid var(--border-color); background: transparent; color: var(--text-primary); font-family: inherit; font-size: 0.75rem; cursor: pointer; }
+.sc-chip.on { border-color: var(--accent-boxing); color: var(--accent-boxing); font-weight: 800; }
+.sc-sugg { padding: 0.55rem; border-radius: var(--radius-md); border: 1px solid var(--accent-boxing); margin-bottom: 0.4rem; font-size: 0.78rem; }
+.sc-apply { margin-top: 0.4rem; min-height: 38px; width: 100%; border: none; border-radius: 999px; background: var(--gradient-boxing); color: #fff; font-family: inherit; font-weight: 800; cursor: pointer; }
+.sc-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 0.3rem; }
+.sc-stars { color: #ffc107; letter-spacing: 1px; }
+
 .app-header.section-program {
   --section-accent: var(--accent-strength);
   --section-glow: var(--accent-strength-glow);
@@ -4901,6 +4955,16 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
      <div class="bld-spacer" aria-hidden="true"></div>
     </div>
    </div>
+   <div id="content-martial" class="main-content">
+    <div class="martial-screen">
+     <div class="app-header section-martial">
+      <h1>حصصي القتالية</h1>
+      <p>صمّم حصة كيك بوكسينغ، مواي تاي، أو هجينة</p>
+     </div>
+     <div id="martialForm"></div>
+     <div id="martialResults" style="display:none"></div>
+    </div>
+   </div>
    <div id="content-myprogram" class="main-content">
     <div class="myprogram-screen">
      <div class="app-header section-myprogram">
@@ -5047,6 +5111,7 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
     <div class="nav-indicator" id="navIndicator"></div>
     <button class="bottom-nav-item active" id="nav-home" onclick="switchBottomNav('home')"><span class="icon"><svg class="ico"><use href="#ico-home"/></svg></span><span class="label">الرئيسية</span></button>
     <button class="bottom-nav-item" id="nav-builder" onclick="switchBottomNav('builder')"><span class="icon"><svg class="ico"><use href="#ico-wrench"/></svg></span><span class="label">حصصي</span></button>
+    <button class="bottom-nav-item" id="nav-martial" onclick="switchBottomNav('martial')"><span class="icon"><svg class="ico"><use href="#ico-boxing-glove"/></svg></span><span class="label">قتالي</span></button>
     <button class="bottom-nav-item" id="nav-progress" onclick="switchBottomNav('progress')"><span class="icon"><svg class="ico"><use href="#ico-bar-chart"/></svg></span><span class="label">تقدمي</span></button>
     <button class="bottom-nav-item" id="nav-settings" onclick="openSettings()"><span class="icon"><svg class="ico"><use href="#ico-settings"/></svg></span><span class="label">الإعدادات</span></button>
    </div>
@@ -6436,7 +6501,10 @@ const MOVE_TONES = {
   'دك': { freq: 650, duration: 0.15, type: 'sine' },
   'خداع': { freq: 1000, duration: 0.10, type: 'sine' },
   'دوران': { freq: 850, duration: 0.15, type: 'sine' },
-  'ستيب باك': { freq: 800, duration: 0.14, type: 'sine' }
+  'ستيب باك': { freq: 800, duration: 0.14, type: 'sine' },
+  // كيك بوكسينغ / مواي تاي (الباقي موجود مسبقاً)
+  'ركبة طائرة': { freq: 300, duration: 0.24, type: 'triangle' },
+  'تيب (دفع)': { freq: 700, duration: 0.18, type: 'sine' }
 };
 const DEFAULT_TONE = { freq: 550, duration: 0.18, type: 'square' };
 
@@ -6517,7 +6585,10 @@ const MOVE_TRANSLATIONS = {
   'دك': { en: 'Duck', fr: 'Duck' },
   'خداع': { en: 'Feint', fr: 'Feinte' },
   'دوران': { en: 'Pivot', fr: 'Pivot' },
-  'ستيب باك': { en: 'Step Back', fr: 'Pas en Arrière' }
+  'ستيب باك': { en: 'Step Back', fr: 'Pas en Arrière' },
+  // كيك بوكسينغ / مواي تاي (الباقي موجود مسبقاً)
+  'ركبة طائرة': { en: 'Flying Knee', fr: 'Genou Sauté' },
+  'تيب (دفع)': { en: 'Teep Kick', fr: 'Teep' }
 };
 
 function getMoveTone(moveText) {
@@ -7263,6 +7334,7 @@ function ctInFullscreenRunner() {
 function ctReleaseCleanClass() {
   if (ctInFullscreenRunner()) return false;
   document.body.classList.remove('clean-timer-active');
+  const _x = document.getElementById('ctExitBtn'); if (_x) _x.style.display = 'none'; // FIX: stray ✕ left on screen
   return true;
 }
 function ctEnterCleanMode(timerId) {
@@ -7990,11 +8062,26 @@ const exerciseDescriptions = {
   calf_stretch: { ar:'إطالة السمانة', en:'Calf Stretch', fr:'Étirement Mollet', desc:'ادفع الحائط مع رجل خلفك.', search_ar:'إطالة السمانة', search_en:'calf stretch', search_fr:'étirement mollet' },
   cobra_stretch: { ar:'إطالة الكوبرا', en:'Cobra Stretch', fr:'Étirement Cobra', desc:'استلقِ على بطنك وارفع صدرك.', search_ar:'إطالة الكوبرا', search_en:'cobra stretch', search_fr:'étirement cobra' },
   pigeon_pose: { ar:'وضعية الحمامة', en:'Pigeon Pose', fr:'Posture Pigeon', desc:'إطالة عميقة للحوض.', search_ar:'وضعية الحمامة', search_en:'pigeon pose yoga', search_fr:'posture pigeon' },
-  downward_dog: { ar:'الكلب المنحني', en:'Downward Dog', fr:'Chien Tête en Bas', desc:'وضعية يوغا الكلب.', search_ar:'Downward Dog', search_en:'downward dog yoga', search_fr:'chien tête en bas' }
+  downward_dog: { ar:'الكلب المنحني', en:'Downward Dog', fr:'Chien Tête en Bas', desc:'وضعية يوغا الكلب.', search_ar:'Downward Dog', search_en:'downward dog yoga', search_fr:'chien tête en bas' },
+  // 🥊 كيك بوكسينغ / مواي تاي
+  front_kick: { ar: 'ركلة أمامية', en: 'Front Kick', fr: 'Coup de Pied Avant', desc: 'اركل من الورك مع رفع الركبة، ثم مد الساق بسرعة. أعد الرجل بسرعة للوقوف.', search_ar: 'ركلة أمامية مواي تاي', search_en: 'front kick muay thai', search_fr: 'coup de pied avant' },
+  roundhouse_kick: { ar: 'ركلة دائرية', en: 'Roundhouse Kick', fr: 'Coup Circulaire', desc: 'دوّر الورك واركل من الخارج للداخل مع الحفاظ على التوازن على القدم الثابتة.', search_ar: 'ركلة دائرية مواي تاي', search_en: 'roundhouse kick muay thai', search_fr: 'coup circulaire' },
+  low_kick: { ar: 'ركلة منخفضة', en: 'Low Kick', fr: 'Low Kick', desc: 'اركل فخذ الخصم بحركة دائرية سريعة، بلا رفع الركبة كثيراً.', search_ar: 'ركلة منخفضة مواي تاي', search_en: 'low kick muay thai', search_fr: 'low kick' },
+  body_kick: { ar: 'ركلة للجسم', en: 'Body Kick', fr: 'Coup au Corps', desc: 'اركل أضلاع أو كبد الخصم من الجانب بحركة دائرية.', search_ar: 'ركلة للجسم', search_en: 'body kick muay thai', search_fr: 'coup au corps' },
+  high_kick: { ar: 'ركلة عالية', en: 'High Kick', fr: 'High Kick', desc: 'اركل رأس أو كتف الخصم بحركة دائرية عالية مع الحفاظ على الرؤية.', search_ar: 'ركلة عالية', search_en: 'high kick muay thai', search_fr: 'high kick' },
+  knee_strike: { ar: 'ركبة', en: 'Knee Strike', fr: 'Coup de Genou', desc: 'اسحب خصمك للأسفل وارفع ركبتك لأعلى بحركة انفجارية.', search_ar: 'ركبة مواي تاي', search_en: 'knee strike muay thai', search_fr: 'coup de genou' },
+  flying_knee: { ar: 'ركبة طائرة', en: 'Flying Knee', fr: 'Genou Sauté', desc: 'اقفز للأمام وارفع ركبتك نحو رأس الخصم مع ضم الساق.', search_ar: 'ركبة طائرة', search_en: 'flying knee muay thai', search_fr: 'genou sauté' },
+  elbow_strike: { ar: 'كوع', en: 'Elbow Strike', fr: 'Coup de Coude', desc: 'اضرب بكوعك بحركة أفقية أو صاعدة من مسافة قريبة.', search_ar: 'كوع مواي تاي', search_en: 'elbow strike muay thai', search_fr: 'coup de coude' },
+  spinning_elbow: { ar: 'كوع دوار', en: 'Spinning Elbow', fr: 'Coude Tournant', desc: 'دوّر جسمك 180 درجة واضرب بكوعك بحركة أفقية مفاجئة.', search_ar: 'كوع دوار', search_en: 'spinning elbow muay thai', search_fr: 'coude tournant' },
+  teep_kick: { ar: 'تيب (دفع)', en: 'Teep Kick', fr: 'Teep', desc: 'ادفع خصمك بباطن قدمك لإبعاده، مع رفع الركبة قبل المد.', search_ar: 'تيب مواي تاي', search_en: 'teep push kick muay thai', search_fr: 'teep' },
+  clinch_knee: { ar: 'ركبة في الاشتباك', en: 'Clinch Knee', fr: 'Genou en Clinch', desc: 'اسحب رأس خصمك للأسفل وارفع ركبتك بسرعة في الاشتباك.', search_ar: 'ركبة اشتباك', search_en: 'clinch knee muay thai', search_fr: 'genou clinch' }
 };
 
 const MUSCLE_MAP = { default: ['الجسم بالكامل'], squat: ['الفخذ الأمامي', 'المؤخرة', 'السمانة'], jump: ['الفخذ', 'السمانة', 'القلب'], push: ['الصدر', 'الترايسبس', 'الكتف الأمامي'], pull: ['الظهر', 'البايسبس', 'الكتف الخلفي'], punch: ['الكتف', 'الذراع', 'الجذع', 'القلب'], kick: ['الفخذ', 'المؤخرة', 'الجذع'], twist: ['البطن', 'الجانبية', 'الجذع'], hold: ['البطن', 'الجذع', 'الظهر السفلي'], run: ['الفخذ', 'السمانة', 'القلب'], rope: ['السمانة', 'الكتف', 'القلب'], swing: ['المؤخرة', 'الفخذ الخلفي', 'الظهر السفلي'], slip: ['الجذع', 'الرقبة', 'الفخذ'], raise: ['السمانة', 'الكتف الجانبي'] };
 const PATTERN_GROUPS = { squat:['squat','lunge','kbdeadlift','glutebridge','prog_goblet_squat','prog_romanian_dl','step'], jump:['jj','squatjump','burpee','twistjump'], push:['pushup','kbpress','tricepsdip','prog_chest_press','prog_incline_press','prog_shoulder_press'], pull:['bentrow','prog_lat_pulldown','prog_cable_row'], punch:['punch','finalpunch','finalcombo','b_hook_mirror','b_touch_go','b_target_hit','b_speed_burst','b_shadow_tech','b_bag_tech','b_bag_power','b_slip_counter','prog_shadow_boxing','prog_heavy_bag','b_shadow_slow'], kick:['kick','finalkick'], twist:['russiantwist','bicycle','vup','legraise','prog_cable_crunch','prog_dead_bug','b_hip_rotation','b_pivot'], hold:['plank','shouldertap','prog_plank','catcow','childpose','breathing','b_stretch_neck','b_stretch_hips','joints','b_shoulderrolls'], run:['highknees','walk','slowwalk','mountain','b_in_out','b_ladder','prog_treadmill','prog_stationary_bike'], rope:['jr','warmrope','b_jumprope'], swing:['kbswing','ballslam','battlerope','wallball'], slip:['b_slip','b_roll','b_duck','b_bob_weave'], raise:['calfraise','prog_lateral_raise','prog_leg_curl'] };
+PATTERN_GROUPS.kick.push('front_kick', 'roundhouse_kick', 'low_kick', 'body_kick', 'high_kick'); // كيك بوكسينغ: نفس عائلة kick (صعوبة/نسبة/عضلات)
+PATTERN_GROUPS.muaythai = ['knee_strike', 'flying_knee', 'elbow_strike', 'spinning_elbow', 'teep_kick', 'clinch_knee'];
+MUSCLE_MAP.muaythai = ['الجذع', 'الفخذ', 'الكتف', 'القلب'];
 const KEY_TO_PATTERN = {};
 Object.entries(PATTERN_GROUPS).forEach(([p, ks]) => ks.forEach(k => KEY_TO_PATTERN[k] = p));
 function getExercisePattern(key){ return KEY_TO_PATTERN[key] || 'hold'; }
@@ -8108,12 +8195,12 @@ const RING_CIRCUMFERENCE = 2 * Math.PI * 95;
 function renderTimerCard(id, title, titleEn, subtitle, descKey, work, rest, nextId, nextAction, gearup) {
   const gearupAttr = gearup ? `, ${gearup}` : '';
   const nextTitle = nextId ? (getExerciseTitleById(nextId) || 'التالي') : 'نهاية المرحلة';
-  return `<div class="exercise-card" id="card-${id}" data-exercise-id="${id}" data-exercise-title="${title}" data-next-title="${nextTitle}"><div class="exercise-header"><div><span class="exercise-title-ar">${emoIco(title)}</span>${titleEn ? `<span class="exercise-title-en">${titleEn}</span>` : ''}${subtitle ? `<span class="badge-green badge" style="margin-top:4px;display:inline-block;">${subtitle}</span>` : ''}</div></div><div class="timer-widget" id="timer-${id}"><div class="timer-ring-container"><svg class="timer-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="95" class="ring-bg"/><circle cx="100" cy="100" r="95" class="ring-progress" style="stroke-dasharray: ${RING_CIRCUMFERENCE}; stroke-dashoffset: 0;"/></svg><div class="ring-content"><div class="timer-display">${formatTime(work)}</div><div class="timer-label">${ICO('dumbbell')} وقت العمل</div></div></div><div class="timer-controls"><button class="timer-btn primary" onclick="startTimer('${id}', ${work}, ${rest}, ${nextId ? `'${nextId}'` : 'null'}, ${nextAction ? `'${nextAction}'` : 'null'}${gearupAttr})"><svg class="ico"><use href="#ico-play"/></svg> ابدأ</button><button class="timer-btn next-btn" onclick="goToNextExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> التالي</button><button class="timer-btn" onclick="resetTimer('${id}', ${work})"><svg class="ico"><use href="#ico-rotate-ccw"/></svg> إعادة</button><button class="timer-btn" onclick="repeatCurrentExercise()"><svg class="ico"><use href="#ico-repeat"/></svg> تكرار</button>
-<button class="timer-btn" onclick="finishCurrentExercise()" style="color:#34a874;border-color:#34a874;"><svg class="ico"><use href="#ico-check-circle"/></svg> إنهاء</button><button class="timer-quick-btn skip" onclick="skipCurrentExercise()" style="font-weight:900;color:#f59e0b;border-color:#f59e0b;"><svg class="ico"><use href="#ico-skip-forward"/></svg> تخطي التمرين</button><button class="timer-quick-btn extra-rest" onclick="addExtraRest()">${ICO('wind')} +30ث</button></div></div><button class="desc-btn" onclick="openDesc('${descKey}')"><span class="icon">${ICO('file-text')}</span> وصف التمرين</button></div>`;
+  return `<div class="exercise-card" id="card-${id}" data-exercise-id="${id}" data-exercise-title="${title}" data-next-title="${nextTitle}"><div class="exercise-header"><div><span class="exercise-title-ar">${emoIco(title)}</span>${titleEn ? `<span class="exercise-title-en">${titleEn}</span>` : ''}${subtitle ? `<span class="badge-green badge">${subtitle}</span>` : ''}</div></div><div class="timer-widget" id="timer-${id}"><div class="timer-ring-container"><svg class="timer-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="95" class="ring-bg"/><circle cx="100" cy="100" r="95" class="ring-progress" style="stroke-dasharray: ${RING_CIRCUMFERENCE}; stroke-dashoffset: 0;"/></svg><div class="ring-content"><div class="timer-display">${formatTime(work)}</div><div class="timer-label">${ICO('dumbbell')} وقت العمل</div></div></div><div class="timer-controls"><button class="timer-btn primary" onclick="startTimer('${id}', ${work}, ${rest}, ${nextId ? `'${nextId}'` : 'null'}, ${nextAction ? `'${nextAction}'` : 'null'}${gearupAttr})"><svg class="ico"><use href="#ico-play"/></svg> ابدأ</button><button class="timer-btn next-btn" onclick="goToNextExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> التالي</button><button class="timer-btn" onclick="resetTimer('${id}', ${work})"><svg class="ico"><use href="#ico-rotate-ccw"/></svg> إعادة</button><button class="timer-btn" onclick="repeatCurrentExercise()"><svg class="ico"><use href="#ico-repeat"/></svg> تكرار</button>
+<button class="timer-btn finish-btn" onclick="finishCurrentExercise()"><svg class="ico"><use href="#ico-check-circle"/></svg> إنهاء</button><button class="timer-quick-btn skip" onclick="skipCurrentExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> تخطي التمرين</button><button class="timer-quick-btn extra-rest" onclick="addExtraRest()">${ICO('wind')} +30ث</button></div></div><button class="desc-btn" onclick="openDesc('${descKey}')"><span class="icon">${ICO('file-text')}</span> وصف التمرين</button></div>`;
 }
 function renderBoxingTimerCard(id, title, titleEn, subtitle, descKey, work, rest, nextId, nextAction) {
   const nextTitle = nextId ? (getExerciseTitleById(nextId) || 'التالي') : 'نهاية المرحلة';
-  return `<div class="exercise-card" id="card-${id}" data-exercise-id="${id}" data-exercise-title="${title}" data-next-title="${nextTitle}"><div class="exercise-header"><div><span class="exercise-title-ar">${emoIco(title)}</span>${titleEn ? `<span class="exercise-title-en">${titleEn}</span>` : ''}${subtitle ? `<span class="badge-red badge" style="margin-top:4px;display:inline-block;">${subtitle}</span>` : ''}</div></div><div class="timer-widget" id="timer-${id}"><div class="timer-ring-container"><svg class="timer-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="95" class="ring-bg"/><circle cx="100" cy="100" r="95" class="ring-progress" style="stroke-dasharray: ${RING_CIRCUMFERENCE}; stroke-dashoffset: 0;"/></svg><div class="ring-content"><div class="timer-display">${formatTime(work)}</div><div class="timer-label">${ICO('boxing-glove')} الجولة</div></div></div><div class="timer-controls"><button class="timer-btn boxing-btn" onclick="startTimer('${id}', ${work}, ${rest}, ${nextId ? `'${nextId}'` : 'null'}, ${nextAction ? `'${nextAction}'` : 'null'})"><svg class="ico"><use href="#ico-play"/></svg> ابدأ</button><button class="timer-btn next-btn" onclick="goToNextExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> التالي</button><button class="timer-btn boxing-btn-outline" onclick="resetTimer('${id}', ${work})"><svg class="ico"><use href="#ico-rotate-ccw"/></svg> إعادة</button><button class="timer-btn boxing-btn-outline" onclick="repeatCurrentExercise()"><svg class="ico"><use href="#ico-repeat"/></svg> تكرار</button><button class="timer-quick-btn skip" onclick="skipCurrentExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> تخطي</button><button class="timer-quick-btn extra-rest" onclick="addExtraRest()">${ICO('wind')} +30ث</button></div></div><button class="desc-btn" onclick="openDesc('${descKey}')"><span class="icon">${ICO('file-text')}</span> وصف التمرين</button></div>`;
+  return `<div class="exercise-card" id="card-${id}" data-exercise-id="${id}" data-exercise-title="${title}" data-next-title="${nextTitle}"><div class="exercise-header"><div><span class="exercise-title-ar">${emoIco(title)}</span>${titleEn ? `<span class="exercise-title-en">${titleEn}</span>` : ''}${subtitle ? `<span class="badge-red badge">${subtitle}</span>` : ''}</div></div><div class="timer-widget" id="timer-${id}"><div class="timer-ring-container"><svg class="timer-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="95" class="ring-bg"/><circle cx="100" cy="100" r="95" class="ring-progress" style="stroke-dasharray: ${RING_CIRCUMFERENCE}; stroke-dashoffset: 0;"/></svg><div class="ring-content"><div class="timer-display">${formatTime(work)}</div><div class="timer-label">${ICO('boxing-glove')} الجولة</div></div></div><div class="timer-controls"><button class="timer-btn boxing-btn" onclick="startTimer('${id}', ${work}, ${rest}, ${nextId ? `'${nextId}'` : 'null'}, ${nextAction ? `'${nextAction}'` : 'null'})"><svg class="ico"><use href="#ico-play"/></svg> ابدأ</button><button class="timer-btn next-btn" onclick="goToNextExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> التالي</button><button class="timer-btn boxing-btn-outline" onclick="resetTimer('${id}', ${work})"><svg class="ico"><use href="#ico-rotate-ccw"/></svg> إعادة</button><button class="timer-btn boxing-btn-outline" onclick="repeatCurrentExercise()"><svg class="ico"><use href="#ico-repeat"/></svg> تكرار</button><button class="timer-quick-btn skip" onclick="skipCurrentExercise()"><svg class="ico"><use href="#ico-skip-forward"/></svg> تخطي</button><button class="timer-quick-btn extra-rest" onclick="addExtraRest()">${ICO('wind')} +30ث</button></div></div><button class="desc-btn" onclick="openDesc('${descKey}')"><span class="icon">${ICO('file-text')}</span> وصف التمرين</button></div>`;
 }
 
 function renderWarmup(items) { let html = `<div id="phase-warmup" class="phase-content active"><h2>${ICO('flame')} المرحلة الأولى: التسخين <span class="badge">5 – 7 دقائق</span></h2><div class="coach">ابدأ بالتسخين.</div>`; items.forEach((item, idx) => { const nextId = idx < items.length - 1 ? items[idx + 1].id : null; const nextAction = idx === items.length - 1 ? 'switch-to-circuit' : null; const nameEn = item.nameEn || getExerciseNameEn(item.id); html += renderTimerCard(item.id, item.title, nameEn, item.subtitle, item.descKey, item.time, 0, nextId, nextAction); }); html += `<div class="coach">ممتاز! ننتقل للدائرة.</div></div>`; return html; }
@@ -8437,17 +8524,50 @@ function handleTransition(nextId, nextAction) {
           document.querySelectorAll('.focus-toggle-btn').forEach(t => t.classList.add('active'));
           if (activeTimerId && typeof ctEnterCleanMode === 'function') ctEnterCleanMode(activeTimerId); // FIX BUG1: no timerStyleMode condition
         } else {
-          nextWidget.scrollIntoView({ behavior: 'smooth', block: 'center' });
           if (nextBtn) nextBtn.click();
+          scrollToExerciseCard(nextWidget.closest('.exercise-card') || nextWidget);
         }
       }
     }, 1500);
   }
 }
 function showWorkoutCompleteModal(dayId, type) { const isBoxing = type === 'boxing'; haptic('complete'); playFinish(); setTimeout(() => { showConfirm(isBoxing ? '🥇' : '🎉', isBoxing ? 'أكملت جلسة الملاكمة!' : 'أكملت تمرين اليوم!', `${isBoxing ? 'عمل رائع! أكملت اليوم ' + dayId + ' من الملاكمة' : 'اليوم ' + dayId + ' من HIIT'}`, (confirmed) => { if (isBoxing) { markBoxingDayCompleted(dayId); goBoxingHome(); } else { markDayCompleted(dayId); goHome(); } }); }, 800); }
-function goToNextExercise() { playClick(); haptic('medium'); let currentCard = document.querySelector('.exercise-card.current'); if (!currentCard) { const activePhase = document.querySelector('.phase-content.active'); if (activePhase) { const firstCard = activePhase.querySelector('.exercise-card'); if (firstCard) { firstCard.classList.add('current'); currentCard = firstCard; } } } if (!currentCard) { showInAppNotification('ℹ️', 'افتح تمريناً أولاً'); return; } const activePhase = currentCard.closest('.phase-content'); if (!activePhase) return; const allCards = Array.from(activePhase.querySelectorAll('.exercise-card')); const currentIndex = allCards.indexOf(currentCard); if (currentIndex >= 0 && currentIndex < allCards.length - 1) { const nextCard = allCards[currentIndex + 1]; const nextWidget = nextCard.querySelector('.timer-widget'); if (nextWidget) { if (activeTimerId) { const tm = timers[activeTimerId]; if (tm && tm.interval) clearInterval(tm.interval); if (tm) tm.running = false; } activeTimerId = null; currentCard.classList.remove('current'); nextCard.classList.add('current'); nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); showInAppNotification('⏭️', 'التمرين التالي'); const nextBtn = nextWidget.querySelector('.timer-btn.primary') || nextWidget.querySelector('.timer-btn.boxing-btn'); if (nextBtn) nextBtn.click(); const type = nextWidget.closest('#content-boxing') ? 'boxing' : 'hiit'; updateExerciseCounter(type); } } else { showInAppNotification('ℹ️', 'هذا آخر تمرين في المرحلة'); } }
+function scrollToExerciseCard(card) {
+  // FIX: scroll AFTER the timer start has finished changing the layout, otherwise the smooth scroll is cancelled
+  if (!card || document.body.classList.contains('focus-mode')) return;
+  const go = () => { try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { card.scrollIntoView(); } };
+  requestAnimationFrame(() => requestAnimationFrame(go));
+  setTimeout(go, 350); // second pass: covers late layout shifts (clean mode / notifications)
+}
+function goToNextExercise() {
+  playClick(); haptic('medium');
+  // FIX: the source card is the one whose "Next" button was pressed (not "the first card" when nothing is current)
+  const ev = window.event; let currentCard = null;
+  if (ev && ev.target && ev.target.closest) currentCard = ev.target.closest('.exercise-card');
+  if (!currentCard) currentCard = document.querySelector('.exercise-card.current');
+  if (!currentCard) { const ap = document.querySelector('.phase-content.active'); if (ap) currentCard = ap.querySelector('.exercise-card'); }
+  if (!currentCard) { showInAppNotification('ℹ️', 'افتح تمريناً أولاً'); return; }
+  const activePhase = currentCard.closest('.phase-content'); if (!activePhase) return;
+  const allCards = Array.from(activePhase.querySelectorAll('.exercise-card'));
+  const currentIndex = allCards.indexOf(currentCard);
+  if (currentIndex < 0 || currentIndex >= allCards.length - 1) { showInAppNotification('ℹ️', 'هذا آخر تمرين في المرحلة'); return; }
+  const nextCard = allCards[currentIndex + 1];
+  const nextWidget = nextCard.querySelector('.timer-widget'); if (!nextWidget) return;
+  // FIX: fully stop + reset the previous timer UI (before it kept showing "إيقاف" as if still running)
+  const prevWidget = currentCard.querySelector('.timer-widget');
+  const prevId = prevWidget ? prevWidget.id.replace(/^timer-/, '') : null;
+  if (activeTimerId) { const tm = timers[activeTimerId]; if (tm && tm.interval) clearInterval(tm.interval); if (tm) { tm.running = false; } }
+  activeTimerId = null;
+  if (prevId && timers[prevId] && timers[prevId].work) { try { resetTimer(prevId, timers[prevId].work); } catch (e) {} }
+  currentCard.classList.remove('current');
+  nextCard.classList.add('current');
+  showInAppNotification('⏭️', 'التمرين التالي');
+  const nextBtn = nextWidget.querySelector('.timer-btn.primary') || nextWidget.querySelector('.timer-btn.boxing-btn') || nextWidget.querySelector('.timer-btn');
+  if (nextBtn) nextBtn.click();
+  scrollToExerciseCard(nextCard);
+  updateExerciseCounter(nextWidget.closest('#content-boxing') ? 'boxing' : 'hiit');
+}
 function skipCurrentExercise() { playClick(); haptic('medium'); if (!activeTimerId || !timers[activeTimerId]) { showInAppNotification('ℹ️', 'لا يوجد تمرين نشط'); return; } const tm = timers[activeTimerId]; clearInterval(tm.interval); tm.running = false; tm.phase = 'done'; activeTimerId = null; speak('تم التخطي'); handleTransition(tm.nextId, tm.nextAction); }
-
 function finishCurrentExercise() {
   playClick(); haptic('medium');
   if (!activeTimerId || !timers[activeTimerId]) { showInAppNotification('ℹ️', 'لا يوجد تمرين نشط'); return; }
@@ -8530,6 +8650,7 @@ function switchMainTab(tab) {
   if (tabBtn) { tabBtn.classList.add('active'); tabBtn.setAttribute('aria-selected', 'true'); }
   if (tab === 'program') { renderProgramDays(); updateProgramStats(); progSub(safeGet('progSub', 'cur'), true); }
   if (tab === 'myprogram') loadSavedProgram();
+  if (tab === 'martial' && typeof initMartialWizard === 'function') initMartialWizard();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function switchBottomNav(tab) {
@@ -8560,8 +8681,450 @@ function switchBottomNav(tab) {
     document.getElementById('mainApp').style.display = 'block'; 
     switchMainTab('builder'); 
   }
+  else if (tab === 'martial') {
+    document.getElementById('dashboardScreen').classList.remove('active');
+    document.getElementById('mainApp').classList.remove('dash-hidden');
+    document.getElementById('mainApp').style.display = 'block';
+    switchMainTab('martial');
+  }
 }
 function closeDashboard() { playClick(); switchBottomNav('home'); }
+/* ============ 🥊 قتالي: المعالج (5 خطوات) ============ */
+let martialData = { style: 'hybrid', level: 'intermediate', equipment: [], duration: 90, rounds: 4, roundDuration: 3, rest: 60, structure: 'traditional', intensity: 'moderate', injuries: ['none'], fasting: 'no' };
+let martialStep = 1;
+const MARTIAL_STEPS = 5;
+let lastMartialSession = null;
+let martialDurTouched = false;
+const MARTIAL_STYLES = [
+  ['kickboxing', 'كيك بوكسينغ', 'Kickboxing', 'ico-zap'],
+  ['muaythai', 'مواي تاي', 'Muay Thai', 'ico-flame'],
+  ['mixed', 'فنون شاملة', 'Mixed Martial Arts', 'ico-activity'],
+  ['hybrid', 'حصة هجينة', 'Hybrid', 'ico-dumbbell'],
+  ['boxing', 'ملاكمة فقط', 'Boxing Only', 'ico-boxing-glove']
+];
+const MARTIAL_STEP_TITLES = [
+  ['ico-boxing-glove', 'نوع القتال'], ['ico-activity', 'المستوى والمعدات'], ['ico-timer', 'الحجم والوقت'], ['ico-gauge', 'نمط الجولة والشدة'], ['ico-bandage', 'صحتك']
+];
+function martialDurOptions() { return martialData.style === 'hybrid' ? [60, 75, 90, 120] : [30, 45, 60, 90]; }
+function martialDurDefault() { return martialData.style === 'hybrid' ? 90 : 45; }
+function mChip(group, val, label, active) {
+  return '<button class="wiz-chip' + (active ? ' active' : '') + '" data-val="' + val + '" onclick="martialPick(\'' + group + '\',\'' + val + '\')">' + label + '</button>';
+}
+function mSection(icon, title) { return '<div class="wiz-section-title"><svg class="ico"><use href="#' + icon + '"/></svg> ' + title + '</div>'; }
+function martialPick(group, val) {
+  const d = martialData;
+  if (group === 'style') {
+    d.style = val;
+    if (!martialDurTouched) d.duration = martialDurDefault();
+    else if (!martialDurOptions().includes(d.duration)) {
+      if (val === 'hybrid' && d.duration < 60) { try { showInAppNotification('⏱️', 'الحصة الهجينة تحتاج 60-90 دقيقة للهيكل الكامل'); } catch (e) {} }
+      d.duration = martialDurDefault();
+    }
+  } else if (group === 'strengthMode') { safeSet('martialStrengthMode', val);
+  } else if (group === 'equipment') {
+    if (val === 'none') d.equipment = [];
+    else d.equipment = d.equipment.includes(val) ? d.equipment.filter(x => x !== val) : d.equipment.concat(val);
+  } else if (group === 'injuries') {
+    if (val === 'none') d.injuries = ['none'];
+    else {
+      let a = d.injuries.filter(x => x !== 'none');
+      a = a.includes(val) ? a.filter(x => x !== val) : a.concat(val);
+      d.injuries = a.length ? a : ['none'];
+    }
+  } else {
+    d[group] = (['duration', 'rounds', 'roundDuration', 'rest'].includes(group)) ? Number(val) : val;
+    if (group === 'duration') martialDurTouched = true;
+  }
+  renderMartialWizard();
+}
+function martialStepHtml(n) {
+  const d = martialData;
+  if (n === 1) {
+    return '<div class="goal-grid">' + MARTIAL_STYLES.map(s => '<div class="goal-card' + (d.style === s[0] ? ' active' : '') + '" data-style="' + s[0] + '" onclick="martialPick(\'style\',\'' + s[0] + '\')"><span class="goal-icon"><svg class="ico"><use href="#' + s[3] + '"/></svg></span><span class="goal-title">' + s[1] + '</span><span class="goal-sub">' + s[2] + '</span></div>').join('') + '</div>';
+  }
+  if (n === 2) {
+    const lv = [['beginner', 'مبتدئ'], ['intermediate', 'متوسط'], ['advanced', 'متقدم'], ['athlete', 'محترف']];
+    const eq = [['bag', 'كيس'], ['rope', 'حبل'], ['dumbbell', 'دمبل'], ['bar', 'بار'], ['pullup', 'عقلة']];
+    return mSection('ico-activity', 'المستوى') + '<div class="wiz-chip-grid" id="mgLevel">' + lv.map(x => mChip('level', x[0], x[1], d.level === x[0])).join('') + '</div>' +
+      mSection('ico-briefcase', 'المعدات المتاحة') + '<div class="wiz-chip-grid" id="mgEquip">' + eq.map(x => mChip('equipment', x[0], x[1], d.equipment.includes(x[0]))).join('') + mChip('equipment', 'none', 'لا شيء', d.equipment.length === 0) + '</div>';
+  }
+  if (n === 3) {
+    const hint = d.style === 'hybrid' ? '<div class="wiz-hint" id="martialDurHint">الحصة الهجينة تحتاج 60-90 دقيقة للهيكل الكامل</div>' : '';
+    return mSection('ico-timer', 'مدة الحصة (دقيقة)') + '<div class="wiz-chip-grid" id="mgDuration">' + martialDurOptions().map(x => mChip('duration', x, x, d.duration === x)).join('') + '</div>' + hint +
+      mSection('ico-repeat', 'عدد الجولات') + '<div class="wiz-chip-grid" id="mgRounds">' + [3, 4, 5, 6, 8, 12].map(x => mChip('rounds', x, x, d.rounds === x)).join('') + '</div>' +
+      mSection('ico-clock', 'مدة الجولة (دقيقة)') + '<div class="wiz-chip-grid" id="mgRoundDur">' + [1, 2, 3, 5].map(x => mChip('roundDuration', x, x, d.roundDuration === x)).join('') + '</div>' +
+      mSection('ico-timer', 'مدة الراحة (ثانية)') + '<div class="wiz-chip-grid" id="mgRest">' + [30, 45, 60, 90, 120].map(x => mChip('rest', x, x, d.rest === x)).join('') + '</div>';
+  }
+  if (n === 4) {
+    const st = [['traditional', 'تقليدي'], ['alternating', 'تبديلي'], ['intense', 'هجين مكثف']];
+    const it = [['light', 'خفيف'], ['moderate', 'متوسط'], ['hard', 'مكثف'], ['max', 'أقصى']];
+    return mSection('ico-repeat', 'نمط الجولة') + '<div class="wiz-chip-grid" id="mgStructure">' + st.map(x => mChip('structure', x[0], x[1], d.structure === x[0])).join('') + '</div>' +
+      '<div class="wiz-hint">تقليدي: مهارة ← كارديو ← كيس ← قوة ← ختامي</div>' +
+      mSection('ico-gauge', 'الشدة') + '<div class="wiz-chip-grid" id="mgIntensity">' + it.map(x => mChip('intensity', x[0], x[1], d.intensity === x[0])).join('') + '</div>' +
+      (d.style === 'hybrid' ? mSection('ico-dumbbell', 'توزيع القوة (للحصص الهجينة الأقصر من 60 د)') + '<div class="wiz-chip-grid" id="mgStrength">' + mChip('strengthMode', 'distributed', 'موزعة (4)', martialStrengthMode() === 'distributed') + mChip('strengthMode', 'focused', 'مركزة (2)', martialStrengthMode() === 'focused') + '</div><div class="wiz-hint">مركزة: بلا كيس أو حبل. موزعة: كتل الكيس والحبل تنزل لمجموعة عند الحاجة.</div>' : '');
+  }
+  const inj = [['knee', 'ركبة'], ['back', 'ظهر'], ['shoulder', 'كتف'], ['ankle', 'كاحل']];
+  return mSection('ico-bandage', 'إصابات حالية') + '<div class="wiz-chip-grid" id="mgInjuries">' + inj.map(x => mChip('injuries', x[0], x[1], d.injuries.includes(x[0]))).join('') + mChip('injuries', 'none', 'لا يوجد', d.injuries.includes('none')) + '</div>' +
+    mSection('ico-moon', 'رمضان / صيام') + '<div class="wiz-chip-grid" id="mgFasting">' + mChip('fasting', 'yes', 'نعم', d.fasting === 'yes') + mChip('fasting', 'no', 'لا', d.fasting === 'no') + '</div>' +
+    '<button class="generate-btn" id="martialLocalBtn" onclick="generateMartialLocal()">🎲 توليد محلي</button>' +
+    '<button class="local-btn" onclick="generateMartialAI()" id="martialAiBtn"><svg class="ico"><use href="#ico-sparkles"/></svg> 🧠 المدرب الذكي</button>';
+}
+function renderMartialWizard() {
+  const box = document.getElementById('martialForm'); if (!box) return;
+  const t = MARTIAL_STEP_TITLES[martialStep - 1];
+  let dots = ''; for (let i = 1; i <= MARTIAL_STEPS; i++) dots += '<div class="wiz-dot' + (i === martialStep ? ' active' : (i < martialStep ? ' done' : '')) + '" data-dot="' + i + '"></div>';
+  box.innerHTML = '<div class="form-card" id="martialWizard">' +
+    '<div class="wiz-progress" id="martialProgress">' + dots + '</div>' +
+    '<div style="text-align:center; margin-bottom:1rem;"><div class="wiz-step-label-wrapper"><div class="wiz-step-label">خطوة <b id="martialStepNum">' + martialStep + '</b> من ' + MARTIAL_STEPS + ' — <span id="martialStepTitle"><svg class="ico"><use href="#' + t[0] + '"/></svg> ' + t[1] + '</span></div></div></div>' +
+    '<div class="wiz-step active" id="martialStep' + martialStep + '">' + martialStepHtml(martialStep) + '</div>' +
+    '<div class="wiz-nav-row">' +
+    '<button class="wiz-btn wiz-btn-back" id="martialBackBtn" onclick="martialBack()"' + (martialStep === 1 ? ' style="display:none;"' : '') + '><svg class="ico"><use href="#ico-chevron-right"/></svg> رجوع</button>' +
+    '<button class="wiz-btn wiz-btn-next" id="martialNextBtn" onclick="martialNext()"' + (martialStep === MARTIAL_STEPS ? ' style="display:none;"' : '') + '>التالي <svg class="ico"><use href="#ico-chevron-left"/></svg></button>' +
+    '</div></div>' + (martialStep === 1 ? martialSavedHtml() : '');
+}
+function martialNext() { if (martialStep < MARTIAL_STEPS) { martialStep++; renderMartialWizard(); window.scrollTo({ top: 0 }); } }
+function martialBack() { if (martialStep > 1) { martialStep--; renderMartialWizard(); window.scrollTo({ top: 0 }); } }
+function initMartialWizard() {
+  const res = document.getElementById('martialResults');
+  if (res && res.style.display !== 'none' && lastMartialSession) return; // النتيجة معروضة: اتركها
+  document.getElementById('martialForm').style.display = '';
+  renderMartialWizard();
+}
+/* ============ 🥊 قتالي: المولّد المحلي + النتيجة + التشغيل ============ */
+const MARTIAL_INT_SETS = { light: 2, moderate: 3, hard: 4, max: 4 };
+const MARTIAL_INT_ORDER = ['light', 'moderate', 'hard', 'max'];
+const MARTIAL_INT_AR = { light: 'خفيفة', moderate: 'متوسطة', hard: 'مكثفة', max: 'أقصى' };
+const MARTIAL_CARDIO = { traditional: 'continuous', alternating: 'interval', intense: 'progressive' };
+const MARTIAL_CARDIO_AR = { interval: 'فاصل', continuous: 'مستمر', progressive: 'متدرج' };
+function martialStrengthMode() { return safeGet('martialStrengthMode', 'distributed') === 'focused' ? 'focused' : 'distributed'; }
+function martialBuildF(data, extra) {
+  return Object.assign({
+    duration: data.duration, place: data.equipment.length === 0 ? 'home' : (data.equipment.includes('bar') ? 'gym' : 'home'),
+    equipment: data.equipment.slice(), injuries: data.injuries.filter(x => x !== 'none'), conditions: [], level: data.level, age: 30,
+    sleep: '7-8', stress: 'mid', fasting: data.fasting, goals: ['boxing'], trainingType: 'boxing'
+  }, extra || {});
+}
+function martialLearn() {
+  const d = { shorten_rest: 0, ease: 0, substitute: {}, total: 0 };
+  try { return Object.assign(d, JSON.parse(safeGet('martialCoachLearn', '{}'))); } catch (e) { return d; }
+}
+function martialLearnSave(L) { L.total = (L.shorten_rest || 0) + (L.ease || 0) + Object.values(L.substitute || {}).reduce((t, x) => t + (x.n || 0), 0); safeSet('martialCoachLearn', L); }
+function martialLearnedPlan(data) { // تعديلات سبق أن اقترحها المدرب وقبلتَها → تُطبَّق تلقائياً
+  const L = martialLearn(), notes = []; let restFactor = 1, shift = 0; const avoid = [];
+  if (L.shorten_rest > 0) { restFactor = Math.max(0.6, 1 - 0.15 * Math.min(L.shorten_rest, 3)); notes.push('راحات أقصر ' + Math.round((1 - restFactor) * 100) + '% (قبلتَ التقصير ' + L.shorten_rest + ' مرة)'); }
+  if (L.ease > 0) { shift -= 1; notes.push('شدة أخف درجة (قبلتَ التخفيف ' + L.ease + ' مرة)'); }
+  Object.keys(L.substitute || {}).forEach(n => { const r = L.substitute[n]; if (r.injury && data.injuries.includes(r.injury)) { avoid.push(n); notes.push('استبعاد ' + n + ' (استبدلتَه ' + r.n + ' مرة بسبب الإصابة)'); } });
+  let adj = null; try { adj = JSON.parse(safeGet('martialNextAdjust', 'null')); } catch (e) {}
+  if (adj && adj.delta) { shift += adj.delta; notes.push('من تقرير الحصة السابقة: ' + (adj.delta > 0 ? 'رفع' : 'خفض') + ' الشدة درجة'); }
+  return { restFactor, shift, avoid, notes, total: L.total || 0 };
+}
+function buildMartialSession(data, opt) {
+  opt = opt || {};
+  const typeMap = { kickboxing: 'ملاكمة + كيك بوكسينغ', muaythai: 'ملاكمة + مواي تاي', mixed: 'فنون قتالية شاملة', hybrid: 'حصة هجينة', boxing: 'ملاكمة' };
+  const type = typeMap[data.style] || 'حصة هجينة', isHybrid = data.style === 'hybrid';
+  const hy45 = isHybrid && data.duration >= 45 && data.duration < 60, mode = martialStrengthMode();
+  const learned = opt.coach ? martialLearnedPlan(data) : null;
+  const iIdx = Math.max(0, Math.min(3, MARTIAL_INT_ORDER.indexOf(data.intensity) + (learned ? learned.shift : 0)));
+  const intensity = MARTIAL_INT_ORDER[iIdx], cardio = MARTIAL_CARDIO[data.structure] || 'interval';
+  const link = { rounds: data.rounds, roundDuration: data.roundDuration, rest: data.rest, sets: MARTIAL_INT_SETS[intensity], cardio };
+  const f = martialBuildF(data, { days: ['الحصة'], forceTypes: [type], rotSeed: Math.floor(Math.random() * 1000), maxExOverride: 8, martialLink: link, strengthMode: mode, noBagRope: hy45 && mode === 'focused', avoidNames: learned ? learned.avoid : [] });
+  const sp = buildSmartSportPlan(f, { bmi: 24, recommendedLevel: data.level });
+  const d = sp.days[0];
+  if (learned && learned.restFactor < 1) d.exercises.forEach(e => { const r = aiSeconds(e.rest); if (r) e.rest = Math.max(10, Math.round(r * learned.restFactor)) + ' ث'; });
+  const blocks = d.exercises.filter(e => { const x = lxFind(e.nameEn); return x && x.fmt === 'm'; });
+  return {
+    name: /^حصة/.test(type) ? type : 'حصة ' + type, style: data.style, type: type,
+    warmup: d.warmup, exercises: d.exercises, cooldown: d.cooldown,
+    totalMinutes: Math.round(sessionMinutes(d)), duration: data.duration, rounds: data.rounds,
+    isHybrid: isHybrid, setsOverride: isHybrid ? (data.duration >= 90 ? 3 : 2) : null,
+    coach: !!opt.coach, learned: learned ? learned.notes : [], learnedTotal: learned ? learned.total : 0, injuries: f.injuries.slice(), intensity: intensity,
+    linked: { rounds: data.rounds, roundsApplied: blocks.length ? Math.max.apply(null, blocks.map(b => b.sets)) : null, roundDuration: data.roundDuration, rest: data.rest, intensity: intensity, setsIntensity: link.sets, cardio: cardio, strengthMode: hy45 ? mode : null }
+  };
+}
+function martialNameAr(nameEn) {
+  for (const val of Object.values(exerciseDescriptions)) { if (val.en && val.en.toLowerCase() === String(nameEn).toLowerCase()) return val.ar; }
+  const lx = lxFind(nameEn); return lx ? lx.ar : '';
+}
+function renderMartialResult(session) {
+  const box = document.getElementById('martialResults'); if (!box) return;
+  const row = (w) => '<div class="workout-ex-line"><span>' + mpLink(w.name, w.notes, 'span') + '</span><span class="ex-sets">' + (w.duration || '') + '</span></div>';
+  let main = '';
+  session.exercises.forEach(ex => {
+    const ar = martialNameAr(ex.nameEn);
+    main += '<div class="workout-ex-line"><div>' + mpLink(ex.nameEn, ex.notes) + (ar ? '<div class="workout-ex-note workout-ex-note-ar">' + ar + '</div>' : '') + (ex.notes ? '<div class="workout-ex-note">' + ex.notes + '</div>' : '') + '</div><span class="ex-sets">' + ex.sets + '×' + (ex.reps || '') + (ex.rest ? ' / ' + ex.rest : '') + '</span></div>';
+  });
+  const k = session.linked || {};
+  const chips = [];
+  if (k.roundsApplied != null) chips.push('🥊 جولات الكيس: ' + (k.roundsApplied === k.rounds ? k.rounds : k.rounds + ' ← ' + k.roundsApplied + ' (لتناسب الوقت)') + ' × ' + k.roundDuration + ' د');
+  chips.push('⏸ راحة: ' + k.rest + ' ث', '💪 الشدة: ' + (MARTIAL_INT_AR[k.intensity] || '') + ' (' + k.setsIntensity + ' مجموعات)', '🔥 الكارديو: ' + (MARTIAL_CARDIO_AR[k.cardio] || ''));
+  if (k.strengthMode) chips.push('🏋️ القوة: ' + (k.strengthMode === 'focused' ? 'مركزة (2)' : 'موزعة (4)'));
+  const learned = session.coach ? '<div class="sc-banner" id="scBanner">🧠 المدرب الذكي تعلّم منك <b>' + (session.learnedTotal || 0) + '</b> مرة' + (session.learned && session.learned.length ? '<ul>' + session.learned.map(x => '<li>' + x + '</li>').join('') + '</ul><div class="sc-sub">طُبّقت تلقائياً على هذه الحصة</div>' : '') + '</div>' : '';
+  let lastRep = null; try { lastRep = JSON.parse(safeGet('martialCoachLast', 'null')); } catch (e) {}
+  box.innerHTML = '<div class="form-card martial-result-card">' +
+    '<div class="mrc-header"><h2>🥊 ' + session.name + (session.coach ? ' <span class="sc-tag">🧠 مدرب ذكي</span>' : '') + '</h2><span class="mrc-duration">' + session.duration + ' دقيقة · ' + session.rounds + ' جولات</span><span class="mrc-total">⏱️ ~' + session.totalMinutes + ' دقيقة فعلياً</span></div>' +
+    learned + '<div class="mrc-linked" id="mrcLinked">' + chips.map(c => '<span>' + c + '</span>').join('') + '</div>' +
+    '<div class="mrc-section"><h3 class="wd-subtitle">🔥 إحماء</h3>' + session.warmup.map(row).join('') + '</div>' +
+    '<div class="mrc-section"><h3 class="wd-subtitle">💪 الحصة الرئيسية</h3>' + main + '</div>' +
+    '<div class="mrc-section"><h3 class="wd-subtitle">🧘 تهدئة</h3>' + session.cooldown.map(row).join('') + '</div>' +
+    '<div class="mrc-actions"><button class="mrc-btn primary" onclick="startMartialSession()">▶ ابدأ الحصة</button>' +
+    '<button class="mrc-btn" onclick="rebuildMartialSession()">🔀 حصة أخرى</button>' +
+    '<button class="mrc-btn" onclick="saveMartialSession()">💾 حفظ</button>' +
+    '<button class="mrc-btn secondary" onclick="editMartialData()">✏️ تعديل</button>' +
+    (lastRep ? '<button class="mrc-btn" style="grid-column:1/-1" onclick="scOpen(\'report\')">📋 آخر تقرير للمدرب</button>' : '') + '</div></div>';
+  document.getElementById('martialForm').style.display = 'none';
+  box.style.display = 'block'; scEnsureUi();
+  window.scrollTo({ top: 0 });
+}
+function generateMartialLocal(coach) {
+  try { playClick(); } catch (e) {}
+  if (martialData.style === 'hybrid' && martialData.duration < 60) { try { showInAppNotification('⏱️', 'الحصة الهجينة تحتاج 60-90 دقيقة للهيكل الكامل'); } catch (e) {} }
+  try { lastMartialSession = buildMartialSession(martialData, { coach: coach === true }); }
+  catch (e) { console.error('martial build', e); try { showInAppNotification('⚠️', 'تعذّر توليد الحصة'); } catch (_) {} return; }
+  renderMartialResult(lastMartialSession);
+}
+function rebuildMartialSession() { generateMartialLocal(lastMartialSession && lastMartialSession.coach); }
+function generateMartialAI() { generateMartialLocal(true); }
+
+/* ============ 🧠 المدرب الذكي (محلي بالكامل — لا شبكة) ============ */
+let scState = { active: false, finished: false, startAt: 0, pauseMs: 0, pausedAt: 0, cur: null, lastIdx: -1, log: [], cues: {}, fatigue: false, applied: [], autoShort: false, feed: [], mode: 'live', started: false };
+let scTimer = null, scDrawerOpen = false, scCaptionT = null, scTouchAt = 0;
+const COACH_INJ = [['knee', 'ركبة'], ['back', 'ظهر'], ['shoulder', 'كتف'], ['ankle', 'كاحل']];
+function scFmt(sec) { sec = Math.max(0, Math.round(sec)); return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); }
+/* سلسلة الصوت: 1 نغمة AudioContext → 2 مقطع صوتي إن وُجد → 3 speechSynthesis → 4 نص على الشاشة. أي فشل ينتقل بصمت للتالي */
+function scCue(text, tone) {
+  scState.feed.unshift(text); scState.feed.length = Math.min(scState.feed.length, 6);
+  if (!soundMuted) {
+    if (tone) { try { const ctx = getAudioCtx(); if (ctx && ctx.state !== 'closed') { playMoveTone(tone); return 1; } } catch (e) {} }
+    try { if (window.HumanVoice) { const ks = HumanVoice.parse(text); if (ks && ks.length) { HumanVoice.play(ks); return 2; } } } catch (e) {}
+    try { if ('speechSynthesis' in window && ttsEnabled) { speak(text, undefined, { rate: 1 }); return 3; } } catch (e) {}
+  }
+  scCaption(text); return 4;
+}
+function scCaption(text, stars) {
+  const el = document.getElementById('scCaption'); if (!el) return;
+  el.textContent = (stars ? '⭐'.repeat(stars) + ' ' : '') + text; el.classList.add('show');
+  clearTimeout(scCaptionT); scCaptionT = setTimeout(() => el.classList.remove('show'), 3800);
+}
+function scToggleMute() {
+  toggleSoundHome();
+  try { if (soundMuted) { window.speechSynthesis.cancel(); const c = getAudioCtx(); if (c && c.suspend) c.suspend(); } else { const c = getAudioCtx(); if (c && c.resume) c.resume(); } } catch (e) {}
+  scUiSync();
+}
+function scEnsureUi() {
+  if (document.getElementById('scDock')) return;
+  const w = document.createElement('div');
+  w.innerHTML = '<div id="scDock" class="sc-dock" style="display:none"><button class="sc-mute" id="scMuteBtn" onclick="scToggleMute()" aria-label="كتم"></button><button class="sc-fab" id="scFab" onclick="scOpen()">🧠 المدرب الذكي</button></div>' +
+    '<div id="scCaption" class="sc-caption" role="status" aria-live="polite"></div>' +
+    '<div id="scBackdrop" class="sc-backdrop" onclick="scClose()"></div>' +
+    '<aside id="scDrawer" class="sc-drawer" aria-hidden="true"><div class="sc-head"><b>🧠 المدرب الذكي</b><span><button class="sc-ico" onclick="scToggleMute()" id="scMuteBtn2" aria-label="كتم"></button><button class="sc-ico" onclick="scClose()" aria-label="إغلاق">✕</button></span></div><div id="scBody"></div></aside>';
+  while (w.firstChild) document.body.appendChild(w.firstChild);
+  document.getElementById('scDrawer').addEventListener('pointerdown', () => { scTouchAt = Date.now(); }, true);
+  scUiSync();
+  if (!scTimer) scTimer = setInterval(scTick, 500);
+}
+function scUiSync() { const t = soundMuted ? '🔇 مكتوم' : '🔊 كتم'; ['scMuteBtn', 'scMuteBtn2'].forEach(id => { const b = document.getElementById(id); if (b) { b.textContent = t; b.classList.toggle('on', soundMuted); } }); }
+function scOpen(mode) { scEnsureUi(); scState.mode = mode || ((scState.active && !scState.finished) ? 'live' : (scState.finished ? 'report' : 'live')); scDrawerOpen = true; document.getElementById('scDrawer').classList.add('open'); document.getElementById('scBackdrop').classList.add('open'); document.getElementById('scDrawer').setAttribute('aria-hidden', 'false'); scRender(); }
+function scClose() { scDrawerOpen = false; const d = document.getElementById('scDrawer'); if (d) { d.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); } const b = document.getElementById('scBackdrop'); if (b) b.classList.remove('open'); }
+function scStart(s) {
+  scEnsureUi();
+  scState = { active: true, finished: false, startAt: Date.now(), pauseMs: 0, pausedAt: 0, cur: null, lastIdx: -1, log: [], cues: {}, fatigue: false, applied: [], autoShort: false, feed: [], mode: 'live', started: true, session: s };
+  scCue('بدأ المدرب الذكي بمتابعة حصتك', { freq: 660, duration: 0.12, type: 'sine' });
+}
+/* ---- الحالة اللحظية ---- */
+function scPlanRemaining() {
+  const R = customRunnerState; let t = R.remaining || 0;
+  if (R.phase === 'work') { const c = R.exercises[R.index]; if (c) t += c.rest || 0; for (let j = R.index + 1; j < R.exercises.length; j++) t += R.exercises[j].duration + (R.exercises[j].rest || 0); }
+  else for (let j = R.index; j < R.exercises.length; j++) t += R.exercises[j].duration + (R.exercises[j].rest || 0);
+  return t;
+}
+function scElapsed() { return (Date.now() - scState.startAt - scState.pauseMs - (scState.pausedAt ? Date.now() - scState.pausedAt : 0)) / 1000; }
+function scSuggestions() {
+  const R = customRunnerState, S = scState.session, out = []; if (!S) return out;
+  const targetRem = S.duration * 60 - scElapsed(), planRem = scPlanRemaining();
+  if (!scState.shortenDone && planRem > targetRem + 20 && R.phase !== 'done') out.push({ type: 'shorten', text: 'الوقت يضيق (متبقٍ ' + scFmt(Math.max(0, targetRem)) + ' للحصة، والخطة تحتاج ' + scFmt(planRem) + '): قصّر الراحات المتبقية.' });
+  if (scState.fatigue && (S.intensity === 'hard' || S.intensity === 'max')) out.push({ type: 'ease', text: 'الشدة ' + MARTIAL_INT_AR[S.intensity] + ' وتبدو متعباً: احذف مجموعة من كل تمرين متبقٍ وزد الراحة 10 ث.' });
+  const inj = martialData.injuries.filter(x => x !== 'none'); const seen = {};
+  for (let j = Math.max(R.index, 0); j < R.exercises.length; j++) {
+    const it = R.exercises[j]; if (it.kind !== 'main' || seen[it.nameEn] || (j === R.index && R.phase === 'work')) continue; seen[it.nameEn] = 1;
+    const lx = lxFind(it.nameEn), hit = lx && inj.find(x => lx.avoid.includes(x)); if (!hit) continue;
+    const alt = scAlternative(lx); if (alt) out.push({ type: 'sub', from: it.nameEn, injury: hit, alt: alt.en, text: 'إصابة ' + (COACH_INJ.find(x => x[0] === hit) || [0, hit])[1] + ': استبدل «' + (lx.ar) + '» بـ «' + alt.ar + '».' });
+  }
+  return out;
+}
+function scAlternative(lx) {
+  const f = martialBuildF(martialData), c = lxCtx(f, { bmi: 24, recommendedLevel: martialData.level });
+  const used = new Set(customRunnerState.exercises.map(x => x.nameEn));
+  return LXDB.find(e => e.pat === lx.pat && e.en !== lx.en && !used.has(e.en) && lxOk(e, f, c)) || null;
+}
+function scApply(i) {
+  const sg = scState.sugg && scState.sugg[i]; if (!sg) return; const R = customRunnerState, L = martialLearn();
+  if (sg.type === 'shorten') { scDoShorten(false); L.shorten_rest++; }
+  else if (sg.type === 'ease') {
+    const seenN = {}; for (let j = R.exercises.length - 1; j > R.index; j--) { const it = R.exercises[j]; if (it.kind === 'main' && j > 0 && R.exercises[j - 1].name === it.name && !seenN[it.name]) { R.exercises.splice(j, 1); seenN[it.name] = 1; } }
+    for (let j = R.index; j < R.exercises.length; j++) if (R.exercises[j].kind === 'main') R.exercises[j].rest = (R.exercises[j].rest || 0) + 10;
+    scState.applied.push('خُفّفت الشدة'); L.ease++; scState.fatigue = false;
+  } else if (sg.type === 'sub') {
+    const alt = lxFind(sg.alt); let n = 0;
+    for (let j = R.index; j < R.exercises.length; j++) { const it = R.exercises[j]; if (it.nameEn === sg.from && !(j === R.index && R.phase === 'work')) { it.name = alt.ar; it.nameEn = alt.en; it.id = martialItemKey(alt.ar, alt.en); n++; } }
+    scState.applied.push('استُبدل ' + sg.from + ' ← ' + alt.en); const r = L.substitute[sg.from] || { n: 0, injury: sg.injury }; r.n++; r.injury = sg.injury; L.substitute[sg.from] = r;
+  }
+  martialLearnSave(L); scState.session.learnedTotal = L.total; scCue('طُبّق الاقتراح'); scRender();
+}
+function scDoShorten(auto) {
+  const R = customRunnerState, S = scState.session; let durs = 0, rests = 0;
+  for (let j = R.index; j < R.exercises.length; j++) { durs += R.exercises[j].duration; rests += R.exercises[j].rest || 0; }
+  const targetRem = S.duration * 60 - scElapsed(); let f = rests > 0 ? (targetRem - durs) / rests : 1; f = Math.max(0.3, Math.min(0.7, f < 1 ? f : 0.7));
+  for (let j = R.index; j < R.exercises.length; j++) if (R.exercises[j].rest) R.exercises[j].rest = Math.max(5, Math.round(R.exercises[j].rest * f));
+  scState.shortenDone = true; scState.applied.push((auto ? 'تلقائي: ' : '') + 'قُصّرت الراحات إلى ' + Math.round(f * 100) + '%');
+  if (auto) { scCue('الوقت ينفد، قصّرتُ الراحات تلقائياً'); scCaption('⏱️ قُصّرت الراحات تلقائياً'); }
+}
+/* ---- التقييم بعد كل تمرين ---- */
+function scEvalCur() {
+  const c = scState.cur; if (!c || c.kind !== 'main' || c.done) return; c.done = true;
+  let stars = 5 - Math.min(3, c.skips * 2) - (c.fatigue ? 1 : 0); stars = Math.max(1, Math.min(5, stars));
+  const note = stars >= 5 ? 'أداء ممتاز — حافظ على الإيقاع' : stars === 4 ? 'جيد جداً — قريب من الكمال' : stars === 3 ? 'جيد — ركّز على إكمال كل المجموعات' : 'تخطّيتَ جزءاً من التمرين — خفّف الشدة أو زد الراحة';
+  const rec = { name: c.name, nameEn: c.nameEn, stars: stars, note: note, skips: c.skips }; scState.log.push(rec); scState.lastStars = rec;
+  scCaption(c.name + ' — ' + note, stars);
+}
+function scRate(n) { const r = scState.lastStars; if (!r) return; r.stars = n; r.note = n >= 4 ? 'تقييمك: أداء قوي' : n === 3 ? 'تقييمك: مقبول' : 'تقييمك: صعب عليك'; if (n <= 2) scState.fatigue = true; scRender(); }
+function scSetFatigue() { scState.fatigue = !scState.fatigue; if (scState.cur) scState.cur.fatigue = scState.fatigue; scRender(); }
+function scToggleInjury(k) {
+  let a = martialData.injuries.filter(x => x !== 'none'); a = a.includes(k) ? a.filter(x => x !== k) : a.concat(k); martialData.injuries = a.length ? a : ['none'];
+  if (scState.session) scState.session.injuries = a.slice(); scRender();
+}
+function scTick() {
+  const fab = document.getElementById('scDock'), S = lastMartialSession, R = customRunnerState;
+  const runnerEl = document.getElementById('customRunner'), runnerOn = !!(R.martial && runnerEl && runnerEl.classList.contains('active'));
+  const show = !!(S && S.coach) && (runnerOn || (typeof currentMainTab !== 'undefined' && currentMainTab === 'martial'));
+  if (fab) fab.style.display = show ? 'flex' : 'none';
+  if (!scState.active) return;
+  if (!runnerOn) { if (!scState.finished) scFinish(false); return; }
+  if (R.phase === 'done' || R.phase === 'idle') return;
+  const it = R.exercises[R.index]; if (!it) return;
+  if (R.index !== scState.lastIdx) {
+    scState.lastIdx = R.index; const c = scState.cur;
+    if (!c || c.name !== it.name || c.kind !== it.kind) { scEvalCur(); scState.cur = { name: it.name, nameEn: it.nameEn, kind: it.kind, skips: 0, fatigue: scState.fatigue }; }
+  }
+  const rem = R.remaining, tot = R.phaseTotal || 0, key = R.index + '|' + R.phase, c2 = scState.cues, lx = lxFind(it.nameEn);
+  if (R.phase === 'rest') {
+    if (tot < 60 && tot >= 20 && !c2[key + 'a']) { c2[key + 'a'] = 1; scCue('استعد للتمرين التالي: ' + it.name); }
+    if (tot >= 60 && rem === 60 && !c2[key + 'b']) { c2[key + 'b'] = 1; scCue('باقي دقيقة، استعد للتمرين التالي'); }
+  } else if (R.phase === 'work') {
+    if (!c2[key + 's']) { c2[key + 's'] = 1; if (lx && ['core', 'hinge', 'push_h', 'pull_h', 'rear'].includes(lx.pat) && tot >= 25) scCue('شدّ البطن، الظهر مستقيم'); }
+    if (rem === 30 && tot >= 45 && !c2[key + 'h']) { c2[key + 'h'] = 1; scCue('٣٠ ثانية، أعطِ كل ما لديك'); }
+    if (rem === 60 && tot >= 120 && !c2[key + 'm']) { c2[key + 'm'] = 1; scCue('باقي دقيقة، حافظ على الإيقاع'); }
+  }
+  if (!scState.autoShort && scPlanRemaining() > S.duration * 60 - scElapsed() + 60) { scState.autoShort = true; scDoShorten(true); }
+  if (scDrawerOpen && scState.mode === 'live' && Date.now() - scTouchAt > 2500) scRender();
+}
+/* ---- تقرير ما بعد الحصة + اقتراح الحصة القادمة ---- */
+function scFinish(complete) {
+  if (scState.finished) return; scEvalCur(); scState.finished = true;
+  const R = customRunnerState, total = R.exercises.length || 1, done = complete ? total : Math.min(total, R.index);
+  const log = scState.log, avg = log.length ? log.reduce((t, x) => t + x.stars, 0) / log.length : 0, comp = Math.round(100 * done / total);
+  const strong = log.filter(x => x.stars >= 4).map(x => x.name).slice(0, 4), weak = log.filter(x => x.stars <= 3).map(x => x.name).slice(0, 4);
+  const recs = []; let delta = 0;
+  if (comp >= 95 && avg >= 4.5) { recs.push('أداؤك ممتاز: ارفع الشدة درجة في الحصة القادمة.'); delta = 1; }
+  else if (comp < 70 || (log.length && avg < 3)) { recs.push('الحصة كانت ثقيلة: خفّف الشدة درجة وزد الراحة.'); delta = -1; }
+  else recs.push('حافظ على نفس الشدة وركّز على إكمال كل المجموعات.');
+  if (weak.length) recs.push('راجع تقنية: ' + weak.join('، '));
+  if (scState.applied.length) recs.push('طبّقتَ ' + scState.applied.length + ' تعديل أثناء الحصة — سيتذكرها المدرب.');
+  const rep = { at: Date.now(), name: (scState.session || {}).name || 'حصة', complete: !!complete, completion: comp, avg: Math.round(avg * 10) / 10, strong, weak, recs, applied: scState.applied.slice(), log: log.slice(), learnedTotal: martialLearn().total };
+  safeSet('martialCoachLast', rep); safeSet('martialNextAdjust', { delta: delta, at: rep.at });
+  let h = []; try { h = JSON.parse(safeGet('martialCoachHistory', '[]')); } catch (e) {} h.unshift({ at: rep.at, name: rep.name, avg: rep.avg, completion: comp }); safeSet('martialCoachHistory', h.slice(0, 20));
+  scState.mode = 'report'; scState.report = rep; setTimeout(() => { scOpen('report'); }, complete ? 900 : 100);
+}
+/* ---- اللوحة ---- */
+function scRender() {
+  const real = document.getElementById('scBody'); if (!real) return; const dr = document.getElementById('scDrawer');
+  const b = { set innerHTML(h) { if (real.dataset.h === h) return; const st = dr.scrollTop; real.innerHTML = h; real.dataset.h = h; dr.scrollTop = st; } }; // لا إعادة رسم إلا عند تغيّر المحتوى + حفظ التمرير
+  const S = scState.session || lastMartialSession, L = martialLearn(), R = customRunnerState;
+  const stars = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+  const learnBox = '<div class="sc-sec"><div class="sc-h">🧠 تعلّم من سلوكك</div><div class="sc-big" id="scLearnCount">تعلّم المدرب الذكي منك <b>' + (L.total || 0) + '</b> مرة</div>' +
+    ((L.shorten_rest || L.ease || Object.keys(L.substitute || {}).length) ? '<ul class="sc-ul">' + (L.shorten_rest ? '<li>تقصير الراحات × ' + L.shorten_rest + '</li>' : '') + (L.ease ? '<li>تخفيف الشدة × ' + L.ease + '</li>' : '') + Object.keys(L.substitute || {}).map(n => '<li>استبدال ' + n + ' × ' + L.substitute[n].n + '</li>').join('') + '</ul><div class="sc-sub">تُقترح تلقائياً في حصصك القادمة</div>' : '<div class="sc-sub">لا تعديلات محفوظة بعد</div>') + '</div>';
+  if (scState.mode === 'report') {
+    let r = scState.report; if (!r) { try { r = JSON.parse(safeGet('martialCoachLast', 'null')); } catch (e) {} }
+    if (!r) { b.innerHTML = '<div class="sc-sec"><div class="sc-sub">لا يوجد تقرير بعد — أكمل حصة بالمدرب الذكي.</div></div>' + learnBox; return; }
+    b.innerHTML = '<div class="sc-sec" id="scReport"><div class="sc-h">📋 تقرير ' + r.name + '</div><div class="sc-grid"><div><b>' + r.completion + '%</b><span>إنجاز</span></div><div><b>' + (r.avg || '—') + '</b><span>متوسط النجوم</span></div><div><b>' + r.log.length + '</b><span>تمارين مُقيَّمة</span></div></div></div>' +
+      '<div class="sc-sec"><div class="sc-h">💪 نقاط القوة</div>' + (r.strong.length ? '<ul class="sc-ul">' + r.strong.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '<div class="sc-sub">أكمل المزيد من الحصص لإظهارها</div>') + '</div>' +
+      '<div class="sc-sec"><div class="sc-h">🎯 ما يحتاج تحسيناً</div>' + (r.weak.length ? '<ul class="sc-ul">' + r.weak.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '<div class="sc-sub">لا شيء — أداء متوازن</div>') + '</div>' +
+      '<div class="sc-sec"><div class="sc-h">➡️ توصيات الحصة القادمة</div><ul class="sc-ul">' + r.recs.map(x => '<li>' + x + '</li>').join('') + '</ul></div>' +
+      '<div class="sc-sec"><div class="sc-h">⭐ تقييم كل تمرين</div>' + r.log.map(x => '<div class="sc-row"><span>' + x.name + '</span><span class="sc-stars">' + stars(x.stars) + '</span></div><div class="sc-sub">' + x.note + '</div>').join('') + '</div>' + learnBox;
+    return;
+  }
+  const live = scState.active && R.martial && R.phase !== 'idle';
+  if (!live) { b.innerHTML = '<div class="sc-sec"><div class="sc-h">حالة الجلسة</div><div class="sc-sub">ابدأ الحصة ليتابعك المدرب لحظياً: الوقت، الإصابات، الشدة، والأداء.</div></div>' + ((S && S.learned && S.learned.length) ? '<div class="sc-sec"><div class="sc-h">طُبّق تلقائياً على هذه الحصة</div><ul class="sc-ul">' + S.learned.map(x => '<li>' + x + '</li>').join('') + '</ul></div>' : '') + learnBox; return; }
+  const sg = scSuggestions(); scState.sugg = sg;
+  const inj = martialData.injuries.filter(x => x !== 'none');
+  const doneN = Math.min(R.index, R.exercises.length), planRem = scPlanRemaining();
+  b.innerHTML = '<div class="sc-sec"><div class="sc-h">حالة الجلسة</div><div class="sc-grid" id="scState"><div><b>' + doneN + '/' + R.exercises.length + '</b><span>مكتمل</span></div><div><b>' + scFmt(planRem) + '</b><span>متبقٍ</span></div><div><b>' + (MARTIAL_INT_AR[S.intensity] || '—') + '</b><span>الشدة</span></div><div><b>' + (inj.length ? inj.length : 0) + '</b><span>إصابات</span></div></div></div>' +
+    '<div class="sc-sec"><div class="sc-h">🩹 سجّل إصابة</div><div class="sc-chips">' + COACH_INJ.map(x => '<button class="sc-chip' + (inj.includes(x[0]) ? ' on' : '') + '" onclick="scToggleInjury(\'' + x[0] + '\')">' + x[1] + '</button>').join('') + '<button class="sc-chip' + (scState.fatigue ? ' on' : '') + '" onclick="scSetFatigue()">😮‍💨 متعب</button></div></div>' +
+    '<div class="sc-sec"><div class="sc-h">💡 اقتراحات فورية</div>' + (sg.length ? sg.map((x, i) => '<div class="sc-sugg"><div>' + x.text + '</div><button class="sc-apply" onclick="scApply(' + i + ')">طبّق الاقتراح</button></div>').join('') : '<div class="sc-sub">لا اقتراحات — أنت على المسار ✅</div>') + (scState.applied.length ? '<div class="sc-sub">طُبّق: ' + scState.applied.join(' • ') + '</div>' : '') + '</div>' +
+    '<div class="sc-sec"><div class="sc-h">⭐ تقييم سريع</div>' + (scState.lastStars ? '<div class="sc-row"><span>' + scState.lastStars.name + '</span><span class="sc-stars">' + stars(scState.lastStars.stars) + '</span></div><div class="sc-sub">' + scState.lastStars.note + '</div><div class="sc-chips">' + [1, 2, 3, 4, 5].map(n => '<button class="sc-chip" onclick="scRate(' + n + ')">' + n + '★</button>').join('') + '</div>' : '<div class="sc-sub">يظهر بعد أول تمرين</div>') + '</div>' +
+    (scState.feed.length ? '<div class="sc-sec"><div class="sc-h">🗣️ آخر التعليمات</div><ul class="sc-ul">' + scState.feed.slice(0, 3).map(x => '<li>' + x + '</li>').join('') + '</ul></div>' : '') + learnBox;
+}
+(function () { // مراقبة أزرار المشغّل: التخطّي والإيقاف المؤقت وإنهاء الحصة
+  const _skip = skipCustomPhase, _pause = toggleCustomPause, _fin = finishCustomRunner;
+  skipCustomPhase = function () { if (scState.active && customRunnerState.martial && customRunnerState.phase === 'work' && scState.cur) scState.cur.skips++; return _skip.apply(this, arguments); };
+  toggleCustomPause = function () { const r = _pause.apply(this, arguments); if (scState.active && customRunnerState.martial) { if (customRunnerState.paused) scState.pausedAt = Date.now(); else if (scState.pausedAt) { scState.pauseMs += Date.now() - scState.pausedAt; scState.pausedAt = 0; } } return r; };
+  finishCustomRunner = function () { const r = _fin.apply(this, arguments); if (scState.active && customRunnerState.martial) scFinish(true); return r; };
+})();
+
+function editMartialData() {
+  try { playClick(); } catch (e) {}
+  document.getElementById('martialResults').style.display = 'none';
+  document.getElementById('martialForm').style.display = '';
+  renderMartialWizard();
+}
+function martialSaved() { try { const a = JSON.parse(safeGet('savedMartialSessions', '[]')); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+function saveMartialSession() {
+  if (!lastMartialSession) return;
+  const a = martialSaved(); a.unshift(Object.assign({}, lastMartialSession, { savedAt: Date.now() }));
+  safeSet('savedMartialSessions', a.slice(0, 20));
+  try { showInAppNotification('💾', 'تم حفظ الحصة'); } catch (e) {}
+}
+function openSavedMartial(i) { const s = martialSaved()[i]; if (!s) return; lastMartialSession = s; renderMartialResult(s); }
+function deleteSavedMartial(i) { const a = martialSaved(); a.splice(i, 1); safeSet('savedMartialSessions', a); renderMartialWizard(); }
+function martialSavedHtml() {
+  const a = martialSaved(); if (!a.length) return '';
+  return '<div class="form-card" id="martialSavedList" style="margin-top:1rem;"><div class="wiz-section-title">💾 حصصي المحفوظة</div>' + a.map((s, i) =>
+    '<div class="workout-ex-line"><div><b>' + s.name + '</b><div class="workout-ex-note">' + s.duration + ' دقيقة · ' + s.exercises.length + ' تمارين</div></div><span><button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="openSavedMartial(' + i + ')">فتح</button> <button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="deleteSavedMartial(' + i + ')" aria-label="حذف">✕</button></span></div>').join('') + '</div>';
+}
+function martialItemKey(ar, en) { const lx = lxFind(en), names = lx ? lx.aliases.concat([lx.ar]) : [en]; for (const n of names) { for (const [k, v] of Object.entries(exerciseDescriptions)) { if (n && v.en && String(v.en).toLowerCase() === String(n).toLowerCase()) return k; } } return mpDescKey(ar, ''); }
+function martialSessionToRunner(s) {
+  const key = martialItemKey;
+  const items = [];
+  (s.warmup || []).forEach(w => items.push({ id: key(w.name, w.nameEn), name: w.name, nameEn: w.nameEn || '', duration: Math.max(10, Math.round(aiSeconds(w.duration)) || 60), rest: 0, kind: 'warm' }));
+  (s.exercises || []).forEach(e => {
+    const work = Math.max(10, Math.round(aiWorkSec(e.reps)) || 40), rest = Math.round(aiSeconds(e.rest)) || 30, sets = Math.max(1, parseInt(e.sets) || 1), id = key(e.name, e.nameEn);
+    for (let k = 0; k < sets; k++) items.push({ id, name: e.name, nameEn: e.nameEn || '', duration: work, rest, kind: 'main' });
+  });
+  (s.cooldown || []).forEach(w => items.push({ id: key(w.name, w.nameEn), name: w.name, nameEn: w.nameEn || '', duration: Math.max(10, Math.round(aiSeconds(w.duration)) || 60), rest: 0, kind: 'cool' }));
+  return items;
+}
+function startMartialSession() {
+  const s = lastMartialSession;
+  if (!s || !s.exercises || !s.exercises.length) { showInAppNotification('⚠️', 'ولّد حصة أولاً'); return; }
+  if (programRunnerState && ['prepare', 'work', 'rest'].indexOf(programRunnerState.phase) > -1) { showInAppNotification('⚠️', 'أوقف جلسة البرنامج أولاً'); return; }
+  playClick(); haptic('medium');
+  currentActiveRunner = 'custom'; showRunnerSwitcher();
+  const items = martialSessionToRunner(s);
+  customRunnerState.exercises = items;
+  CUSTOM_WORK_SECONDS = 45; CUSTOM_REST_SECONDS = 15; CUSTOM_PREPARE_SECONDS = 5;
+  customRunnerState.name = s.name; customRunnerState.index = 0; customRunnerState.paused = false;
+  customRunnerState.phase = 'prepare'; customRunnerState.remaining = CUSTOM_PREPARE_SECONDS;
+  if (s.coach) scStart(s); customRunnerState.martial = true; customRunnerState.totalSeconds = items.reduce((t, x) => t + x.duration + (x.rest || 0), 0);
+  clearInterval(customRunnerState.interval);
+  const runner = document.getElementById('customRunner'); if (!runner) { console.error('customRunner not found'); return; }
+  runner.classList.add('active'); document.body.style.overflow = 'hidden';
+  requestWakeLock(); ctRequestNotifyPermissionOnce(); ctEnterCleanMode();
+  updateCustomRunnerUI('prepare'); ctCwPhaseVisual('prepare'); cwSpeak('بدأت ' + s.name);
+  document.getElementById('customRunnerTimer').textContent = formatTime(CUSTOM_PREPARE_SECONDS);
+  document.getElementById('customRunnerNext').textContent = 'استعد للبدء...';
+  ctDriftSafeCountdown(customRunnerState, CUSTOM_PREPARE_SECONDS, (remaining) => {
+    if (remaining > 0) { document.getElementById('customRunnerTimer').textContent = formatTime(remaining); playTick(); if (remaining <= 3) cwSpeak(String(remaining)); ctSetUrgentEffects('customRunnerTimer', 'cwRunnerRingWrap', remaining); }
+  }, () => startCustomWorkPhase(), 'cwRunnerRing');
+}
 function updateNavIndicator() {
   const nav = document.querySelector('.bottom-nav');
   const indicator = document.getElementById('navIndicator');
@@ -9462,8 +10025,23 @@ Heavy Bag Rounds|جولات كيس الملاكمة|box|bag|0|wrist,shoulder|m|0
 Bag Combinations|كومبوهات على الكيس|box|bag|1|wrist,shoulder|m|0
 Jump Rope|نط الحبل|boxc|rope|0|ankle,knee|m|1
 Speed Punches|لكمات سريعة|boxc|bw|0||t|0
-Mountain Climbers|متسلق الجبل|boxc|bw|0|wrist,shoulder|t|0`;
+Mountain Climbers|متسلق الجبل|boxc|bw|0|wrist,shoulder|t|0
+Front Kick|ركلة أمامية|kick|bw|0|knee|t|0
+Roundhouse Kick|ركلة دائرية|kick|bw|1|knee,back|t|0
+Low Kick|ركلة منخفضة|kick|bw|0|knee|t|0
+Body Kick|ركلة للجسم|kick|bw|0||t|0
+High Kick|ركلة عالية|kick|bw|1|knee,back|t|0
+Knee Strike|ركبة|muaythai|bw|0||t|0
+Flying Knee|ركبة طائرة|muaythai|bw|1|knee|t|1
+Elbow Strike|كوع|muaythai|bw|0||t|0
+Spinning Elbow|كوع دوار|muaythai|bw|1|back|t|1
+Teep Kick|تيب (دفع)|muaythai|bw|0||t|0
+Clinch Knee|ركبة في الاشتباك|muaythai|bw|0||t|0`;
 const LXDB = LX_RAW.split('\n').map(l => { const p = l.split('|'); return { en: p[0], ar: p[1], pat: p[2], eq: p[3], lvl: +p[4], avoid: p[5] ? p[5].split(',') : [], fmt: p[6], imp: p[7] === '1' }; });
+/* aliases: الاسم الأصلي لا يتغيّر؛ المحرك يبحث في الاسم + aliases (Knee ≡ Knee Strike / Elbow ≡ Elbow Strike) */
+const LX_ALIASES = { 'Knee Strike': ['Knee', 'ركبة'], 'Elbow Strike': ['Elbow', 'كوع'], 'Teep Kick': ['Teep', 'تيب'], 'Clinch Knee': ['Knee in Clinch'], 'Flying Knee': ['Jumping Knee'] };
+LXDB.forEach(e => { e.aliases = Array.from(new Set([e.en].concat(LX_ALIASES[e.en] || []))); });
+function lxFind(name) { const n = String(name == null ? '' : name).trim().toLowerCase(); if (!n) return null; return LXDB.find(e => e.en.toLowerCase() === n || e.ar === name || e.aliases.some(a => String(a).toLowerCase() === n)) || null; }
 const LX_SESS = {
   'قوة — صدر وذراع': ['push_h', 'push_h', 'push_v', 'delt', 'tri', 'bi', 'core'],
   'قوة — ظهر وكتف': ['pull_v', 'pull_h', 'push_v', 'rear', 'delt', 'bi', 'core'],
@@ -9480,7 +10058,11 @@ const LX_SESS = {
   'كارديو': ['cardio', 'cardio', 'cardio', 'core', 'cardio'],
   'ملاكمة': ['box', 'box', 'box', 'boxc', 'core', 'box'],
   'ملاكمة + كارديو': ['box', 'box', 'boxc', 'cardio', 'core'],
-  'ملاكمة + قوة': ['box', 'box', 'push_h', 'squat', 'pull_h', 'core']
+  'ملاكمة + قوة': ['box', 'box', 'push_h', 'squat', 'pull_h', 'core'],
+  'ملاكمة + كيك بوكسينغ': ['box', 'box', 'kick', 'kick', 'boxc', 'core'],
+  'ملاكمة + مواي تاي': ['box', 'box', 'muaythai', 'muaythai', 'boxc', 'core'],
+  'فنون قتالية شاملة': ['box', 'kick', 'muaythai', 'muaythai', 'boxc', 'core'],
+  'حصة هجينة': ['box', 'hiit', 'boxc', 'hinge', 'push_h', 'pull_h', 'rear', 'boxc', 'core']
 };
 const LX_FALL = { hinge: 'glute', push_v: 'push_h', pull_v: 'pull_h', bi: 'pull_h', tri: 'push_h', delt: 'push_v', rear: 'pull_h', calves: 'core', squat: 'lunge', lunge: 'glute', boxc: 'hiit', box: 'hiit', hiit: 'cardio' };
 const LX_CUE = { squat: 'الصدر مرفوع والركبتان باتجاه القدمين', lunge: 'الخطوة ثابتة والجذع مستقيم', hinge: 'ادفع الورك للخلف وأبقِ الظهر محايداً', glute: 'اعصر الأرداف في أعلى الحركة', push_h: 'اللوح ثابت والمرفقان بزاوية 45°', push_v: 'شدّ البطن لتجنب تقوّس الظهر', pull_v: 'ابدأ السحب من الكتفين لا الذراعين', pull_h: 'قرّب لوحي الكتف عند نهاية السحب', core: 'تنفس بانتظام ولا تحبس النفس', delt: 'حركة بطيئة ومتحكَّم بها', rear: 'وزن خفيف وتركيز على الكتف الخلفي', tri: 'ثبّت المرفقين قرب الجسم', bi: 'لا تتأرجح بالجسم', calves: 'توقف ثانية في الأعلى', box: 'ركّز على التقنية قبل السرعة', boxc: 'حافظ على إيقاع ثابت', hiit: 'جهد عالٍ ثم راحة قصيرة', cardio: 'شدة تسمح لك بالحديث بجمل قصيرة' };
@@ -9505,7 +10087,7 @@ function lxAvail(e, f, c) {
 function lxOk(e, f, c) { return e.lvl <= c.lv && !e.avoid.some(a => c.inj.includes(a)) && !(e.imp && c.lowImpact) && lxAvail(e, f, c); }
 function lxPick(pat, f, c, used, rot, strengthy) {
   for (let p = pat, hop = 0; p && hop < 4; p = LX_FALL[p], hop++) {
-    const cand = LXDB.filter(e => e.pat === p && !used.has(e.en) && lxOk(e, f, c));
+    const cand = LXDB.filter(e => e.pat === p && !used.has(e.en) && lxOk(e, f, c) && !(f.noBagRope && /bag|rope/i.test(e.en)) && !(f.avoidNames && f.avoidNames.includes(e.en)));
     if (!cand.length) continue;
     const sc = e => -(c.weekUse[e.en] || 0) * 4 - Math.abs(c.lv - e.lvl) * 0.7 + ((strengthy && e.eq !== 'bw') ? 2 : 0) + ((LX_CAT[e.eq] && e.eq !== 'mach' && c.have.has(e.eq)) ? 1 : 0);
     cand.sort((a, b) => sc(b) - sc(a));
@@ -9514,7 +10096,22 @@ function lxPick(pat, f, c, used, rot, strengthy) {
   }
   return null;
 }
-function lxRx(e, f, c, strengthMode) {
+/* ربط معالج «قتالي» بالحصة: جولات/مدة الجولة/راحة → كتل الكيس والحبل (fmt m)، الشدة → المجموعات، النمط → نوع الكارديو */
+function lxLink(e, rx, L) {
+  if (e.fmt === 'm') { rx.reps = L.roundDuration + ' د'; rx.sets = L.rounds; rx.rest = L.rest + ' ثانية'; return; }
+  rx.sets = L.sets;
+  if (e.pat === 'hiit' && e.fmt === 't') {
+    if (L.cardio === 'interval') { rx.reps = '40 ث'; rx.rest = '20 ث'; }
+    else if (L.cardio === 'continuous') { rx.sets = 1; rx.reps = '3 د'; rx.rest = '10 ث'; }
+    else { rx.reps = '45 ث'; rx.rest = '30 ث'; rx.notes = ((rx.notes || '') + ' — تصاعدي: زد الإيقاع مع كل مجموعة').trim(); }
+  }
+}
+function lxRx(e, f, c, strengthMode, setsOverride) { // setsOverride: عدد مجموعات كتل box/boxc/hiit (للحصص الهجينة فقط)
+  const r = lxRx0(e, f, c, strengthMode);
+  if (setsOverride && (e.pat === 'boxc' || e.pat === 'box' || e.pat === 'hiit')) r.sets = setsOverride;
+  return r;
+}
+function lxRx0(e, f, c, strengthMode) {
   const lv = c.lv, g = getGoals(f), has = x => g.includes(x), loaded = e.eq !== 'bw' && LX_CAT[e.eq] && e.fmt === 'r';
   const heavy = isHeavyLift({ nameEn: e.en, name: e.ar }), iso = ['bi', 'tri', 'delt', 'rear', 'calves'].includes(e.pat); if (iso) strengthMode = false;
   const cue = LX_CUE[e.pat] || '';
@@ -9533,10 +10130,10 @@ function lxRx(e, f, c, strengthMode) {
   return { sets, reps, rest, weight, notes: cue + ((lv >= 2 && !loaded && ['push_h', 'squat', 'lunge', 'pull_h'].includes(e.pat)) ? ' — إن كان سهلاً أبطئ النزول (3 ثوانٍ)' : '') };
 }
 function lxWarmCool(type, f, c, B) {
-  const lower = /أرجل|مؤخرة/.test(type), upper = /صدر|ظهر|كتف/.test(type), box = /ملاكمة/.test(type);
+  const lower = /أرجل|مؤخرة/.test(type), upper = /صدر|ظهر|كتف/.test(type), isMartialArts = /ملاكمة|كيك|مواي|هجينة|فنون/.test(type);
   const W = (ar, en, d) => ({ name: ar, nameEn: en, duration: d });
   let warm;
-  if (box) warm = [W('نط الحبل خفيف أو المشي السريع', 'Jump Rope', '3 دقائق'), W('تدوير الكتفين', 'Shoulder Circles', '1 دقيقة'), W('ملاكمة ظل خفيفة', 'Shadow Boxing', '2 دقيقة')];
+  if (isMartialArts) warm = [W('نط الحبل خفيف أو المشي السريع', 'Jump Rope', '3 دقائق'), W('تدوير الكتفين', 'Shoulder Circles', '1 دقيقة'), W('ملاكمة ظل خفيفة', 'Shadow Boxing', '2 دقيقة')];
   else if (lower) warm = [W('المشي السريع في المكان', 'Brisk March', '2 دقيقة'), W('تدوير الورك', 'Hip Circles', '1 دقيقة'), W('سكوات بوزن الجسم بطيء', 'Bodyweight Squat', '2 دقيقة')];
   else if (upper) warm = [W('المشي السريع في المكان', 'Brisk March', '2 دقيقة'), W('دوائر الذراعين', 'Arm Circles', '1 دقيقة'), W('تدوير الكتفين', 'Shoulder Rolls', '1 دقيقة'), W('قط-بقرة', 'Cat Cow', '1 دقيقة')];
   else warm = [W('المشي السريع في المكان', 'Brisk March', '3 دقائق'), W('دوائر الذراعين', 'Arm Circles', '1 دقيقة'), W('تدوير الورك', 'Hip Circles', '1 دقيقة')];
@@ -9544,7 +10141,7 @@ function lxWarmCool(type, f, c, B) {
   let cool;
   if (lower) cool = [W('إطالة أمام الفخذ والورك', 'Hip Flexor Stretch', '2 دقيقة'), W('إطالة خلف الفخذ', 'Hamstring Stretch', '2 دقيقة')];
   else if (upper) cool = [W('إطالة الصدر والكتف', 'Chest Stretch', '2 دقيقة'), W('إطالة الظهر (وضعية الطفل)', 'Child Pose', '2 دقيقة')];
-  else if (box) cool = [W('إطالة الرقبة والكتفين', 'Neck Side Stretch', '2 دقيقة'), W('إطالة الورك', 'Hip Flexor Stretch', '2 دقيقة')];
+  else if (isMartialArts) cool = [W('إطالة الرقبة والكتفين', 'Neck Side Stretch', '2 دقيقة'), W('إطالة الورك', 'Hip Flexor Stretch', '2 دقيقة')];
   else cool = [W('مشي بطيء لخفض النبض', 'Slow Walk', '2 دقيقة'), W('إطالة عامة', 'Full Body Stretch', '2 دقيقة')];
   cool.push(W('تنفس عميق', 'Deep Breathing', '1 دقيقة'));
   if (B.dur >= 60) cool.push(W('إطالة عامة', 'Full Body Stretch', '2 دقيقة'));
@@ -9568,7 +10165,7 @@ function lxPickTypes(f, c) {
   else if (tt === 'weights') out = lxSplit(n, f, c);
   else if (tt === 'hiit') out = cyc(['HIIT', 'HIIT + بطن', 'كارديو', 'HIIT + كارديو']);
   else if (tt === 'cardio') out = cyc(['كارديو', 'HIIT + كارديو', 'كارديو', 'قوة + كارديو']);
-  else if (tt === 'boxing') out = cyc(['ملاكمة', 'ملاكمة + قوة', 'ملاكمة + كارديو']);
+  else if (tt === 'boxing') out = cyc(['ملاكمة', 'ملاكمة + كيك بوكسينغ', 'ملاكمة + مواي تاي', 'حصة هجينة']);
   else {
     const cats = [];
     if (has('musclegain') || has('strength') || has('recomp')) cats.push(['str', 3]);
@@ -9582,7 +10179,7 @@ function lxPickTypes(f, c) {
     while (cnt.reduce((a, b) => a + b, 0) < n) { let bi = 0; cats.forEach((x, i) => { if (x[1] / (cnt[i] + 1) > cats[bi][1] / (cnt[bi] + 1)) bi = i; }); cnt[bi]++; }
     while (cnt.reduce((a, b) => a + b, 0) > n) { let bi = cnt.indexOf(Math.max.apply(null, cnt)); cnt[bi]--; }
     const strN = cnt[cats.findIndex(x => x[0] === 'str')] || 0;
-    const pools = { str: lxSplit(strN || 1, f, c), fatstr: ['قوة شاملة', 'HIIT + كارديو', 'قوة — جسم كامل', 'كارديو', 'قوة + كارديو', 'HIIT + بطن'], fat: ['HIIT + كارديو', 'كارديو', 'HIIT + بطن'], box: ['ملاكمة + قوة', 'ملاكمة + كارديو', 'ملاكمة'], cardio: ['كارديو', 'HIIT + كارديو'], fit: ['قوة شاملة', 'HIIT', 'كارديو'], flex: ['قوة', 'كارديو'] };
+    const pools = { str: lxSplit(strN || 1, f, c), fatstr: ['قوة شاملة', 'HIIT + كارديو', 'قوة — جسم كامل', 'كارديو', 'قوة + كارديو', 'HIIT + بطن'], fat: ['HIIT + كارديو', 'كارديو', 'HIIT + بطن'], box: ['ملاكمة', 'ملاكمة + كيك بوكسينغ', 'ملاكمة + مواي تاي', 'حصة هجينة'], cardio: ['كارديو', 'HIIT + كارديو'], fit: ['قوة شاملة', 'HIIT', 'كارديو'], flex: ['قوة', 'كارديو'] };
     const ptr = {}, rem = cnt.slice(); out = []; let last = -1;
     for (let i = 0; i < n; i++) { let bi = -1; rem.forEach((r, k) => { if (r > 0 && (bi < 0 || r > rem[bi] || (r === rem[bi] && k !== last && bi === last))) bi = k; }); const key = cats[bi][0]; ptr[key] = ptr[key] || 0; out.push(pools[key][ptr[key]++ % pools[key].length]); rem[bi]--; last = bi; }
   }
@@ -9593,30 +10190,41 @@ function lxPickTypes(f, c) {
 }
 function buildSmartSportPlan(f, analysis) {
   const c = lxCtx(f, analysis), B = aiBudget(f), days = f.days && f.days.length ? f.days : ['السبت'];
-  const types = lxPickTypes(Object.assign({}, f, { days }), c), has = x => getGoals(f).includes(x);
-  let maxEx = B.maxEx - (c.fatigue >= 2 ? 1 : 0);
+  const types = (f.forceTypes && f.forceTypes.length) ? f.forceTypes : lxPickTypes(Object.assign({}, f, { days }), c), has = x => getGoals(f).includes(x);
   const planDays = days.map((dayName, i) => {
     const type = types[i] || 'قوة شاملة', strType = /^قوة/.test(type) || /قوة$/.test(type);
+    const isHybrid = /هجينة/.test(type), dur = f.duration || 45;
+    let maxEx, setsForBlocks = null; // setsForBlocks للهجين فقط؛ غير الهجين يبقى على سلوكه الأصلي
+    if (isHybrid) {
+      if (dur >= 90) { maxEx = 12; setsForBlocks = 3; }
+      else if (dur >= 60) { maxEx = 12; setsForBlocks = 2; }
+      else if (dur >= 45) { maxEx = 8; setsForBlocks = 2; } // بدون core
+      else { maxEx = 5; setsForBlocks = 2; } // هجين مصغّر
+    } else maxEx = f.maxExOverride || (B.maxEx - (c.fatigue >= 2 ? 1 : 0)); // maxExOverride: تبويب قتالي (حتى 8)
     const wc = lxWarmCool(type, f, c, B);
     const d = { dayNumber: i + 1, dayName, focus: type, duration: f.duration || 45, warmup: wc.warm, exercises: [], cooldown: wc.cool };
-    const slots = (LX_SESS[type] || LX_SESS['قوة شاملة']).slice(), ext = /ملاكمة/.test(type) ? ['box', 'boxc', 'core', 'box'] : (/^قوة/.test(type) && !/بطن/.test(type) ? ['core', 'calves', 'bi', 'tri', 'delt', 'rear', 'glute'] : ['core', 'hiit', 'cardio', 'core']);
+    let slots = (LX_SESS[type] || LX_SESS['قوة شاملة']).slice();
+    if (isHybrid && dur < 60) slots = dur >= 45 ? (f.strengthMode === 'focused' ? ['box', 'hiit', 'boxc', 'push_h', 'pull_h', 'core'] : slots.filter(x => x !== 'core')) : ['box', 'hiit', 'boxc', 'push_h', 'pull_h'];
+    const ext = isHybrid ? [] : /ملاكمة/.test(type) ? ['box', 'boxc', 'core', 'box'] : (/^قوة/.test(type) && !/بطن/.test(type) ? ['core', 'calves', 'bi', 'tri', 'delt', 'rear', 'glute'] : ['core', 'hiit', 'cardio', 'core']);
     const fin = has('fatloss') && strType && !/بطن/.test(type) && B.dur >= 40, reserve = fin ? 6 : 0, used = new Set(), strengthy = /^قوة/.test(type);
     let k = 0;
     while (d.exercises.length < maxEx && k < slots.length + ext.length * 3) {
       let pat = k < slots.length ? slots[k] : ext[(k - slots.length) % ext.length]; k++;
       if (pat === 'hinge') { const last = c.hingeDays[c.hingeDays.length - 1]; if (c.hingeDays.length >= 2 || (last !== undefined && adjacentDays(days[last], dayName))) pat = 'glute'; }
-      const e = lxPick(pat, f, c, used, i + k, strengthy); if (!e) continue;
-      const rx = lxRx(e, f, c, strengthy);
+      const e = lxPick(pat, f, c, used, i + k + (f.rotSeed || 0), strengthy); if (!e) continue;
+      const rx = lxRx(e, f, c, strengthy, setsForBlocks); if (f.martialLink) lxLink(e, rx, f.martialLink);
       d.exercises.push({ name: e.ar, nameEn: e.en, sets: rx.sets, reps: rx.reps, rest: rx.rest, weight: rx.weight, notes: rx.notes });
-      if (sessionMinutes(d) + reserve > d.duration && d.exercises.length > 3) { d.exercises.pop(); break; }
+      if (!isHybrid && sessionMinutes(d) + reserve > d.duration && d.exercises.length > 3) { d.exercises.pop(); break; } // الهجين: lxFit يخفض المجموعات أولاً
       used.add(e.en); c.weekUse[e.en] = (c.weekUse[e.en] || 0) + 1; if (e.pat === 'hinge' && c.hingeDays.indexOf(i) < 0) c.hingeDays.push(i);
-      if (sessionMinutes(d) + reserve >= d.duration * 0.92 && d.exercises.length >= B.minEx) break;
+      if (!isHybrid && sessionMinutes(d) + reserve >= d.duration * 0.92 && d.exercises.length >= B.minEx) break;
     }
     if (fin) { const e = lxPick('hiit', f, c, used, i + 7, false); if (e) { const rx = lxRx(e, f, c, false); d.exercises.push({ name: 'ختام حرق: ' + e.ar, nameEn: e.en, sets: 3, reps: rx.reps, rest: rx.rest, weight: '-', notes: 'ختام قصير لرفع الحرق بعد القوة' }); } }
     if (!d.exercises.length) d.exercises = [{ name: 'بلانك', nameEn: 'Plank', sets: 3, reps: '30 ث', rest: '30 ثانية', weight: '-', notes: '' }, { name: 'مشي سريع', nameEn: 'Brisk Walk', sets: 1, reps: '10 د', rest: '-', weight: '-', notes: '' }];
+    if (isHybrid && dur < 60) { let g = 0; while (sessionMinutes(d) > d.duration * 1.03 && g++ < 6) { const m = d.exercises.find(x => /د/.test(String(x.reps)) && x.sets > 1); if (!m) break; m.sets = 1; } } // هجين مصغّر: جولة واحدة للكتل الطويلة (كيس/حبل) قبل حذف أي تمرين
     lxFit(d);
     return d;
   });
+  if ((f.duration || 45) < 60 && types.some(t => /هجينة/.test(t))) { try { if (typeof showInAppNotification === 'function') showInAppNotification('⏱️', 'الحصة الهجينة تحتاج 60-90 دقيقة للهيكل الكامل'); } catch (e) {} }
   const sp = { weeklyStructure: `${planDays.length} حصص أسبوعياً — ${f.place === 'gym' ? 'نادي' : (f.place === 'outdoor' ? 'خارجي' : 'منزل')} — ${Array.from(new Set(types)).join(' • ')}`, days: planDays };
   try { autoFixSportPlan(sp, f); } catch (e) { console.warn('lx autofix', e); }
   return sp;
@@ -10084,6 +10692,7 @@ function renderSportPlan(plan) {
   for (const [key, val] of Object.entries(exerciseDescriptions)) {
     if (val.en && val.en.toLowerCase() === String(nameEn).toLowerCase()) { nameAr = val.ar; break; }
   }
+  if (!nameAr) { const lx = lxFind(nameEn); if (lx) nameAr = lx.ar; }
   html += `<div class="workout-ex-line"><div>${mpLink(nameEn, ex.notes)}${nameAr ? `<div class="workout-ex-note workout-ex-note-ar">${nameAr}</div>` : ''}${ex.notes ? `<div class="workout-ex-note">${ex.notes}</div>` : ''}</div><span class="ex-sets">${setsReps}${ex.rest ? ` / ${ex.rest}` : ''}</span></div>`; 
 });
     if (day.cooldown && day.cooldown.length) { html += `<div class="wd-subtitle">🧊 تهدئة</div>`; day.cooldown.forEach(w => { html += `<div class="workout-ex-line"><span>${mpLink(w.name, w.notes, 'span')}</span><span class="ex-sets">${w.duration || ''}</span></div>`; }); }
@@ -10512,7 +11121,18 @@ const ALL_EXERCISES_FOR_BUILDER = [
   { id: 'calf_stretch', name: 'Calf Stretch', emoji: '🦶', descKey: 'calf_stretch', group: 'إطالة' },
   { id: 'cobra_stretch', name: 'Cobra Stretch', emoji: '🐍', descKey: 'cobra_stretch', group: 'إطالة' },
   { id: 'pigeon_pose', name: 'Pigeon Pose', emoji: '🕊️', descKey: 'pigeon_pose', group: 'إطالة' },
-  { id: 'downward_dog', name: 'Downward Dog', emoji: '🐕', descKey: 'downward_dog', group: 'إطالة' }
+  { id: 'downward_dog', name: 'Downward Dog', emoji: '🐕', descKey: 'downward_dog', group: 'إطالة' },
+  { id: 'front_kick', name: 'Front Kick', emoji: '🦵', descKey: 'front_kick', group: 'كيك بوكسينغ' },
+  { id: 'roundhouse_kick', name: 'Roundhouse Kick', emoji: '🦵', descKey: 'roundhouse_kick', group: 'كيك بوكسينغ' },
+  { id: 'low_kick', name: 'Low Kick', emoji: '🦵', descKey: 'low_kick', group: 'كيك بوكسينغ' },
+  { id: 'body_kick', name: 'Body Kick', emoji: '🦵', descKey: 'body_kick', group: 'كيك بوكسينغ' },
+  { id: 'high_kick', name: 'High Kick', emoji: '🦵', descKey: 'high_kick', group: 'كيك بوكسينغ' },
+  { id: 'knee_strike', name: 'Knee Strike', emoji: '🦵', descKey: 'knee_strike', group: 'مواي تاي' },
+  { id: 'flying_knee', name: 'Flying Knee', emoji: '🦵', descKey: 'flying_knee', group: 'مواي تاي' },
+  { id: 'elbow_strike', name: 'Elbow Strike', emoji: '💪', descKey: 'elbow_strike', group: 'مواي تاي' },
+  { id: 'spinning_elbow', name: 'Spinning Elbow', emoji: '💪', descKey: 'spinning_elbow', group: 'مواي تاي' },
+  { id: 'teep_kick', name: 'Teep Kick', emoji: '🦶', descKey: 'teep_kick', group: 'مواي تاي' },
+  { id: 'clinch_knee', name: 'Clinch Knee', emoji: '🦵', descKey: 'clinch_knee', group: 'مواي تاي' }
 ];
 function renderExercisePicker() {
   const picker = document.getElementById('exercisePicker');
@@ -10687,7 +11307,7 @@ function renderTemplates() {
 /* ============================================================
    🛠️ BUILDER v2 (حصصي) — sliders + toggles + categories
    ============================================================ */
-const BLD_CATS = [['ملاكمة','Boxing','🥊'],['كارديو','Cardio','🔥'],['أرجل','Legs','🦵'],['صدر','Chest','💪'],['ظهر','Back','🚣'],['بطن','Core','🎯'],['حركات','Movement','🐻'],['أوزان','Weights','🏋️'],['إطالة','Stretching','🧘']];
+const BLD_CATS = [['ملاكمة','Boxing','🥊'],['كارديو','Cardio','🔥'],['أرجل','Legs','🦵'],['صدر','Chest','💪'],['ظهر','Back','🚣'],['بطن','Core','🎯'],['حركات','Movement','🐻'],['أوزان','Weights','🏋️'],['إطالة','Stretching','🧘'],['كيك بوكسينغ','Kickboxing','🦵'],['مواي تاي','Muay Thai','🦿']];
 const BLD_INT = [['light','Light','خفيف','Easy pace'],['moderate','Moderate','متوسط','Steady pace'],['vigorous','Vigorous','قوي','Push hard'],['max','Max effort','أقصى جهد','All out']];
 /* [T2] bldS أُعلن في أعلى السكربت (انظر bldSanitize) */
 const bldOpen = new Set(['ملاكمة']);
@@ -10890,6 +11510,7 @@ function startCustomWorkout() {
   customRunnerState.name = name;
   customRunnerState.index = 0;
   customRunnerState.paused = false;
+  customRunnerState.martial = false; customRunnerState.totalSeconds = 0;
   customRunnerState.phase = 'prepare';
   customRunnerState.remaining = CUSTOM_PREPARE_SECONDS;
   
@@ -10962,7 +11583,7 @@ function startCustomWorkPhase() {
   if (!ex) { finishCustomRunner(); return; }
   
   customRunnerState.phase = 'work';
-  const cwWork = (bldS.mode === 'modern' && ex.duration > 0) ? ex.duration : CUSTOM_WORK_SECONDS;
+  const cwWork = ((bldS.mode === 'modern' || customRunnerState.martial) && ex.duration > 0) ? ex.duration : CUSTOM_WORK_SECONDS;
   
   updateCustomRunnerUI('work');
   ctCwPhaseVisual('work');
@@ -10988,10 +11609,12 @@ function startCustomWorkPhase() {
 
 function endCustomWorkPhase() {
   customRunnerState.index++;
+  const prevEx = customRunnerState.exercises[customRunnerState.index - 1];
+  const restSec = (customRunnerState.martial && prevEx && prevEx.rest != null) ? prevEx.rest : CUSTOM_REST_SECONDS; // قتالي: راحة كل مجموعة
   const nextEx = customRunnerState.exercises[customRunnerState.index];
   
   if (!nextEx) { finishCustomRunner(); return; }
-  if (CUSTOM_REST_SECONDS <= 0) { startCustomWorkPhase(); return; }
+  if (restSec <= 0) { startCustomWorkPhase(); return; }
   
   // راحة قصيرة بين التمارين
   customRunnerState.phase = 'rest';
@@ -11002,10 +11625,10 @@ function endCustomWorkPhase() {
   ctNotify('😮‍💨 وقت الراحة', 'استعد للتمرين التالي: ' + (nextEx.name || ''));
   
   const timerEl = document.getElementById('customRunnerTimer');
-  if (timerEl) timerEl.textContent = formatTime(CUSTOM_REST_SECONDS);
+  if (timerEl) timerEl.textContent = formatTime(restSec);
   
   // 🐞 إصلاح مشكلة الانحراف الزمني: عداد آمن معتمد على Date.now()
-  ctDriftSafeCountdown(customRunnerState, CUSTOM_REST_SECONDS, (remaining) => {
+  ctDriftSafeCountdown(customRunnerState, restSec, (remaining) => {
     if (timerEl) timerEl.textContent = formatTime(Math.max(0, remaining));
     ctSetUrgentEffects('customRunnerTimer', 'cwRunnerRingWrap', remaining);
     if (remaining <= 3 && remaining > 0) {
@@ -11031,7 +11654,7 @@ function finishCustomRunner() {
   cwSpeak('Great job! Workout complete!');
   ctNotify('🏆 انتهت الحصة', 'أحسنت! أكملت الحصة المخصصة بنجاح');
   
-  const totalSeconds = customRunnerState.exercises.length * (CUSTOM_WORK_SECONDS + CUSTOM_REST_SECONDS);
+  const totalSeconds = customRunnerState.totalSeconds || customRunnerState.exercises.length * (CUSTOM_WORK_SECONDS + CUSTOM_REST_SECONDS);
   const added = addWorkoutToHistory('hiit', 99, Math.ceil(totalSeconds / 60)) || { duration: Math.ceil(totalSeconds / 60), calories: 0 }; // [T5]
   
   showConfetti();
@@ -11424,6 +12047,18 @@ const EXERCISE_MEDIA = {
   quad_stretch: { pinnedIds: [], queries: ['quad stretch', 'standing quad stretch', 'quadriceps stretch'], category: "stretching", fallbackType: 'svg', arabicName: "إطالة الفخذ الأمامي", englishName: "Quad Stretch" },
   shoulder_stretch: { pinnedIds: [], queries: ['shoulder stretch', 'cross body shoulder stretch', 'arm across stretch'], category: "stretching", fallbackType: 'svg', arabicName: "إطالة الكتف", englishName: "Shoulder Stretch" },
   stretch: { pinnedIds: [], queries: ['full body stretch', 'standing stretch', 'stretch'], category: "stretching", fallbackType: 'svg', arabicName: "تمارين الإطالة", englishName: "Stretching" },
+  // 🥊 كيك بوكسينغ / مواي تاي
+  front_kick: { pinnedIds: [], queries: ['front kick', 'muay thai front kick'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة أمامية', englishName: 'Front Kick' },
+  roundhouse_kick: { pinnedIds: [], queries: ['roundhouse kick', 'muay thai roundhouse'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة دائرية', englishName: 'Roundhouse Kick' },
+  low_kick: { pinnedIds: [], queries: ['low kick', 'leg kick', 'muay thai low kick'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة منخفضة', englishName: 'Low Kick' },
+  body_kick: { pinnedIds: [], queries: ['body kick', 'middle kick'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة للجسم', englishName: 'Body Kick' },
+  high_kick: { pinnedIds: [], queries: ['high kick', 'head kick'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة عالية', englishName: 'High Kick' },
+  knee_strike: { pinnedIds: [], queries: ['knee strike', 'muay thai knee'], category: 'muaythai', fallbackType: 'svg', arabicName: 'ركبة', englishName: 'Knee Strike' },
+  flying_knee: { pinnedIds: [], queries: ['flying knee', 'jumping knee'], category: 'muaythai', fallbackType: 'svg', arabicName: 'ركبة طائرة', englishName: 'Flying Knee' },
+  elbow_strike: { pinnedIds: [], queries: ['elbow strike', 'muay thai elbow'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع', englishName: 'Elbow Strike' },
+  spinning_elbow: { pinnedIds: [], queries: ['spinning elbow', 'muay thai spinning elbow'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع دوار', englishName: 'Spinning Elbow' },
+  teep_kick: { pinnedIds: [], queries: ['teep kick', 'push kick', 'muay thai teep'], category: 'muaythai', fallbackType: 'svg', arabicName: 'تيب (دفع)', englishName: 'Teep Kick' },
+  clinch_knee: { pinnedIds: [], queries: ['clinch knee', 'muay thai clinch'], category: 'muaythai', fallbackType: 'svg', arabicName: 'ركبة في الاشتباك', englishName: 'Clinch Knee' }
 };
 
 // تصنيف تلقائي للتمارين الديناميكية (bb_* والمخصّصة) غير الموجودة في الجدول
@@ -11803,11 +12438,10 @@ const oldV = box.querySelector('video.dm-vid'); if (oldV) { try { oldV.pause(); 
 box.classList.remove('ready', 'svgmode'); img.removeAttribute('src'); img.alt = ''; img.style.display = ''; svgBox.innerHTML = ''; cap.hidden = true; cap.textContent = '';
 retry.hidden = !force; retry.disabled = !!force; retry.classList.toggle('spin', !!force);
 box.hidden = false; hero.classList.add('has-media');
-const showNone = res => { // [MEDIA-LOCAL] لا رسم احتياطي: بطاقة تخبرك باسم الملف المطلوب
+const showNone = res => { // صورة ثابتة توضيحية بدل رسالة الخطأ (لا رسالة قبيحة)
 box.classList.add('svgmode');
-const msg = (res && res.reason === 'offline') ? 'لا يوجد إنترنت — لم تُحفظ حركة هذا التمرين بعد' : 'لا توجد صورة متحركة لهذا التمرين بعد';
-const safeKey = String(key).replace(/[<>&"'\\]/g, '');
-svgBox.innerHTML = '<div style="text-align:center;padding:1rem;line-height:1.8;font-size:.9rem;opacity:.85">🎬<br>' + msg + '<br><span dir="ltr" style="font-size:.75rem;opacity:.7">' + safeKey + '.mp4</span><br><span style="font-size:.72rem;opacity:.6">الإعدادات ← البيانات ← استيراد صور متحركة</span></div>';
+let cat = (EXERCISE_MEDIA[key] && EXERCISE_MEDIA[key].category) || ''; if (!SVG_PLACEHOLDERS[cat]) { try { const g = erGet(key); cat = (g && g.primaryMuscle) || ''; } catch (e) {} } if (!SVG_PLACEHOLDERS[cat]) cat = 'cardio';
+svgBox.innerHTML = '<div style="text-align:center;padding:.6rem;color:var(--text-secondary)"><div style="width:62%;max-width:210px;margin:0 auto;color:var(--accent-boxing)">' + SVG_PLACEHOLDERS[cat] + '</div><div style="font-size:.72rem;opacity:.7;margin-top:.3rem">صورة توضيحية للحركة</div></div>';
 retry.hidden = false; retry.disabled = false; retry.classList.remove('spin');
 };
 const showVideo = res => {
@@ -12071,6 +12705,18 @@ const EXERCISE_RELATIONSHIPS = {
   shoulder_stretch: { primaryMuscle: 'stretching', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
   stretch: { primaryMuscle: 'stretching', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
   bb_bench: { primaryMuscle: 'chest', equipment: 'barbell', youtubeUrl: 'https://www.youtube.com/watch?v=rT7DgCr-3pg', ytSource: 'manual', alternatives: null },
+  // 🥊 كيك بوكسينغ / مواي تاي
+  front_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  roundhouse_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  low_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  body_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  high_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  knee_strike: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  flying_knee: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  elbow_strike: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  spinning_elbow: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  teep_kick: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  clinch_knee: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null }
 };
 /* تصحيح تصنيفات خاطئة: تحدد البدائل المقترحة */
 [['bb_squat','legs'],['bb_lateral','shoulders'],['bb_legcurl','legs'],['bb_hanging','core']].forEach(([k, m]) => { if (EXERCISE_RELATIONSHIPS[k]) EXERCISE_RELATIONSHIPS[k].primaryMuscle = m; });
@@ -14140,7 +14786,12 @@ const HUMAN_VOICE_CLIPS = {
   slip:['سليب','Slip','Esquive'], roll:['رول','Roll','Roulade'], duck:['دك','Duck','Baisse-toi'], block:['احمِ وجهك','Block','Bloque'],
   guard:['ارفع يدك','Guard up','Garde haute'], move:['تحرك','Move','Bouge'], pivot:['دور','Pivot','Pivote'], back:['ارجع','Step back','Recule'],
   power:['قوّي','Power','Puissance'], go:['هيا','Go','Allez'], ready:['استعد','Ready','Prêt'], rest:['راحة','Rest','Repos'],
-  finish:['انتهينا','Finish','Terminé'], faster:['أسرع','Faster','Plus vite'], push:['اضغط','Push','Pousse'], focus:['ركّز','Focus','Concentre-toi'], combo:['كومبو','Combo','Combo']
+  finish:['انتهينا','Finish','Terminé'], faster:['أسرع','Faster','Plus vite'], push:['اضغط','Push','Pousse'], focus:['ركّز','Focus','Concentre-toi'], combo:['كومبو','Combo','Combo'],
+  // 🥊 كيك بوكسينغ / مواي تاي
+  front_kick:['ركلة أمامية','Front Kick','Coup de Pied Avant'], roundhouse_kick:['ركلة دائرية','Roundhouse Kick','Coup Circulaire'], low_kick:['ركلة منخفضة','Low Kick','Low Kick'],
+  body_kick:['ركلة للجسم','Body Kick','Coup au Corps'], high_kick:['ركلة عالية','High Kick','High Kick'], knee_strike:['ركبة','Knee Strike','Coup de Genou'],
+  flying_knee:['ركبة طائرة','Flying Knee','Genou Sauté'], elbow_strike:['كوع','Elbow Strike','Coup de Coude'], spinning_elbow:['كوع دوار','Spinning Elbow','Coude Tournant'],
+  teep_kick:['تيب','Teep Kick','Teep'], clinch_knee:['ركبة اشتباك','Clinch Knee','Genou en Clinch']
 };
 // Word → clip. Only phrases made entirely of known/ignorable words are played from clips; others use TTS.
 const HV_WORDS = {
@@ -14169,6 +14820,7 @@ const HumanVoice = (function () {
   try { Object.keys(MOVE_TRANSLATIONS).forEach(ar => { const m = MOVE_TRANSLATIONS[ar]; let k = String(m.en).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''); k = HV_ALIAS[k] || k;
     if (!HUMAN_VOICE_CLIPS[k]) HUMAN_VOICE_CLIPS[k] = [ar, m.en, m.fr];
     hvAdd(ar, [k]); hvAdd(m.en, [k]); hvAdd(m.fr, [k]); }); } catch (e) { console.warn('[HumanVoice] move clips unavailable', e); }
+    try { ['front_kick','roundhouse_kick','low_kick','body_kick','high_kick','knee_strike','flying_knee','elbow_strike','spinning_elbow','teep_kick','clinch_knee'].forEach(k => (HUMAN_VOICE_CLIPS[k] || []).forEach(t => hvAdd(t, [k]))); } catch (e) {} // الحركات القتالية: اربط أسماءها بمقاطعها (hvAdd لا يكتب فوق ما هو مربوط مسبقاً)
   function parse(text) { // returns array of clip keys or null. Longest phrase first; unrecorded moves fall back to the old word rules, then TTS
     const n = norm(text); if (!n) return null;
     if (HV_PHRASES[n]) return st.buf[HV_PHRASES[n][0]] ? HV_PHRASES[n] : null;
@@ -15700,5 +16352,346 @@ function setBtnLoading(btn, on) { if (!btn) return; btn.classList.toggle('is-loa
   });
 })();
 </script>
+<style id="ui-polish">
+/* ═══════════════════════════════════════════════════════════════
+   UI POLISH — تحسين بصري فقط (لا منطق، لا حذف ميزات، لا تغيير بيانات)
+   • كل الألوان عبر متغيّرات: الافتراضي في :root، ونسخة لكل ثيم أدناه
+   • الأسطح/الحدود تُشتق من متغيّرات الثيم نفسه (تعمل مع أي ثيم مستقبلي)
+   • لا يمس وضع التركيز (focus-mode) ولا وضع الجيم (gym-mode)
+   • موضوع في آخر الملف ليتجاوز طبقات الثيمات والإصلاحات السابقة
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── ١) المتغيّرات: القيم الافتراضية (الوضع الليلي) ── */
+:root {
+  --pl-surface: #14171f;                    /* خلفية المؤقت داخل البطاقة */
+  --pl-line: rgba(255, 255, 255, 0.08);     /* حدود ناعمة */
+  --pl-chip: rgba(255, 255, 255, 0.06);     /* خلفية الأزرار الثانوية */
+  --pl-shadow-c: rgba(0, 0, 0, 0.45);       /* لون الظل */
+  --pl-shadow: 0 1px 2px var(--pl-shadow-c), 0 6px 16px -8px var(--pl-shadow-c);
+  --pl-on-hiit: #14110f;                    /* نص فوق لون الإبراز الأساسي */
+  --pl-on-boxing: #ffffff;                  /* نص فوق لون الملاكمة */
+  --pl-on-ai: #14110f;                      /* نص فوق لون الذكاء/القتالي */
+  --pl-ring: 96px;                          /* قطر المؤقت داخل البطاقة */
+  --pl-gap: 8px;                            /* المسافة بين البطاقات */
+}
+/* الأسطح تُشتق من ألوان الثيم الحالي → تتأقلم تلقائياً (فاتح/داكن/أي ثيم) */
+body, body[data-theme] {
+  --pl-surface: color-mix(in srgb, var(--bg-primary) 55%, var(--bg-card));
+  --pl-line: color-mix(in srgb, var(--text-primary) 10%, transparent);
+  --pl-chip: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  --pl-shadow: 0 1px 2px var(--pl-shadow-c), 0 6px 16px -8px var(--pl-shadow-c);
+}
+body[data-timer-style="classic"] { --pl-ring: 96px; }
+body[data-timer-style="clean"]   { --pl-ring: 108px; }
+body[data-timer-style="compact"] { --pl-ring: 80px; }
+
+/* ── ٢) نسخة كل ثيم (نص فوق اللون المُبرز + لون الظل) ── */
+body[data-theme="dark"] { --pl-on-hiit: #14110f; --pl-on-boxing: #ffffff; --pl-on-ai: #14110f; --pl-shadow-c: rgba(0,0,0,.45); }
+body[data-theme="light"] { --pl-on-hiit: #ffffff; --pl-on-boxing: #ffffff; --pl-on-ai: #ffffff; --pl-shadow-c: rgba(15,23,42,.16); }
+body[data-theme="ocean"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(0,10,25,.5); }
+body[data-theme="emerald"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(0,12,8,.5); }
+body[data-theme="royal"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(5,3,15,.5); }
+body[data-theme="frost"] { --pl-on-hiit: #ffffff; --pl-on-boxing: #ffffff; --pl-on-ai: #ffffff; --pl-shadow-c: rgba(10,28,51,.16); }
+body[data-theme="sakura"] { --pl-on-hiit: #ffffff; --pl-on-boxing: #ffffff; --pl-on-ai: #ffffff; --pl-shadow-c: rgba(120,40,80,.16); }
+body[data-theme="nebula"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(5,3,17,.55); }
+body[data-theme="dracula"] { --pl-on-hiit: #14110f; --pl-on-boxing: #ffffff; --pl-on-ai: #14110f; --pl-shadow-c: rgba(10,0,0,.55); }
+body[data-theme="rose-gold"] { --pl-on-hiit: #ffffff; --pl-on-boxing: #ffffff; --pl-on-ai: #ffffff; --pl-shadow-c: rgba(58,33,32,.16); }
+body[data-theme="legendary-gold"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(17,14,6,.55); }
+body[data-theme="amoled"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(0,0,0,.6); }
+body[data-theme="contrast"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --pl-on-ai: #14110f; --pl-shadow-c: rgba(0,0,0,0); --pl-line: var(--text-primary); --pl-chip: var(--bg-elevated); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ٣) بطاقة التمرين — أصغر وأنظف
+   ═══════════════════════════════════════════════════════════════ */
+body:not(.focus-mode):not(.gym-mode) .exercise-card {
+  margin: 0 0 var(--pl-gap);
+  padding: 0.55rem 0.65rem 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--pl-line);
+  border-radius: min(var(--t-card-r, var(--radius-lg)), 22px);
+  box-shadow: var(--pl-shadow);
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card.current {
+  border-color: var(--accent-hiit);
+  box-shadow: var(--pl-shadow), 0 0 0 1px color-mix(in srgb, var(--accent-hiit) 45%, transparent);
+}
+body:not(.focus-mode):not(.gym-mode) #content-boxing .exercise-card.current {
+  border-color: var(--accent-boxing);
+  box-shadow: var(--pl-shadow), 0 0 0 1px color-mix(in srgb, var(--accent-boxing) 45%, transparent);
+}
+/* العلامة العائمة للبطاقة الحالية مكرّرة (الحدّ المميّز يكفي) */
+body:not(.focus-mode):not(.gym-mode) .exercise-card.current::before,
+body:not(.focus-mode):not(.gym-mode) .exercise-card.current::after { display: none; }
+
+/* ── الرأس: الاسم + الإنجليزي + المدة في سطر واحد ── */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header {
+  margin: 0 0 0.4rem; gap: 0; flex-wrap: nowrap; justify-content: flex-start;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header > div {
+  display: flex; align-items: center; gap: 0.45rem; width: 100%; min-width: 0;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-title-ar {
+  display: inline-flex; align-items: center; gap: 0.3rem; flex: 0 1 auto; min-width: 0;
+  margin: 0; font-size: 0.95rem; font-weight: 800; line-height: 1.35; letter-spacing: 0;
+  color: var(--text-primary);
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-title-en {
+  display: block; flex: 0 1 auto; min-width: 0; margin: 0;
+  font-size: 0.68rem; opacity: 1; color: var(--text-secondary);
+  direction: ltr; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header .badge {
+  margin: 0 !important; margin-inline-start: auto !important; flex: none;
+  padding: 0.05rem 0.55rem; font-size: 0.66rem; line-height: 1.6;
+  background: color-mix(in srgb, var(--accent-success) 16%, transparent);
+  color: color-mix(in srgb, var(--accent-success) 65%, var(--text-primary));
+  border: 1px solid color-mix(in srgb, var(--accent-success) 30%, transparent);
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header .badge-red {
+  background: color-mix(in srgb, var(--accent-boxing) 16%, transparent);
+  color: color-mix(in srgb, var(--accent-boxing) 60%, var(--text-primary));
+  border-color: color-mix(in srgb, var(--accent-boxing) 30%, transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ٤) المؤقت — بحجم معقول في المنتصف
+   ═══════════════════════════════════════════════════════════════ */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-widget {
+  background: var(--pl-surface);
+  border-width: 1px;
+  border-radius: min(var(--t-radius-md, var(--radius-md)), 16px);
+  padding: 0.5rem;
+  margin: 0;
+  box-shadow: none;
+}
+body:not(.focus-mode):not(.gym-mode)[data-timer-style="clean"] .exercise-card .timer-widget {
+  background: transparent; border-color: transparent;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-ring-container {
+  width: var(--pl-ring); height: var(--pl-ring); margin: 0.1rem auto 0.5rem;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-ring-container::before,
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-ring-container::after { inset: -5px; border-width: 1.5px; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .ring-bg { stroke-width: 9; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .ring-progress { stroke-width: 10; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-display {
+  font-size: calc(var(--pl-ring) * 0.27); line-height: 1; letter-spacing: -0.01em;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-label {
+  margin-top: 2px; font-size: 0.6rem; letter-spacing: 0.4px; font-weight: 700;
+  color: var(--text-secondary);
+}
+/* أيقونة الدمبل بجانب «وقت العمل» مكرّرة */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-label .ico { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ٥) الأزرار — زر البدء بعرض كامل + صف واحد مضغوط للباقي
+   (!important هنا فقط لتجاوز طبقات الإصلاح السابقة التي تستخدمه)
+   ═══════════════════════════════════════════════════════════════ */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls {
+  display: flex !important; flex-wrap: wrap !important; justify-content: stretch !important;
+  gap: 4px !important; margin: 0; padding: 0;
+}
+/* زر البدء (الأول دائماً: .primary أو .boxing-btn) */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn:first-child {
+  order: 0 !important; flex: 1 1 100% !important; width: 100% !important; max-width: none !important;
+  margin: 0 0 2px !important; min-height: 38px !important; padding: 0.3rem 0.9rem !important;
+  font-size: 0.85rem !important; font-weight: 800 !important; border-radius: 9999px !important;
+  flex-direction: row; gap: 0.35rem;
+  background: var(--accent-hiit); color: var(--pl-on-hiit); border: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: 0 3px 10px -4px color-mix(in srgb, var(--accent-hiit) 70%, transparent);
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn.boxing-btn:first-child {
+  background: var(--accent-boxing); color: var(--pl-on-boxing);
+  box-shadow: 0 3px 10px -4px color-mix(in srgb, var(--accent-boxing) 70%, transparent);
+}
+/* الأزرار الثانوية: أيقونة فوق نص صغير، كلها في صف واحد */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn:not(:first-child),
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn {
+  flex: 1 1 0 !important; min-width: 0 !important; width: auto !important;
+  min-height: 42px !important; padding: 0.3rem 0.1rem !important;
+  display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  font-size: 0.66rem !important; font-weight: 700 !important; line-height: 1.15;
+  white-space: normal; text-align: center; overflow: hidden; text-overflow: clip;
+  border-radius: min(var(--t-radius-md, var(--radius-md)), 14px) !important;
+  background: var(--pl-chip) !important; color: var(--text-primary) !important;
+  border: 1px solid var(--pl-line) !important;
+  -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none !important;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn:not(:first-child) .ico,
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn .ico { width: 1.05rem; height: 1.05rem; flex: none; }
+/* ترتيب منطقي: تنقّل ← إنهاء ← إعادة/تكرار/راحة */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .next-btn { order: 1 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-quick-btn.skip { order: 2 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-btn[onclick^="finishCurrentExercise"] { order: 3 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-btn[onclick^="resetTimer"] { order: 4 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-btn[onclick^="repeatCurrentExercise"] { order: 5 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-quick-btn.extra-rest { order: 6 !important; }
+/* ألوان دلالية — من متغيّرات الثيم فقط */
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn.finish-btn,
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn[onclick^="finishCurrentExercise"] {
+  color: color-mix(in srgb, var(--accent-success) 70%, var(--text-primary)) !important;
+  background: color-mix(in srgb, var(--accent-success) 13%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent-success) 34%, transparent) !important;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn.skip {
+  color: color-mix(in srgb, var(--accent-warning) 70%, var(--text-primary)) !important;
+  background: color-mix(in srgb, var(--accent-warning) 13%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent-warning) 34%, transparent) !important;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn.extra-rest {
+  color: color-mix(in srgb, var(--accent-info) 70%, var(--text-primary)) !important;
+  background: color-mix(in srgb, var(--accent-info) 13%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent-info) 34%, transparent) !important;
+}
+
+/* ── زر الوصف: آخر عنصر، صغير وهادئ ── */
+body:not(.focus-mode):not(.gym-mode) .exercise-card > .desc-btn {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  margin: 0.4rem 0 0; min-height: 30px; padding: 0.1rem 0.7rem;
+  font-size: 0.68rem; font-weight: 700;
+  background: transparent; color: var(--text-secondary);
+  border: 1px solid var(--pl-line); border-radius: var(--radius-full);
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card > .desc-btn .icon {
+  width: auto; height: auto; background: none; border-radius: 0; font-size: inherit;
+}
+body:not(.focus-mode):not(.gym-mode) .exercise-card > .desc-btn .ico { width: 0.95rem; height: 0.95rem; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ٦) صفحة التمرين: شريط علوي ثابت — زر الرجوع دائماً في المتناول
+   ═══════════════════════════════════════════════════════════════ */
+body:not(.focus-mode):not(.gym-mode) .workout-topbar {
+  position: sticky; top: 0; z-index: 60;
+  margin: 0 -0.75rem 0.5rem;
+  padding: calc(0.35rem + env(safe-area-inset-top, 0px)) 0.75rem 0.4rem;
+  gap: 0.5rem; flex-wrap: wrap;
+  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--pl-line);
+}
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .back-btn,
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .sound-toggle-mini {
+  width: 38px; height: 38px; min-height: 0; border-width: 1px; border-radius: var(--radius-md);
+}
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .title { font-size: 0.95rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .topbar-progress { margin-top: 0.3rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-screen .progress-bar { margin-bottom: 0.5rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-screen .phase-buttons { margin-bottom: 0.6rem; gap: 0.35rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-screen .phase-btn { padding: 0.4rem 0.7rem; min-height: 38px; font-size: 0.78rem; border-width: 1px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ٧) الشريط السفلي — أنحف ولا يغطي المحتوى
+   ═══════════════════════════════════════════════════════════════ */
+body:not(.focus-mode):not(.gym-mode) { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
+html body .bottom-nav { min-height: 0; bottom: 0.4rem; padding: 0.2rem 0.3rem; }
+html body .bottom-nav .nav-indicator { top: 0.2rem; bottom: 0.2rem; }
+html body .bottom-nav .bottom-nav-item { min-height: 0; padding: 0.25rem 0.2rem; gap: 0; border-radius: var(--radius-md); }
+html body .bottom-nav .bottom-nav-item .icon { font-size: 1.05rem; line-height: 1; }
+html body .bottom-nav .bottom-nav-item .icon .ico,
+html body .bottom-nav #nav-martial .icon .ico { width: 1.15rem; height: 1.15rem; }
+html body .bottom-nav #nav-martial .icon { width: 1.15rem; height: 1.15rem; }
+html body .bottom-nav .bottom-nav-item .label { font-size: 0.6rem; line-height: 1.25; }
+html body .bottom-nav .bottom-nav-item.active { transform: none; }
+html body .bottom-nav .bottom-nav-item.active .icon { transform: none; filter: none; animation: none; }
+html body .bottom-nav .bottom-nav-item.active .label { transform: none; }
+html body .bottom-nav .bottom-nav-item.active::before { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ٨) صفحة «قتالي» — أنظف وأصغر، ألوان من المتغيّرات
+   ═══════════════════════════════════════════════════════════════ */
+.martial-screen { padding-bottom: 4rem; }
+.martial-screen .app-header { padding-block: 0.7rem; margin-bottom: 0.7rem; }
+.martial-screen .app-header h1 { font-size: 1.1rem; margin-bottom: 0.1rem; }
+.martial-screen .app-header p { font-size: 0.72rem; margin: 0; }
+.martial-screen .form-card {
+  padding: 0.75rem; margin-bottom: 0.6rem; background: var(--bg-card);
+  border: 1px solid var(--pl-line); border-radius: min(var(--t-card-r, var(--radius-lg)), 22px);
+  box-shadow: var(--pl-shadow); -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.martial-screen .wiz-progress { margin-bottom: 0.6rem; }
+.martial-screen .wiz-dot { height: 4px; }
+.martial-screen .wiz-dot.active { transform: none; }
+.martial-screen .wiz-step-label-wrapper { margin-bottom: 0.6rem; }
+.martial-screen .wiz-step-label {
+  padding: 0.3rem 0.75rem; font-size: 0.74rem; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--pl-chip);
+  border-color: var(--pl-line);
+}
+.martial-screen .wiz-section-title { margin: 0.6rem 0 0.4rem; font-size: 0.78rem; }
+.martial-screen .wiz-chip-grid { gap: 0.35rem; margin-bottom: 0.6rem; }
+.martial-screen .wiz-chip {
+  min-height: 34px; padding: 0.3rem 0.75rem; border-width: 1px; border-color: var(--pl-line);
+  background: var(--pl-chip); color: var(--text-secondary); box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.martial-screen .wiz-chip.active {
+  background: var(--accent-ai); color: var(--pl-on-ai); border-color: transparent;
+  box-shadow: none; transform: none;
+}
+.martial-screen .wiz-chip.active::before { background: color-mix(in srgb, currentColor 22%, transparent); }
+.martial-screen .wiz-nav-row { margin-top: 0.8rem; gap: 0.4rem; }
+.martial-screen .wiz-btn { min-height: 42px; padding: 0.5rem; font-size: 0.82rem; }
+.martial-screen .wiz-btn-next { background: var(--accent-ai); color: var(--pl-on-ai); box-shadow: none; }
+.martial-screen .wiz-btn-back {
+  background: var(--pl-chip); color: var(--text-primary); border: 1px solid var(--pl-line) !important;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.martial-screen .wiz-consent { padding: 0.55rem 0.7rem; border-width: 1px; border-color: var(--pl-line); }
+/* نتيجة الحصة */
+.martial-screen .martial-result-card .mrc-header { margin-bottom: 0.4rem; }
+.martial-screen .martial-result-card .mrc-section h3 { margin: 0.6rem 0 0.25rem; }
+.martial-screen .mrc-linked { gap: 0.3rem; }
+.martial-screen .mrc-linked span {
+  font-size: 0.66rem; padding: 0.15rem 0.5rem; border-color: var(--pl-line);
+  background: var(--pl-chip); color: var(--text-secondary);
+}
+.martial-screen .mrc-actions { gap: 0.4rem; margin-top: 0.7rem; }
+.martial-screen .mrc-btn {
+  min-height: 40px; padding: 0.45rem; font-size: 0.78rem; border-width: 1px;
+  border-color: var(--pl-line); background: var(--pl-chip); color: var(--text-primary);
+}
+.martial-screen .mrc-btn.primary {
+  background: var(--accent-boxing); color: var(--pl-on-boxing); border: none;
+  box-shadow: 0 3px 10px -4px color-mix(in srgb, var(--accent-boxing) 70%, transparent);
+}
+</style>
+<style>
+/* [FIX] ✕ (ctExitBtn) must only exist while an inline timer is really in clean mode on a workout screen */
+body:not(.clean-timer-active) #ctExitBtn,
+body:not(:has(.workout-screen.active)) #ctExitBtn,
+body:not(:has(.timer-widget.clean-mode)) #ctExitBtn{display:none!important}
+/* [FIX] soft blur: background + the other cards while a timer is running (normal mode) */
+#bgCanvas{transition:filter .5s ease,opacity .5s ease}
+body.timer-running:not(.focus-mode) #bgCanvas{filter:blur(7px);opacity:.45!important}
+body:not(.focus-mode) .exercise-card{transition:filter .4s ease,opacity .4s ease}
+body.timer-running:not(.focus-mode) .exercise-card:not(.current){filter:blur(2.5px);opacity:.5}
+body.timer-running:not(.focus-mode) .exercise-card:not(.current):active{filter:none;opacity:1}
+@media (prefers-reduced-motion:reduce){#bgCanvas,body:not(.focus-mode) .exercise-card{transition:none}}
+</style>
+<script>
+/* [FIX] mark <body> while an inline timer is actually running */
+(function(){
+  function sync(){
+    try{
+      const t = (typeof activeTimerId!=='undefined' && activeTimerId) ? timers[activeTimerId] : null;
+      document.body.classList.toggle('timer-running', !!(t && t.running));
+    }catch(e){}
+  }
+  if (typeof PollGuard!=='undefined') PollGuard.register(sync,250); else setInterval(sync,250);
+})();
+</script>
+<style>
+/* [FIX] شريط التنقل السفلي: أكبر وأوضح (كان مضغوطاً جداً) */
+html body .bottom-nav{min-height:66px;bottom:.5rem;padding:.3rem .4rem}
+html body .bottom-nav .nav-indicator{top:.3rem;bottom:.3rem}
+html body .bottom-nav .bottom-nav-item{min-height:56px;padding:.4rem .2rem;gap:.15rem}
+html body .bottom-nav .bottom-nav-item .icon{font-size:1.35rem}
+html body .bottom-nav .bottom-nav-item .icon .ico,
+html body .bottom-nav #nav-martial .icon .ico,
+html body .bottom-nav #nav-martial .icon{width:1.5rem;height:1.5rem}
+html body .bottom-nav .bottom-nav-item .label{font-size:.74rem;font-weight:800;line-height:1.3}
+</style>
 </body>
 </html>
