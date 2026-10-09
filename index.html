@@ -4492,6 +4492,76 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
 .bb-restbar button { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 99px; min-width: 42px; height: 42px; padding: 0 0.7rem; font-family: inherit; font-weight: 800; font-size: 0.8rem; cursor: pointer; touch-action: manipulation; }
 .bb-restbar .bb-rest-x { background: #dc2626; color: #fff; border-color: #dc2626; font-size: 1rem; width: 42px; padding: 0; }
 .bb-muscles { font-size: 0.74rem; font-weight: 800; color: var(--accent-strength); margin: 0.25rem 0 0; line-height: 1.5; }
+
+/* ===== [نداء الكومبو المرقّم] ===== */
+.cn-chips { display:inline-flex; flex-wrap:wrap; gap:.28em; justify-content:center; align-items:center; direction:ltr; }
+.cn-chip { width:2.1em; height:2.1em; display:inline-block; transition: transform .12s ease, opacity .12s ease, filter .12s ease; }
+.cn-chip svg { width:100%; height:100%; display:block; }
+.cn-chips.live .cn-chip { opacity:.32; transform:scale(.86); }
+.cn-chips.live .cn-chip.done { opacity:.6; }
+.cn-chips.live .cn-chip.on { opacity:1; transform:scale(1.22); filter:drop-shadow(0 0 .35em rgba(255,255,255,.55)); }
+.cn-chips.sm { font-size:.62rem; gap:.22em; }
+.cn-sub { display:block; margin-top:.35rem; font-size:.34em; letter-spacing:.5px; opacity:.8; text-transform:none; font-weight:700; }
+.combo-chips-row { margin-top:.4rem; font-size:.78rem; }
+.combo-code { display:inline-block; font-weight:800; letter-spacing:1px; direction:ltr; color:var(--accent-boxing); margin-inline-start:.4rem; font-size:.78rem; }
+.num-legend { background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:.8rem; margin-bottom:.9rem; }
+.num-legend h3 { font-size:.9rem; margin:0 0 .5rem; }
+.num-legend-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.45rem; }
+.num-legend-item { display:flex; align-items:center; gap:.4rem; font-size:.74rem; color:var(--text-secondary); font-weight:700; }
+.num-legend-item .cn-chip { width:1.9rem; height:1.9rem; flex:none; }
+.hb-call-style { display:flex; gap:.4rem; margin:.7rem auto 0; max-width:420px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-full); padding:.25rem; }
+.hb-call-style button { flex:1; border:0; background:transparent; color:var(--text-secondary); font:inherit; font-size:.8rem; font-weight:800; padding:.45rem .6rem; border-radius:var(--radius-full); cursor:pointer; }
+.hb-call-style button.active { background:var(--gradient-boxing); color:#fff; }
+.hb-runner-round { font-size:1.15rem !important; font-weight:900 !important; padding:.5rem 1.2rem !important; letter-spacing:1.5px !important; }
+body.clean-timer-active .hb-runner-combo .cn-chips { font-size:.75em; }
+
+/* ===== [فحص الجاهزية + عدّل الحصة] ===== */
+.rdy-overlay { position:fixed; inset:0; z-index:999998; background:rgba(0,0,0,.72); display:flex; align-items:flex-end; justify-content:center; padding:0; backdrop-filter:blur(4px); }
+.rdy-sheet { width:100%; max-width:520px; background:var(--bg-card,#161616); color:var(--text-primary,#fff); border-radius:22px 22px 0 0; padding:1.1rem 1rem calc(1.1rem + env(safe-area-inset-bottom,0px)); border:1px solid var(--border-color,#333); max-height:92vh; overflow:auto; direction:rtl; }
+.rdy-sheet h3 { margin:0 0 .2rem; font-size:1.05rem; }
+.rdy-sheet .rdy-sub { font-size:.78rem; color:var(--text-secondary,#aaa); margin-bottom:.9rem; }
+.rdy-q { margin-bottom:.85rem; }
+.rdy-q-title { font-size:.85rem; font-weight:800; margin-bottom:.4rem; }
+.rdy-opts { display:grid; grid-template-columns:repeat(3,1fr); gap:.4rem; }
+.rdy-opt { border:1.5px solid var(--border-color,#333); background:transparent; color:inherit; font:inherit; font-size:.8rem; font-weight:700; padding:.65rem .3rem; border-radius:14px; cursor:pointer; }
+.rdy-opt.sel { background:var(--gradient-boxing,#dc2626); border-color:transparent; color:#fff; }
+.rdy-go { width:100%; margin-top:.3rem; border:0; padding:.85rem; border-radius:14px; font:inherit; font-weight:900; font-size:.95rem; color:#fff; background:var(--gradient-boxing,#dc2626); cursor:pointer; }
+.rdy-go:disabled { opacity:.4; }
+.rdy-skip { width:100%; margin-top:.4rem; background:transparent; border:0; color:var(--text-secondary,#aaa); font:inherit; font-size:.8rem; padding:.5rem; cursor:pointer; }
+.rdy-result { font-size:.8rem; margin:.5rem 0 .2rem; padding:.55rem .7rem; border-radius:12px; background:rgba(255,255,255,.06); min-height:2.2em; }
+.rdy-chip { display:inline-block; margin:.6rem auto 0; font-size:.76rem; font-weight:800; padding:.35rem .8rem; border-radius:999px; border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; }
+.adj-row { display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; margin:.7rem 0 .2rem; padding:.55rem; border-radius:14px; background:rgba(168,85,247,.08); border:1px dashed rgba(168,85,247,.45); }
+.adj-row .adj-title { font-size:.74rem; font-weight:900; margin-inline-end:.2rem; }
+.adj-row button { border:1px solid var(--border-color); background:var(--bg-card); color:inherit; font:inherit; font-size:.76rem; font-weight:800; padding:.38rem .7rem; border-radius:999px; cursor:pointer; }
+.adj-row button:disabled { opacity:.45; }
+.adj-row.busy::after { content:'⏳ جاري التعديل…'; font-size:.74rem; font-weight:800; width:100%; }
+
+/* ===== [وضع الهاتف على الأرض] ===== */
+#floorBtn { display:none; position:fixed; z-index:100001; top:30%; right:8px; left:auto; width:48px; height:48px; padding:0; border-radius:50%; align-items:center; justify-content:center; font-size:1.3rem; line-height:1; border:1.5px solid color-mix(in srgb, var(--accent-info,#38bdf8) 55%, transparent); background:linear-gradient(135deg, color-mix(in srgb, var(--accent-info,#38bdf8) 22%, transparent), color-mix(in srgb, var(--bg-elevated,#111) 92%, transparent)); color:#fff; box-shadow:0 4px 14px rgba(0,0,0,.4); cursor:pointer; opacity:.92; touch-action:none; user-select:none; -webkit-user-select:none; backdrop-filter:blur(6px); }
+body:has(.hb-runner.active) #floorBtn, body:has(.cw-runner.active) #floorBtn { display:flex; }
+body.floor-mode #floorBtn, body.floor-mode #ctExitBtn, body.floor-mode .coach-fab, body.floor-mode .runner-switcher-btn, body.floor-mode .runner-switcher-menu { display:none !important; }
+body.floor-mode .hb-runner.active, body.floor-mode .cw-runner.active { background: color-mix(in srgb, var(--ct-accent, #7f1d1d) 42%, #000) !important; justify-content:center !important; gap:1.2vh; user-select:none; -webkit-user-select:none; }
+body.floor-mode .hb-runner-bottom, body.floor-mode .cw-runner-bottom, body.floor-mode .ct-round-dashes, body.floor-mode .hb-runner-next, body.floor-mode .cw-runner-next, body.floor-mode .ct-ring-svg, body.floor-mode .ct-share-btn, body.floor-mode .ct-icon-group, body.floor-mode .cw-runner-top > :not(.cw-runner-progress), body.floor-mode .cw-runner-confetti { display:none !important; }
+body.floor-mode .hb-runner-top, body.floor-mode .cw-runner-top { justify-content:center !important; position:static !important; }
+body.floor-mode .hb-runner-round, body.floor-mode .cw-runner-progress { font-size:clamp(2rem,11vw,4rem) !important; font-weight:900 !important; background:none !important; border:0 !important; color:#fff !important; letter-spacing:2px !important; padding:0 !important; }
+body.floor-mode .hb-runner-phase, body.floor-mode .cw-runner-phase { font-size:clamp(1.6rem,9vw,3.2rem) !important; letter-spacing:6px !important; color:#fff !important; animation:none !important; }
+body.floor-mode .hb-runner-combo, body.floor-mode .cw-runner-combo { font-size:clamp(1.6rem,9vw,3.4rem) !important; opacity:1 !important; color:#fff !important; }
+body.floor-mode .hb-runner-combo .cn-chips { font-size:1.15em; }
+body.floor-mode .ct-ring-wrap { width:100vw !important; height:auto !important; }
+body.floor-mode .hb-runner-timer, body.floor-mode .cw-runner-timer { position:static !important; transform:none !important; font-size:min(50vw,40vh) !important; line-height:1 !important; color:#fff !important; animation:none !important; text-shadow:0 0 .12em rgba(0,0,0,.35); font-variant-numeric:tabular-nums; }
+body.floor-mode .hb-runner-timer.urgent, body.floor-mode .cw-runner-timer.urgent { animation:pulseUrgent .6s ease-in-out infinite alternate !important; }
+#floorCtl { display:none; position:fixed; inset:auto 0 calc(2rem + env(safe-area-inset-bottom,0px)) 0; z-index:100002; justify-content:center; gap:1rem; pointer-events:none; }
+body.floor-mode #floorCtl.show { display:flex; }
+#floorCtl button { pointer-events:auto; border:2px solid rgba(255,255,255,.5); background:rgba(0,0,0,.65); color:#fff; font:inherit; font-size:1rem; font-weight:900; padding:.9rem 1.4rem; border-radius:999px; cursor:pointer; }
+#floorHint { display:none; position:fixed; z-index:100002; top:calc(.8rem + env(safe-area-inset-top,0px)); left:0; right:0; text-align:center; color:rgba(255,255,255,.75); font-size:.8rem; font-weight:700; pointer-events:none; }
+body.floor-mode #floorHint.show { display:block; }
+
+/* ===== [وضع صوت فقط] ===== */
+.hb-runner.audio-only { background:#000 !important; }
+.hb-runner.audio-only .ct-ring-svg, .hb-runner.audio-only .ct-round-dashes, .hb-runner.audio-only .hb-runner-next { opacity:.25; }
+.hb-runner.audio-only .hb-runner-timer { font-size:clamp(2.6rem,13vw,4.8rem) !important; opacity:.4; animation:none !important; }
+.hb-runner.audio-only .hb-runner-combo { font-size:2.2rem !important; opacity:.35; text-shadow:none !important; }
+.hb-audio-lv-title { text-align:center; font-size:.74rem; font-weight:800; color:var(--text-secondary); margin-top:.7rem; }
 </style>
  </head>
  <body>
@@ -4838,6 +4908,10 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
       <div class="heavybag-header">
        <h1><svg class="ico"><use href="#ico-briefcase"/></svg> مدرب الكيس الثقيل</h1>
        <p>6 بروتوكولات احترافية مع جولات صوتية كاملة</p>
+       <div class="hb-call-style" id="hbCallStyle"><button data-style="numbered" onclick="setHbCallStyle('numbered')">🔢 نداء مرقّم (1، 2، 3…)</button><button data-style="names" onclick="setHbCallStyle('names')">🗣️ بأسماء الضربات</button></div>
+       <div style="text-align:center"><span class="rdy-chip" id="readyChip" onclick="openReadiness(true)"></span></div>
+       <div class="hb-audio-lv-title">🎧 مستوى جلسة «صوت فقط»</div>
+       <div class="hb-call-style" id="hbAudioLevel" style="margin-top:.3rem"><button data-lv="مبتدئ" onclick="setHbAudioLevel('مبتدئ')">مبتدئ</button><button data-lv="متوسط" onclick="setHbAudioLevel('متوسط')">متوسط</button><button data-lv="متقدم" onclick="setHbAudioLevel('متقدم')">متقدم</button></div>
       </div>
       <div id="heavybagProtocolsGrid"></div>
      </div>
@@ -5614,11 +5688,12 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
     </div>
     <!-- صفحة البيانات -->
     <div class="settings-page" data-page="data">
+     <div id="backupInfo" style="padding:.7rem 1rem;font-size:.8rem;font-weight:800;color:var(--text-secondary);"></div>
      <div class="settings-item" onclick="exportData()">
       <div class="item-info">
        <span class="item-icon"><svg class="ico"><use href="#ico-upload"/></svg></span>
        <div class="item-text">
-        <span class="item-title">تصدير البيانات</span><span class="item-desc">نسخة احتياطية JSON</span>
+        <span class="item-title">تصدير البيانات</span><span class="item-desc">سجل المدرب + الحصص المحفوظة + حصص AI (JSON)</span>
        </div>
       </div>
      </div>
@@ -5818,6 +5893,9 @@ body[data-theme="light"] .day-card .diff-badge, body[data-theme="frost"] .day-ca
    </div>
    <div class="cw-runner-confetti" id="cwConfetti"></div>
   </div>
+<button id="floorBtn" type="button" aria-label="وضع الهاتف على الأرض" title="وضع الهاتف على الأرض — اسحبه لتحريكه">📱</button>
+<div id="floorHint">المس الشاشة لإظهار التحكم</div>
+<div id="floorCtl"><button onclick="floorTogglePause()">⏯ إيقاف / استئناف</button><button onclick="exitFloorMode()">⤴ خروج</button></div>
   <div class="hb-runner" id="hbRunner">
    <div class="ct-round-dashes" id="hbRunnerDashes"></div>
    <div class="hb-runner-top">
@@ -6922,6 +7000,472 @@ const HEAVY_BAG_PROTOCOLS = [
     combos: ['جاب + كروس + هوك + كروس', 'جاب + كروس + مراوغة + هوك', 'هوك + أبركوت + كروس', 'جاب + كروس + هوك + أبركوت']
   }
 ];
+
+/* ============================================================
+   🔢 نظام ترقيم الكومبو + نداء المدرب (1 جاب، 2 كروس، 3 هوك أمامية، 4 هوك خلفية، 5 أبركوت أمامية، 6 أبركوت خلفية)
+   ============================================================ */
+
+/* ============================================================
+   🩺 فحص الجاهزية قبل الحصة (نوم · ألم عضلات · طاقة) — يُسأل مرة يومياً
+   ============================================================ */
+const RDY_Q = [
+  { k: 'sleep', t: '😴 كيف كان نومك؟', o: [['bad', 'سيئ'], ['ok', 'عادي'], ['good', 'جيد']] },
+  { k: 'sore', t: '💥 ألم العضلات', o: [['severe', 'شديد'], ['mild', 'خفيف'], ['none', 'لا يوجد']] },
+  { k: 'energy', t: '⚡ مستوى الطاقة', o: [['low', 'منخفضة'], ['mid', 'متوسطة'], ['high', 'عالية']] }
+];
+const RDY_PTS = { bad: 0, ok: 1, good: 2, severe: 0, mild: 1, none: 2, low: 0, mid: 1, high: 2 };
+function rdyToday() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function rdyCompute(a) {
+  const score = (RDY_PTS[a.sleep] || 0) + (RDY_PTS[a.sore] || 0) + (RDY_PTS[a.energy] || 0);
+  let mode = 'normal';
+  if (score <= 2 || a.sore === 'severe') mode = 'light'; else if (score >= 5) mode = 'push';
+  return { score: score, mode: mode };
+}
+function getReadiness() {
+  const r = safeParse('readinessToday', null);
+  return (r && r.date === rdyToday() && r.mode) ? r : null;
+}
+function rdyModeText(m) {
+  return m === 'light' ? '🟡 جسمك يحتاج حصة أخف: راحة أطول وكومبوهات أقصر'
+    : m === 'push' ? '🟢 جاهزيتك ممتازة: راحة أقل وكومبوهات أطول'
+    : '🔵 جاهزية عادية: نكمل بالشدة المقررة';
+}
+function rdySave(a) {
+  const c = rdyCompute(a);
+  const rec = { date: rdyToday(), sleep: a.sleep, sore: a.sore, energy: a.energy, score: c.score, mode: c.mode };
+  safeSet('readinessToday', rec);
+  const log = safeParse('readinessLog', []).filter(x => x && x.date !== rec.date); log.push(rec);
+  safeSet('readinessLog', log.slice(-30));
+  return rec;
+}
+function renderReadyChip() {
+  const el = document.getElementById('readyChip'); if (!el) return;
+  const r = getReadiness();
+  el.textContent = r ? ('🩺 جاهزيتي اليوم: ' + (r.mode === 'light' ? 'خفيفة 🟡' : r.mode === 'push' ? 'عالية 🟢' : 'عادية 🔵') + ' · تعديل') : '🩺 فحص الجاهزية قبل الحصة';
+}
+/* force=true: يفتح النافذة حتى لو أُجيب اليوم. cb يُنفّذ بعد الحفظ أو التخطّي */
+function openReadiness(force, cb) {
+  if (!force && getReadiness()) { if (cb) cb(); return; }
+  const old = document.getElementById('rdyOverlay'); if (old) old.remove();
+  const ans = {}; const prev = getReadiness(); if (prev) { ans.sleep = prev.sleep; ans.sore = prev.sore; ans.energy = prev.energy; }
+  const ov = document.createElement('div'); ov.className = 'rdy-overlay'; ov.id = 'rdyOverlay';
+  ov.innerHTML = '<div class="rdy-sheet" role="dialog" aria-modal="true"><h3>🩺 جاهزيتك اليوم</h3><div class="rdy-sub">ثلاث نقرات فقط — نضبط الشدة على حالتك الفعلية</div>' +
+    RDY_Q.map(q => '<div class="rdy-q"><div class="rdy-q-title">' + q.t + '</div><div class="rdy-opts">' + q.o.map(o => '<button class="rdy-opt" data-k="' + q.k + '" data-v="' + o[0] + '">' + o[1] + '</button>').join('') + '</div></div>').join('') +
+    '<div class="rdy-result" id="rdyResult">اختر إجابة لكل سؤال</div><button class="rdy-go" id="rdyGo" disabled>ابدأ الحصة</button><button class="rdy-skip" id="rdySkip">تخطّي هذه المرة</button></div>';
+  document.body.appendChild(ov);
+  const sync = () => {
+    ov.querySelectorAll('.rdy-opt').forEach(b => b.classList.toggle('sel', ans[b.dataset.k] === b.dataset.v));
+    const done = ans.sleep && ans.sore && ans.energy;
+    document.getElementById('rdyGo').disabled = !done;
+    document.getElementById('rdyResult').textContent = done ? rdyModeText(rdyCompute(ans).mode) : 'اختر إجابة لكل سؤال';
+  };
+  ov.querySelectorAll('.rdy-opt').forEach(b => b.onclick = () => { playClick(); haptic('light'); ans[b.dataset.k] = b.dataset.v; sync(); });
+  const close = () => { ov.remove(); };
+  document.getElementById('rdyGo').onclick = () => { playClick(); haptic('medium'); const r = rdySave(ans); close(); renderReadyChip(); showInAppNotification('🩺', rdyModeText(r.mode)); if (cb) cb(); };
+  document.getElementById('rdySkip').onclick = () => { playClick(); close(); if (cb) cb(); };
+  sync();
+}
+function withReadiness(cb) { openReadiness(false, cb); }
+/* تطبيق الجاهزية على بروتوكول الكيس: نسخة معدّلة لا تمسّ الأصل */
+function hbApplyReadiness(p) {
+  if (p.audioOnly) {
+    const lv = safeGet('hbAudioLevel', 'متوسط');
+    const base = HEAVY_BAG_PROTOCOLS.find(x => !x.audioOnly && x.level === lv && ['beginner', 'intermediate', 'advanced'].indexOf(x.id) >= 0);
+    if (base) p = Object.assign({}, p, { level: lv, rounds: base.rounds, work: base.work, rest: base.rest, combos: base.combos });
+  }
+  const r = getReadiness(); if (!r || r.mode === 'normal') return p;
+  const q = Object.assign({}, p);
+  const k = r.mode === 'light' ? 1.35 : 0.8;
+  q.rest = Math.max(15, Math.round(p.rest * k / 5) * 5);
+  q.capShift = r.mode === 'light' ? -1 : 1;
+  return q;
+}
+function programApplyReadiness(exercises) {
+  const r = getReadiness(); if (!r || r.mode === 'normal') return;
+  const k = r.mode === 'light' ? 1.25 : 0.85;
+  exercises.forEach(e => { if (e.restAfter) e.restAfter = Math.max(20, Math.round(e.restAfter * k)); if (e.rest) e.rest = Math.max(10, Math.round(e.rest * k)); });
+}
+
+/* ============================================================
+   ✨ «عدّل الحصة» بنقرة على نتيجة AI — يُرسل الحصة الحالية للنموذج فلا يبدأ من الصفر
+   ============================================================ */
+const ADJ_KINDS = {
+  harder: { label: '🔥 أصعب', ins: 'ارفع الشدة قليلاً: زد مجموعة أو قلّل الراحة 10-20% أو استبدل بعض التمارين بنسخ أصعب منها، دون أن تتجاوز مدة الحصة المحددة بأكثر من 10%.' },
+  shorter: { label: '⏱️ أقصر', ins: 'اختصر الحصة إلى نحو 65% من مدتها الحالية: احذف أقل التمارين أهمية وقلّل المجموعات، وأبقِ الإحماء والتهدئة قصيرين.' },
+  nojump: { label: '🚫 بلا قفز', ins: 'احذف كل تمرين فيه قفز أو بليومتري أو نط (Jump, Burpee, Skipping, Tuck, Star, Skater, Broad, Jacks) واستبدله بتمرين منخفض الصدمات يستهدف نفس العضلات والغرض.' },
+  kicks: { label: '🦶 أكثر ركلات', ins: 'أكثر من الركلات: أضف أو استبدل بتمارين ركلات (أمامية، دائرية، منخفضة، على الكيس أو شادو) مع تمارين تقوية الورك والجذع الداعمة لها، دون إلغاء هدف الحصة.' }
+};
+let aiDayUndo = {}, aiAdjBusy = false;
+function adjustRowHTML(i) {
+  const u = aiDayUndo[i] ? `<button onclick="aiUndoDay(${i})">↩️ تراجع</button>` : '';
+  return `<div class="adj-row" id="adj-${i}"><span class="adj-title">✨ عدّل الحصة</span>` +
+    Object.keys(ADJ_KINDS).map(k => `<button onclick="aiAdjustDay(${i},'${k}')">${ADJ_KINDS[k].label}</button>`).join('') + u + `</div>`;
+}
+function adjRerender(i) {
+  renderSportPlan(aiDeepEscape(programData).sportPlan);
+  const c = document.getElementById('wd-' + i); if (c) c.classList.add('open');
+}
+async function aiAdjustDay(i, kind) {
+  if (aiAdjBusy || !programData || !programData.sportPlan || !ADJ_KINDS[kind]) return;
+  const day = programData.sportPlan.days[i]; if (!day) return;
+  playClick(); haptic('medium');
+  if (!navigator.onLine) { showInAppNotification('📡', 'لا يوجد إنترنت — التعديل يحتاج الذكاء الاصطناعي'); return; }
+  if (!hasAnyAIKey()) { showInAppNotification('🔑', 'أدخل مفتاح Groq أو OpenRouter من الإعدادات'); openSettings(); return; }
+  aiAdjBusy = true;
+  const row = document.getElementById('adj-' + i); if (row) { row.classList.add('busy'); row.querySelectorAll('button').forEach(b => b.disabled = true); }
+  try {
+    const frm = programData.form || {}; const rd = getReadiness();
+    const dur = day.duration || frm.duration || 45;
+    const ctx = [
+      'مدة الحصة الأصلية: ' + dur + ' دقيقة',
+      frm.injuries && frm.injuries.length ? 'إصابات يجب تجنّب إجهادها: ' + frm.injuries.join(', ') : '',
+      frm.equipment && frm.equipment.length ? 'الأجهزة المتاحة فقط: ' + frm.equipment.join(', ') : 'لا أجهزة (وزن الجسم) ما لم تكن مذكورة في الحصة',
+      rd ? 'جاهزية المتدرب اليوم: نوم=' + rd.sleep + '، ألم=' + rd.sore + '، طاقة=' + rd.energy : ''
+    ].filter(Boolean).join('\n');
+    const prompt = `هذه حصة تدريب حالية بصيغة JSON:\n${JSON.stringify(day).slice(0, 6000)}\n\n${ctx}\n\nالتعديل المطلوب: ${ADJ_KINDS[kind].ins}\n\nعدّل هذه الحصة نفسها (لا تبدأ من الصفر وأبقِ ما لا يتعارض مع التعديل). أرجع JSON فقط بهذا الشكل: {"day": { "dayName":"", "focus":"", "duration":${dur}, "warmup":[{"name":"","duration":"","nameEn":""}], "exercises":[{"name":"","nameEn":"","sets":3,"reps":"","rest":"60 ثانية","weight":"","notes":""}], "cooldown":[{"name":"","duration":"","nameEn":""}] } }`;
+    const chain = await aiGetModelChain();
+    const out = await aiRunModelChain(getOpenRouterKey(), [{ role: 'system', content: 'أنت مدرب رياضي معتمد. أرجع JSON فقط بدون أي نص إضافي.' }, { role: 'user', content: prompt }], {
+      models: chain, temperature: 0.3, max_tokens: 3500,
+      validate: p => { if (!p || !p.day || !Array.isArray(p.day.exercises) || !p.day.exercises.length) throw aiErr('badjson', 'الرد لا يحتوي حصة صالحة'); }
+    });
+    const f = { days: [day.dayName || ''], duration: dur };
+    const norm = aiNormalizeSport({ sportPlan: { days: [out.parsed.day] } }, f);
+    const nd = norm.sportPlan.days[0];
+    nd.dayNumber = day.dayNumber; nd.dayName = day.dayName; nd.focus = nd.focus || day.focus; nd.duration = dur;
+    try { autoFixSportPlan({ days: [nd] }, { days: f.days, duration: Math.max(dur, Math.ceil(sessionMinutes(nd)) + 1) }); } catch (e) {}
+    aiDayUndo[i] = day;
+    programData.sportPlan.days[i] = nd;
+    safeSet('myProgramData', programData);
+    adjRerender(i);
+    playFinish(); haptic('complete');
+    showInAppNotification('✅', 'تم تعديل الحصة: ' + ADJ_KINDS[kind].label);
+  } catch (e) {
+    console.error('[adjust day]', e);
+    showInAppNotification('❌', 'تعذّر التعديل: ' + String((e && e.message) || e).substring(0, 120));
+    const r2 = document.getElementById('adj-' + i); if (r2) { r2.classList.remove('busy'); r2.querySelectorAll('button').forEach(b => b.disabled = false); }
+  } finally { aiAdjBusy = false; }
+}
+function aiUndoDay(i) {
+  const prev = aiDayUndo[i]; if (!prev || !programData) return;
+  playClick(); haptic('light');
+  programData.sportPlan.days[i] = prev; delete aiDayUndo[i];
+  safeSet('myProgramData', programData); adjRerender(i);
+  showInAppNotification('↩️', 'عادت الحصة لنسختها السابقة');
+}
+
+
+/* ============================================================
+   📱 وضع «الهاتف على الأرض»: مؤقت ضخم يُقرأ من بعيد، لون الخلفية بحسب المرحلة، وإخفاء كل ما سواه
+   ============================================================ */
+let floorCtlTimer = null, floorWatch = null;
+function floorRunnerKind() {
+  const on = id => { const e = document.getElementById(id); return !!(e && e.classList.contains('active')); };
+  if (on('hbRunner')) return 'hb';
+  if (on('frRunner')) return 'fr';
+  if (on('customRunner')) return (typeof currentActiveRunner !== 'undefined' && currentActiveRunner === 'program') ? 'program' : 'custom';
+  return null;
+}
+function enterFloorMode() {
+  if (!floorRunnerKind()) return;
+  playClick(); haptic('medium');
+  document.body.classList.add('floor-mode');
+  const h = document.getElementById('floorHint'); if (h) { h.classList.add('show'); setTimeout(() => h.classList.remove('show'), 3500); }
+  clearInterval(floorWatch);
+  floorWatch = setInterval(() => { if (!floorRunnerKind()) exitFloorMode(true); }, 700);
+}
+function exitFloorMode(silent) {
+  document.body.classList.remove('floor-mode');
+  clearInterval(floorWatch); floorWatch = null; clearTimeout(floorCtlTimer);
+  const c = document.getElementById('floorCtl'); if (c) c.classList.remove('show');
+  if (silent !== true) { playClick(); haptic('light'); }
+}
+function floorTogglePause() {
+  haptic('medium');
+  const k = floorRunnerKind();
+  try {
+    if (k === 'hb') toggleHeavyBagPause();
+    else if (k === 'fr') toggleFrPause();
+    else if (k === 'program') toggleProgramPause();
+    else if (k === 'custom') toggleCustomPause();
+  } catch (e) { console.warn('[floor pause]', e); }
+  floorShowCtl();
+}
+function floorShowCtl() {
+  const c = document.getElementById('floorCtl'); if (!c) return;
+  c.classList.add('show'); clearTimeout(floorCtlTimer);
+  floorCtlTimer = setTimeout(() => c.classList.remove('show'), 3500);
+}
+
+/* زر وضع الأرض العائم: قابل للسحب (موضع محفوظ مستقل) ونقرة مزدوجة لإعادته */
+let _floorMoved = false;
+function floorFabLoad() { try { const q = JSON.parse(localStorage.getItem('floorFabPos') || 'null'); if (q && (q.side === 'l' || q.side === 'r') && q.y > 0 && q.y < 1) return q; } catch (e) {} return { side: 'r', y: 0.3 }; }
+function floorFabInit() {
+  const b = document.getElementById('floorBtn'); if (!b) return;
+  let pos = floorFabLoad(), sx = 0, sy = 0, ox = 0, oy = 0, drag = false, id = null;
+  tsFabPlace(b, pos.side, pos.y, false);
+  b.addEventListener('click', e => { if (_floorMoved) { _floorMoved = false; e.preventDefault(); return; } enterFloorMode(); });
+  b.addEventListener('pointerdown', e => {
+    id = e.pointerId; sx = e.clientX; sy = e.clientY; const r = b.getBoundingClientRect(); ox = r.left; oy = r.top; drag = false;
+    try { b.setPointerCapture(id); } catch (x) {}
+  });
+  b.addEventListener('pointermove', e => {
+    if (id !== e.pointerId) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (!drag && Math.hypot(dx, dy) < 8) return;
+    drag = true; _floorMoved = true;
+    const w = b.offsetWidth || 48, h = b.offsetHeight || 48;
+    const x = Math.max(4, Math.min(window.innerWidth - w - 4, ox + dx)), y = Math.max(8, Math.min(window.innerHeight - h - 8, oy + dy));
+    b.style.transition = 'none';
+    b.style.setProperty('left', x + 'px', 'important'); b.style.setProperty('right', 'auto', 'important');
+    b.style.setProperty('top', y + 'px', 'important'); b.style.setProperty('bottom', 'auto', 'important');
+    e.preventDefault();
+  });
+  const end = e => {
+    if (id !== e.pointerId) return; id = null;
+    try { b.releasePointerCapture(e.pointerId); } catch (x) {}
+    if (!drag) { _floorMoved = false; return; }
+    const r = b.getBoundingClientRect();
+    pos = { side: (r.left + r.width / 2) < window.innerWidth / 2 ? 'l' : 'r', y: (r.top + r.height / 2) / window.innerHeight };
+    try { localStorage.setItem('floorFabPos', JSON.stringify(pos)); } catch (x) {}
+    tsFabPlace(b, pos.side, pos.y, true);
+    try { haptic('light'); } catch (x) {}
+    setTimeout(() => { _floorMoved = false; }, 60);
+  };
+  b.addEventListener('pointerup', end); b.addEventListener('pointercancel', end);
+  b.addEventListener('dblclick', e => { e.preventDefault(); pos = { side: 'r', y: 0.3 }; try { localStorage.removeItem('floorFabPos'); } catch (x) {} tsFabPlace(b, pos.side, pos.y, true); });
+  window.addEventListener('resize', () => tsFabPlace(b, pos.side, pos.y, false));
+}
+setTimeout(() => { try { floorFabInit(); } catch (e) { console.warn('floorFabInit', e); } }, 0);
+document.addEventListener('click', e => {
+  if (!document.body.classList.contains('floor-mode')) return;
+  if (e.target.closest && e.target.closest('#floorCtl')) return;
+  floorShowCtl();
+}, true);
+
+
+/* ============================================================
+   🎧 وضع «صوت فقط»: شادو بوكسينغ بنداءات عشوائية مرقّمة دون النظر للشاشة
+   ============================================================ */
+HEAVY_BAG_PROTOCOLS.push({
+  id: 'audio', icon: '🎧', title: 'صوت فقط', desc: 'شادو بوكسينغ بنداءات عشوائية — لا تنظر للشاشة',
+  rounds: 4, work: 180, rest: 60, level: 'متوسط', audioOnly: true,
+  combos: ['جاب + كروس', 'جاب + كروس + هوك', 'جاب + جاب + كروس', 'جاب + كروس + هوك + كروس']
+});
+let hbAudioPrevTts = null;
+function hbEnterAudioMode(pr) {
+  const el = document.getElementById('hbRunner'); if (el) el.classList.toggle('audio-only', !!(pr && pr.audioOnly));
+  if (!pr || !pr.audioOnly) return;
+  if (soundMuted) showInAppNotification('🔇', 'الصوت مكتوم — ألغِ الكتم لسماع النداءات');
+  if (!ttsEnabled) { hbAudioPrevTts = false; ttsEnabled = true; showInAppNotification('🎧', 'فُعّل صوت المدرب لهذه الجلسة فقط'); }
+}
+function hbLeaveAudioMode() {
+  const el = document.getElementById('hbRunner'); if (el) el.classList.remove('audio-only');
+  if (hbAudioPrevTts === false) { ttsEnabled = false; hbAudioPrevTts = null; }
+}
+function setHbAudioLevel(lv) { playClick(); haptic('light'); safeSet('hbAudioLevel', lv); renderHbAudioLevel(); }
+function renderHbAudioLevel() {
+  const lv = safeGet('hbAudioLevel', 'متوسط');
+  document.querySelectorAll('#hbAudioLevel button').forEach(b => b.classList.toggle('active', b.dataset.lv === lv));
+}
+function hbAudioLoop(myLoopId) {
+  const comboEl = document.getElementById('hbRunnerCombo');
+  if (comboEl) { comboEl.textContent = '🎧'; comboEl.classList.remove('muted'); }
+  const vi = cnVoice(), ar = !!(vi && vi.arabic);
+  const CUES = ar ? ['حرس مرفوع', 'تحرّك', 'مراوغة', 'ارجع للحرس', 'حرّك قدميك', 'تنفّس'] : ['Guard up', 'Move', 'Slip', 'Reset', 'Footwork', 'Breathe'];
+  const rnd = n => Math.floor(Math.random() * n);
+  const alive = () => myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work';
+  let last = '';
+  const later = (fn, ms) => hbRunnerState.comboTimers.push(setTimeout(fn, ms));
+  function callOne() {
+    if (!alive()) return;
+    let text, est;
+    if (Math.random() < 0.15) { text = CUES[rnd(CUES.length)]; est = 1200; }
+    else {
+      const pool = hbPoolForRound(); let c = pool[rnd(pool.length)];
+      for (let k = 0; k < 4 && c === last && pool.length > 1; k++) c = pool[rnd(pool.length)];
+      last = c;
+      const tk = comboTokens(c);
+      text = tk.map(t => ar ? t.say : t.sayEn).join(ar ? '، ' : ', '); est = tk.length * 650 + 300;
+    }
+    try { playMoveTone(getMoveTone('جاب')); } catch (e) {}
+    let fired = false;
+    const after = () => { if (fired) return; fired = true; if (alive()) later(callOne, 1100 + Math.random() * 2200); };
+    if (vi && ttsEnabled && !soundMuted && 'speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.voice = vi.voice; u.lang = vi.lang; u.volume = voiceVolume; u.rate = 1.05;
+        u.onend = after; u.onerror = after;
+        window.speechSynthesis.speak(u);
+      } catch (e) { after(); }
+      later(after, est + 2500);
+    } else later(after, est);
+  }
+  later(callOne, 600);
+}
+
+const CN_AR = ['', 'واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة'];
+const CN_EN = ['', 'one', 'two', 'three', 'four', 'five', 'six'];
+const CN_LEGEND = [
+  { n: 1, ar: 'جاب' }, { n: 2, ar: 'كروس' }, { n: 3, ar: 'هوك أمامية' },
+  { n: 4, ar: 'هوك خلفية' }, { n: 5, ar: 'أبركوت أمامية' }, { n: 6, ar: 'أبركوت خلفية' }
+];
+const CN_COLORS = { 1: '#3b82f6', 2: '#dc2626', 3: '#f97316', 4: '#ea580c', 5: '#a855f7', 6: '#7c3aed', kick: '#16a34a', knee: '#0d9488', elbow: '#ca8a04', def: '#64748b', other: '#475569' };
+function comboTokens(ar) {
+  return String(ar || '').split('+').map(s => s.trim()).filter(Boolean).map(m => {
+    const body = /جسم|كبد|بودي/.test(m);
+    const en = (typeof getMoveEnglishName === 'function') ? getMoveEnglishName(m) : m;
+    let n = 0, kind = 'other', glyph = '•';
+    if (m.includes('ركلة') || m.includes('ركل')) { kind = 'kick'; glyph = '🦶'; }
+    else if (m.includes('ركبة')) { kind = 'knee'; glyph = '🦵'; }
+    else if (m.includes('كوع')) { kind = 'elbow'; glyph = '💪'; }
+    else if (/مراوغة|رول|خداع|دوران|تراجع|انحناء|حرس|بلوك|صد|تفادي|خطوة|ظل/.test(m)) { kind = 'def'; glyph = '🛡'; }
+    else if (m.includes('أبركوت')) { n = m.includes('خلفية') ? 6 : 5; }
+    else if (m.includes('هوك')) { n = m.includes('خلفية') ? 4 : 3; }
+    else if (m.includes('كروس')) { n = 2; }
+    else if (m.includes('جاب')) { n = 1; }
+    if (n) { kind = 'punch'; glyph = String(n); }
+    const say = n ? CN_AR[n] + (body ? ' جسم' : '') : m;
+    const sayEn = n ? CN_EN[n] + (body ? ' body' : '') : en;
+    return { raw: m, n, kind, glyph, body, say, sayEn, en };
+  });
+}
+function comboCode(tokens) { return tokens.map(t => t.n ? t.n + (t.body ? 'b' : '') : (t.kind === 'kick' ? 'K' : t.kind === 'knee' ? 'N' : t.kind === 'elbow' ? 'E' : '·')).join('-'); }
+function comboChipSVG(t) {
+  const col = t.n ? CN_COLORS[t.n] : (CN_COLORS[t.kind] || CN_COLORS.other);
+  const inner = t.n
+    ? `<text x="20" y="27" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" font-family="Cairo,Arial,sans-serif">${t.n}</text>`
+    : `<text x="20" y="26" text-anchor="middle" font-size="18" font-family="Arial,sans-serif">${t.glyph}</text>`;
+  const bodyMark = t.body ? `<rect x="6" y="34" width="28" height="3" rx="1.5" fill="#fff" opacity=".85"/>` : '';
+  const hook = (t.n === 3 || t.n === 4) ? `<path d="M7 14 Q20 2 33 14" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55"/>` : '';
+  const upper = (t.n === 5 || t.n === 6) ? `<path d="M12 12 L20 4 L28 12" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55"/>` : '';
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="${col}"/>${hook}${upper}${inner}${bodyMark}</svg>`;
+}
+function comboChipsHTML(tokens, cls) {
+  return `<span class="cn-chips ${cls || ''}">` + tokens.map((t, i) => `<span class="cn-chip" data-i="${i}" title="${escapeHTML(t.raw)}">${comboChipSVG(t)}</span>`).join('') + `</span>`;
+}
+function cnSetActive(container, idx) {
+  if (!container) return;
+  const chips = container.querySelectorAll('.cn-chip');
+  chips.forEach((c, i) => { c.classList.toggle('on', i === idx); c.classList.toggle('done', i < idx); });
+}
+function hbCallStyle() { return safeGet('hbCallStyle', 'numbered') === 'names' ? 'names' : 'numbered'; }
+function setHbCallStyle(v) {
+  playClick(); haptic('light');
+  safeSet('hbCallStyle', v === 'names' ? 'names' : 'numbered');
+  renderHbCallStyle();
+}
+function renderHbCallStyle() {
+  const s = hbCallStyle();
+  document.querySelectorAll('#hbCallStyle button').forEach(b => b.classList.toggle('active', b.dataset.style === s));
+  renderReadyChip(); renderHbAudioLevel();
+}
+/* صوت النداء: عربي إن وُجد، وإلا إنجليزي */
+function cnVoice() {
+  try {
+    const ar = getBestVoice('ar-SA');
+    if (ar && ar.voice && String(ar.actualLang).toLowerCase().startsWith('ar')) return { voice: ar.voice, lang: ar.actualLang, arabic: true };
+    const en = getBestVoice('en-US');
+    if (en && en.voice) return { voice: en.voice, lang: 'en-US', arabic: false };
+  } catch (e) {}
+  return null;
+}
+function cnSay(text, vi, rate) {
+  if (!vi || !ttsEnabled || soundMuted || !('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.voice = vi.voice; u.lang = vi.lang; u.volume = voiceVolume; u.rate = rate || 1.1;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function hbWarn10(kind) {
+  const vi = cnVoice();
+  if (!vi || !ttsEnabled || soundMuted) return;
+  const txt = vi.arabic ? (kind === 'rest' ? 'الجولة تبدأ بعد عشر ثوان' : 'عشر ثوان') : (kind === 'rest' ? 'Ten seconds to the next round' : 'Ten seconds');
+  cnSay(txt, vi, 1.0);
+}
+/* معاينة كومبو من المكتبة: نداء مرقّم مع إضاءة البطاقات */
+let cnPreviewTimers = [], cnPreviewId = 0;
+function previewComboCall(card, ar) {
+  playClick(); haptic('light');
+  cnPreviewTimers.forEach(clearTimeout); cnPreviewTimers = [];
+  const myId = ++cnPreviewId;
+  try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+  document.querySelectorAll('.combo-card .cn-chips.live').forEach(c => { c.classList.remove('live'); cnSetActive(c, -1); });
+  const tokens = comboTokens(ar);
+  const box = card && card.querySelector('.cn-chips');
+  if (box) box.classList.add('live');
+  const vi = cnVoice();
+  tokens.forEach((t, i) => {
+    cnPreviewTimers.push(setTimeout(() => {
+      if (myId !== cnPreviewId) return;
+      cnSetActive(box, i);
+      try { playMoveTone(getMoveTone(t.raw)); } catch (e) {}
+      cnSay(vi && vi.arabic ? t.say : t.sayEn, vi, 1.1);
+    }, 150 + i * 700));
+  });
+  cnPreviewTimers.push(setTimeout(() => { if (myId === cnPreviewId && box) { box.classList.remove('live'); cnSetActive(box, -1); } }, 150 + tokens.length * 700 + 400));
+}
+function comboLegendHTML() {
+  return `<div class="num-legend"><h3>🔢 نظام الترقيم — المدرب ينادي بالأرقام</h3><div class="num-legend-grid">` +
+    CN_LEGEND.map(l => `<div class="num-legend-item"><span class="cn-chip">${comboChipSVG({ n: l.n })}</span><span>${l.ar}</span></div>`).join('') +
+    `</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.5rem;">الشريط الأبيض أسفل الرقم = للجسم. 🦶 ركلة · 🦵 ركبة · 💪 كوع · 🛡 دفاع</div></div>`;
+}
+/* مجموعة الكومبوهات لجولة معيّنة: من المكتبة حسب مستوى البروتوكول، ويزداد الطول تدريجياً مع الجولات */
+function hbPoolForRound() {
+  const p = hbRunnerState.protocol, r = hbRunnerState.round;
+  let pool = [].concat(p.combos || []);
+  try {
+    const g = COMBO_LIBRARY.boxing.groups.find(x => x.level === p.level);
+    if (g) pool = pool.concat(g.combos.map(c => c.ar));
+  } catch (e) {}
+  pool = Array.from(new Set(pool));
+  const lens = pool.map(c => c.split('+').length);
+  const mn = Math.min.apply(null, lens), mx = Math.max.apply(null, lens);
+  const progress = Math.min(1, r / Math.max(1, p.rounds * 0.8));
+  const cap = Math.max(mn, Math.min(mx, Math.round(mn + (mx - mn) * progress) + (p.capShift || 0)));
+  const f = pool.filter(c => c.split('+').length <= cap);
+  return f.length ? f : pool;
+}
+function hbNumberedLoop(myLoopId) {
+  if (!hbRoundCombosQueue || hbRoundCombosQueue.length === 0) {
+    hbRoundCombosQueue = hbPoolForRound().slice();
+    for (let i = hbRoundCombosQueue.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [hbRoundCombosQueue[i], hbRoundCombosQueue[j]] = [hbRoundCombosQueue[j], hbRoundCombosQueue[i]]; }
+  }
+  const combo = hbRoundCombosQueue.shift();
+  hbRoundRepsLeft = HB_REPS_PER_COMBO;
+  const tokens = comboTokens(combo);
+  if (!tokens.length) return;
+  const vi = cnVoice();
+  const INTERVAL = 700, BREAK = 900, START = 250;
+  const comboEl = document.getElementById('hbRunnerCombo');
+  const alive = () => myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work';
+  function render() {
+    if (!comboEl) return;
+    comboEl.innerHTML = comboChipsHTML(tokens, 'live') + `<span class="cn-sub">${escapeHTML(comboCode(tokens))}</span>`;
+    comboEl.classList.remove('muted');
+  }
+  function cycle() {
+    if (!alive()) return;
+    if (hbRoundRepsLeft <= 0) { hbRoundCombosQueue.push(combo); startHbComboLoop(); return; }
+    hbRoundRepsLeft--;
+    render();
+    tokens.forEach((t, i) => {
+      const id = setTimeout(() => {
+        if (!alive()) return;
+        cnSetActive(comboEl, i);
+        try { playMoveTone(getMoveTone(t.raw)); } catch (e) {}
+        cnSay(vi && vi.arabic ? t.say : t.sayEn, vi, 1.15);
+      }, START + i * INTERVAL);
+      hbRunnerState.comboTimers.push(id);
+    });
+    const nid = setTimeout(() => { if (alive()) cycle(); }, START + tokens.length * INTERVAL + BREAK);
+    hbRunnerState.comboTimers.push(nid);
+  }
+  hbRunnerState.comboTimers.push(setTimeout(cycle, 100));
+}
+
 let hbRoundCombosQueue = [];
 let hbRoundRepsLeft = 0;
 const HB_REPS_PER_COMBO = 5;
@@ -7542,12 +8086,14 @@ function renderHeavybagProtocols() {
   });
 }
 
-function startHeavyBagWorkout(protocolId) {
+function startHeavyBagWorkout(protocolId) { withReadiness(() => _startHeavyBagWorkoutCore(protocolId)); }
+function _startHeavyBagWorkoutCore(protocolId) {
   playClick(); haptic('medium');
   currentActiveRunner = 'hb'; showRunnerSwitcher();
   const p = HEAVY_BAG_PROTOCOLS.find(x => x.id === protocolId);
   if (!p) return;
-  hbRunnerState.protocol = p;
+  hbRunnerState.protocol = hbApplyReadiness(p);
+  hbEnterAudioMode(hbRunnerState.protocol);
   hbRunnerState.round = 1;
   hbRunnerState.phase = 'prepare';
   hbRunnerState.paused = false;
@@ -7607,7 +8153,7 @@ startHbComboLoop();
     hbUpdateTimer();
     ctUpdateRing('hb', remaining, p.work);
     ctSetUrgentEffects('hbRunnerTimer', 'hbRunnerRingWrap', remaining);
-    if (p.work > 15 && remaining === 10) { playHalfwayTone(); haptic('medium'); }
+    if (p.work > 15 && remaining === 10) { playHalfwayTone(); haptic('medium'); hbWarn10('work'); }
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); speak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
   }, () => { timerEl.classList.remove('urgent'); ctSetUrgentEffects('hbRunnerTimer', 'hbRunnerRingWrap', -1); hbEndRound(); }, 'hbRunnerRing');
 }
@@ -7640,6 +8186,7 @@ function hbEndRound() {
   ctDriftSafeCountdown(hbRunnerState, p.rest, (remaining) => {
     hbUpdateTimer();
     ctUpdateRing('hb', remaining, p.rest);
+    if (p.rest > 15 && remaining === 10) { playHalfwayTone(); hbWarn10('rest'); }
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); speak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
   }, () => { timerEl.classList.remove('urgent'); hbRunnerState.round++; hbStartPrepare(); }, 'hbRunnerRing');
 }
@@ -7682,6 +8229,8 @@ function startHbComboLoop() {
   const myLoopId = ++hbRunnerState.comboLoopId;
   const p = hbRunnerState.protocol;
   if (!p || !p.combos || p.combos.length === 0) return;
+  if (p.audioOnly) { hbAudioLoop(myLoopId); return; }
+  if (hbCallStyle() === 'numbered') { hbNumberedLoop(myLoopId); return; }
   if (!hbRoundCombosQueue || hbRoundCombosQueue.length === 0) {
     hbRoundCombosQueue = [...p.combos];
     for (let i = hbRoundCombosQueue.length - 1; i > 0; i--) {
@@ -7817,6 +8366,7 @@ function cleanupHeavyBagRunner() {
   hbRunnerState.round = 1;
   const r = document.getElementById('hbRunner');
   if (r) { r.classList.remove('active'); r.classList.remove('ct-celebrate'); }
+  hbLeaveAudioMode();
   document.body.style.overflow = '';
   releaseWakeLock();
   if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
@@ -8767,7 +9317,7 @@ function martialStepHtml(n) {
   return mSection('ico-bandage', 'إصابات حالية') + '<div class="wiz-chip-grid" id="mgInjuries">' + inj.map(x => mChip('injuries', x[0], x[1], d.injuries.includes(x[0]))).join('') + mChip('injuries', 'none', 'لا يوجد', d.injuries.includes('none')) + '</div>' +
     mSection('ico-moon', 'رمضان / صيام') + '<div class="wiz-chip-grid" id="mgFasting">' + mChip('fasting', 'yes', 'نعم', d.fasting === 'yes') + mChip('fasting', 'no', 'لا', d.fasting === 'no') + '</div>' +
     '<button class="generate-btn" id="martialLocalBtn" onclick="generateMartialLocal()">🎲 توليد محلي</button>' +
-    '<button class="local-btn" onclick="generateMartialAI()" id="martialAiBtn"><svg class="ico"><use href="#ico-sparkles"/></svg> 🧠 المدرب الذكي</button>';
+    '<button class="local-btn" onclick="generateMartialAI()" id="martialAiBtn"><svg class="ico"><use href="#ico-sparkles"/></svg> 🤖 توليد بالذكاء الاصطناعي</button>';
 }
 function renderMartialWizard() {
   const box = document.getElementById('martialForm'); if (!box) return;
@@ -8858,11 +9408,12 @@ function renderMartialResult(session) {
   if (k.roundsApplied != null) chips.push('🥊 جولات الكيس: ' + (k.roundsApplied === k.rounds ? k.rounds : k.rounds + ' ← ' + k.roundsApplied + ' (لتناسب الوقت)') + ' × ' + k.roundDuration + ' د');
   chips.push('⏸ راحة: ' + k.rest + ' ث', '💪 الشدة: ' + (MARTIAL_INT_AR[k.intensity] || '') + ' (' + k.setsIntensity + ' مجموعات)', '🔥 الكارديو: ' + (MARTIAL_CARDIO_AR[k.cardio] || ''));
   if (k.strengthMode) chips.push('🏋️ القوة: ' + (k.strengthMode === 'focused' ? 'مركزة (2)' : 'موزعة (4)'));
+  const aiBox = session.ai ? '<div class="sc-banner" id="scAiBox">🤖 صمّمها الذكاء الاصطناعي' + (session.aiModel ? ' <span class="sc-sub">(' + session.aiModel + ')</span>' : '') + (session.aiSummary ? '<div class="sc-sub">' + session.aiSummary + '</div>' : '') + (session.aiTips && session.aiTips.length ? '<ul>' + session.aiTips.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '') + (session.aiFixes && session.aiFixes.length ? '<div class="sc-sub">🛡️ تصحيحات تلقائية:</div><ul>' + session.aiFixes.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '') + '</div>' : '';
   const learned = session.coach ? '<div class="sc-banner" id="scBanner">🧠 المدرب الذكي تعلّم منك <b>' + (session.learnedTotal || 0) + '</b> مرة' + (session.learned && session.learned.length ? '<ul>' + session.learned.map(x => '<li>' + x + '</li>').join('') + '</ul><div class="sc-sub">طُبّقت تلقائياً على هذه الحصة</div>' : '') + '</div>' : '';
   let lastRep = null; try { lastRep = JSON.parse(safeGet('martialCoachLast', 'null')); } catch (e) {}
   box.innerHTML = '<div class="form-card martial-result-card">' +
-    '<div class="mrc-header"><h2>🥊 ' + session.name + (session.coach ? ' <span class="sc-tag">🧠 مدرب ذكي</span>' : '') + '</h2><span class="mrc-duration">' + session.duration + ' دقيقة · ' + session.rounds + ' جولات</span><span class="mrc-total">⏱️ ~' + session.totalMinutes + ' دقيقة فعلياً</span></div>' +
-    learned + '<div class="mrc-linked" id="mrcLinked">' + chips.map(c => '<span>' + c + '</span>').join('') + '</div>' +
+    '<div class="mrc-header"><h2>🥊 ' + session.name + (session.ai ? ' <span class="sc-tag">🤖 AI</span>' : (session.coach ? ' <span class="sc-tag">🧠 مدرب ذكي</span>' : '')) + '</h2><span class="mrc-duration">' + session.duration + ' دقيقة · ' + session.rounds + ' جولات</span><span class="mrc-total">⏱️ ~' + session.totalMinutes + ' دقيقة فعلياً</span></div>' +
+    aiBox + learned + '<div class="mrc-linked" id="mrcLinked">' + chips.map(c => '<span>' + c + '</span>').join('') + '</div>' +
     '<div class="mrc-section"><h3 class="wd-subtitle">🔥 إحماء</h3>' + session.warmup.map(row).join('') + '</div>' +
     '<div class="mrc-section"><h3 class="wd-subtitle">💪 الحصة الرئيسية</h3>' + main + '</div>' +
     '<div class="mrc-section"><h3 class="wd-subtitle">🧘 تهدئة</h3>' + session.cooldown.map(row).join('') + '</div>' +
@@ -8883,7 +9434,146 @@ function generateMartialLocal(coach) {
   renderMartialResult(lastMartialSession);
 }
 function rebuildMartialSession() { generateMartialLocal(lastMartialSession && lastMartialSession.coach); }
-function generateMartialAI() { generateMartialLocal(true); }
+/* ============ 🤖 قتالي: توليد حصة بالذكاء الاصطناعي (Groq/OpenRouter عبر سلسلة النماذج الموجودة) ============ */
+const MARTIAL_AI_BLOCKS = ['skill', 'cardio', 'bag', 'strength', 'finisher', 'core', 'kick', 'muaythai', 'boxing'];
+const MARTIAL_PAT_BLOCK = { box: 'skill', hiit: 'cardio', boxc: 'bag', hinge: 'strength', push_h: 'strength', pull_h: 'strength', rear: 'strength', push_v: 'strength', pull_v: 'strength', squat: 'strength', lunge: 'strength', core: 'core', kick: 'kick', muaythai: 'muaythai' };
+const MARTIAL_LEVEL_GUIDE = {
+  beginner: 'مبتدئ: تقنية أساسية فقط (جاب، كروس، ركلة أمامية/منخفضة، تيب)، كومبوهات من 2-3 ضربات، بلا ركلات عالية ولا حركات طائرة أو دوارة، 2-3 مجموعات، إيقاع هادئ وراحة كافية، وركّز في الملاحظات على الوضعية والتنفس.',
+  intermediate: 'متوسط: كومبوهات 3-5 ضربات، ركلات دائرية للجسم والساق، ركب وأكواع أساسية، جولات متوسطة الشدة مع تصحيح التقنية تحت التعب.',
+  advanced: 'متقدم: كومبوهات أطول مع تبديل بين اللكمات والركلات والركب، ركلات عالية، تغيير الإيقاع داخل الجولة، وإدارة التعب.',
+  athlete: 'محترف: حمل عالٍ وتبديل سريع بين المهارات وجولات طويلة بشدة عالية، مع الحفاظ على جودة التقنية وإدارة التعافي.'
+};
+function martialAiSlots(type, dur, mode) {
+  let slots = (LX_SESS[type] || LX_SESS['حصة هجينة']).slice();
+  if (/هجينة/.test(type) && dur < 60) slots = dur >= 45 ? (mode === 'focused' ? ['box', 'hiit', 'boxc', 'push_h', 'pull_h', 'core'] : slots.filter(x => x !== 'core')) : ['box', 'hiit', 'boxc', 'push_h', 'pull_h'];
+  return slots;
+}
+function martialAiParams(data) { // نفس قواعد المولّد المحلي (النوع، الشدة، الربط، ما تعلّمه المدرب)
+  const typeMap = { kickboxing: 'ملاكمة + كيك بوكسينغ', muaythai: 'ملاكمة + مواي تاي', mixed: 'فنون قتالية شاملة', hybrid: 'حصة هجينة', boxing: 'ملاكمة' };
+  const type = typeMap[data.style] || 'حصة هجينة', isHybrid = data.style === 'hybrid', mode = martialStrengthMode();
+  const hy45 = isHybrid && data.duration >= 45 && data.duration < 60, learned = martialLearnedPlan(data);
+  const iIdx = Math.max(0, Math.min(3, MARTIAL_INT_ORDER.indexOf(data.intensity) + learned.shift)), intensity = MARTIAL_INT_ORDER[iIdx];
+  const cardio = MARTIAL_CARDIO[data.structure] || 'interval';
+  const f = martialBuildF(data, { noBagRope: hy45 && mode === 'focused', avoidNames: learned.avoid });
+  const c = lxCtx(f, { bmi: 24, recommendedLevel: data.level });
+  return { type, isHybrid, mode, hy45, learned, intensity, cardio, setsI: MARTIAL_INT_SETS[intensity], f, c, slots: martialAiSlots(type, data.duration, mode) };
+}
+function martialAiLibrary(P) { // التمارين المسموحة فقط (المستوى + الإصابات + المعدات + ما تعلّمه المدرب)
+  const pats = Array.from(new Set(P.slots.concat(['core', 'hiit', 'boxc', 'box'])));
+  const rows = [];
+  pats.forEach(p => { const l = LXDB.filter(e => e.pat === p && lxOk(e, P.f, P.c) && !(P.f.noBagRope && /bag|rope/i.test(e.en)) && !P.f.avoidNames.includes(e.en)); if (l.length) rows.push(p + ': ' + l.map(e => e.en + ' (' + e.ar + ')').join('، ')); });
+  return rows.join('\n');
+}
+function buildMartialAiPrompt(data, P, issues) {
+  const injs = P.f.injuries.length ? P.f.injuries.map(x => (COACH_INJ.find(y => y[0] === x) || [0, x])[1]).join('، ') : 'لا يوجد';
+  const eq = data.equipment.length ? data.equipment.join('، ') : 'لا شيء (وزن الجسم فقط)';
+  let last = null; try { last = JSON.parse(safeGet('martialCoachLast', 'null')); } catch (e) {}
+  const mem = [];
+  if (P.learned.notes.length) mem.push('تفضيلات تعلّمها المدرب من هذا المتدرب (التزم بها): ' + P.learned.notes.join(' • '));
+  if (last && last.recs && last.recs.length) mem.push('تقرير آخر حصة (' + last.completion + '% إنجاز، متوسط ' + last.avg + '/5): ' + last.recs.join(' • ') + (last.weak && last.weak.length ? ' — تمارين ضعيفة: ' + last.weak.join('، ') : ''));
+  const sets = P.slots.map((p, i) => (i + 1) + ') ' + p + ' ← ' + (MARTIAL_PAT_BLOCK[p] || 'boxing')).join('\n');
+  const hybridNote = P.isHybrid ? '\nهذه حصة هجينة: الترتيب إلزامي (مهارة ← كارديو ← كيس ← كتلة القوة ← ختامي ← بطن) ولا تغيّره.' : '';
+  return 'صمّم حصة قتالية واحدة بمستوى "' + LEVEL_LABELS[data.level] + '" لا أعلى ولا أدنى.\n\n' +
+    '■ المتدرب: المستوى: ' + MARTIAL_LEVEL_GUIDE[data.level] + '\n■ النوع: ' + P.type + '\n■ مدة الحصة الكلية (إحماء + رئيسية + تهدئة): ' + data.duration + ' دقيقة — اجعل المجموع بين 90% و100% منها.\n' +
+    '■ المعدات: ' + eq + '\n■ الإصابات الحالية (تجنّب أي تمرين يضغط عليها): ' + injs + '\n■ صيام: ' + (data.fasting === 'yes' ? 'نعم (خفّف الشدة قليلاً وزد الراحة)' : 'لا') + '\n' +
+    '■ إعدادات يجب احترامها حرفياً:\n  - كتل الكيس والحبل (reps بالدقائق): sets = ' + data.rounds + '، reps = "' + data.roundDuration + ' د"، rest = "' + data.rest + ' ثانية".\n  - بقية التمارين: sets = ' + P.setsI + ' (شدة ' + MARTIAL_INT_AR[P.intensity] + ').\n  - نوع الكارديو: ' + MARTIAL_CARDIO_AR[P.cardio] + ' (' + (P.cardio === 'interval' ? '40 ث عمل / 20 ث راحة' : P.cardio === 'continuous' ? 'كتلة واحدة متواصلة 3 د' : 'تصاعدي الإيقاع كل مجموعة') + ').\n' +
+    (mem.length ? '■ ذاكرة المدرب:\n  - ' + mem.join('\n  - ') + '\n' : '') +
+    '\n■ الهيكل الإلزامي: اختر تمريناً واحداً لكل خانة من قائمة نمطها نفسه (يمكنك إضافة تمرين واحد إضافي من أي نمط مسموح):\n' + sets + hybridNote + '\n\n' +
+    '■ التمارين المسموحة فقط (انسخ nameEn حرفياً من هنا، ولا تخترع أسماء):\n' + martialAiLibrary(P) + '\n\n' +
+    'في notes اكتب تعليماً عملياً قصيراً بالعربية (مثلاً كومبو محدد: جاب-كروس-هوك، أو نقطة تقنية)، ومناسباً للمستوى.\n' +
+    'الإحماء 3-5 بنود والتهدئة 3-4 بنود بمدد مكتوبة (مثل "3 دقائق"). ويجب أن يتضمن الإحماء نط حبل أو شادو بوكسينغ.\n' +
+    (issues && issues.length ? '\nمشاكل في محاولتك السابقة يجب إصلاحها:\n- ' + issues.join('\n- ') + '\n' : '') +
+    '\nأرجع JSON فقط بهذا الشكل بالضبط:\n{"name":"اسم الحصة","summary":"جملة عن هدف الحصة وكيف تناسب المستوى","warmup":[{"name":"عربي","nameEn":"English","duration":"3 دقائق"}],"exercises":[{"block":"skill|cardio|bag|strength|finisher|core|kick|muaythai|boxing","name":"الاسم العربي","nameEn":"من القائمة","sets":3,"reps":"40 ث","rest":"30 ثانية","notes":"..."}],"cooldown":[{"name":"عربي","nameEn":"English","duration":"2 دقيقة"}],"tips":["نصيحة 1","نصيحة 2"]}';
+}
+const mAiClean = (s, n) => String(s == null ? '' : s).replace(/[<>&"'`\\]/g, '').replace(/\s+/g, ' ').trim().slice(0, n || 80);
+const mAiUnit = (v, dflt, kind) => { const t = mAiClean(v, 30); if (!t) return dflt; if (kind === 'dur') return /\d/.test(t) && /[ثدsm]|دق|ثان|sec|min/i.test(t) ? t : (/\d/.test(t) ? t + ' دقيقة' : dflt); return /\d/.test(t) ? t : dflt; };
+function martialAiNormalize(parsed, data, P) {
+  const issues = [], fixes = [];
+  if (!parsed || !Array.isArray(parsed.exercises) || parsed.exercises.length < 3) throw aiErr('badjson', 'الحصة بلا تمارين كافية');
+  const used = new Set(), out = [], f = P.f, c = P.c;
+  const alt = (pat) => LXDB.filter(e => e.pat === pat && !used.has(e.en) && lxOk(e, f, c) && !(f.noBagRope && /bag|rope/i.test(e.en)) && !f.avoidNames.includes(e.en)).sort((a, b) => Math.abs(c.lv - a.lvl) - Math.abs(c.lv - b.lvl))[0] || null;
+  parsed.exercises.slice(0, 14).forEach(raw => {
+    if (!raw || typeof raw !== 'object') return;
+    let lx = lxFind(raw.nameEn) || lxFind(raw.name), tag = MARTIAL_AI_BLOCKS.includes(raw.block) ? raw.block : null;
+    const bad = lx && !(lxOk(lx, f, c) && !(f.noBagRope && /bag|rope/i.test(lx.en)) && !f.avoidNames.includes(lx.en));
+    if (!lx || bad || used.has(lx.en)) {
+      const pat = lx ? lx.pat : (Object.keys(MARTIAL_PAT_BLOCK).find(p => MARTIAL_PAT_BLOCK[p] === tag) || null), rep = pat ? alt(pat) : null;
+      if (!rep) { issues.push('تمرين غير مسموح أو غير موجود: ' + mAiClean(raw.nameEn || raw.name, 40)); return; }
+      fixes.push('استُبدل «' + mAiClean(raw.nameEn || raw.name, 40) + '» بـ «' + rep.en + '» ' + (bad ? '(لا يناسب المستوى/الإصابة/المعدات)' : '(غير موجود في مكتبة التمارين)')); lx = rep;
+    }
+    used.add(lx.en);
+    const isM = lx.fmt === 'm';
+    let sets = isM ? Math.max(1, Math.min(12, data.rounds)) : P.setsI;
+    let reps = isM ? data.roundDuration + ' د' : mAiUnit(raw.reps, lx.fmt === 't' ? '40 ث' : '10-12', 'reps');
+    let rest = isM ? data.rest + ' ثانية' : mAiUnit(raw.rest, lx.fmt === 'r' ? '60 ثانية' : '25 ثانية', 'reps');
+    if (!isM && lx.pat === 'hiit' && lx.fmt === 't') { if (P.cardio === 'interval') { reps = '40 ث'; rest = '20 ث'; } else if (P.cardio === 'continuous') { sets = 1; reps = '3 د'; rest = '10 ث'; } else { reps = '45 ث'; rest = '30 ث'; } }
+    if (P.learned.restFactor < 1) { const r = aiSeconds(rest); if (r) rest = Math.max(10, Math.round(r * P.learned.restFactor)) + ' ث'; }
+    out.push({ name: lx.ar, nameEn: lx.en, sets: sets, reps: reps, rest: rest, weight: '-', notes: mAiClean(raw.notes, 140), block: tag || MARTIAL_PAT_BLOCK[lx.pat] || 'boxing', pat: lx.pat });
+  });
+  if (out.length < 3) throw aiErr('badjson', 'تمارين صالحة أقل من 3 بعد التحقق');
+  const want = P.slots.length, minN = Math.max(3, want - 1);
+  if (out.length < minN) issues.push('عدد التمارين ' + out.length + ' والمطلوب ' + want + ' على الأقل ' + minN);
+  const pats = out.map(e => e.pat);
+  P.slots.forEach(p => { const fam = { kick: ['kick'], muaythai: ['muaythai'], box: ['box'], hiit: ['hiit', 'cardio'], boxc: ['boxc'], core: ['core'] }[p] || [p]; if (!pats.some(x => fam.includes(x)) && !/rope|bag/i.test(p) && ['kick', 'muaythai', 'hinge', 'push_h', 'pull_h', 'rear'].includes(p)) issues.push('خانة ناقصة من النمط ' + p); });
+  if (P.isHybrid) { const b = out.map(e => e.block); ['skill', 'cardio', 'strength'].forEach(k => { if (!b.includes(k)) issues.push('الهجين بلا كتلة ' + k); }); if (!P.f.noBagRope && !b.includes('bag') && !pats.includes('boxc')) issues.push('الهجين بلا كتلة كيس'); }
+  const clean = arr => (Array.isArray(arr) ? arr : []).slice(0, 6).map(w => w && typeof w === 'object' ? { name: mAiClean(w.name || w.nameEn, 60), nameEn: mAiClean(w.nameEn || w.name, 60), duration: mAiUnit(w.duration, '2 دقيقة', 'dur') } : null).filter(w => w && w.name);
+  let warm = clean(parsed.warmup), cool = clean(parsed.cooldown);
+  const wc = lxWarmCool(P.type, f, c, { dur: data.duration, warm: data.duration >= 60 ? 8 : 5, cool: data.duration >= 60 ? 6 : 4, budget: data.duration, maxEx: 12, minEx: 3 });
+  if (warm.length < 2) { warm = wc.warm; fixes.push('استُخدم الإحماء المحلي (إحماء غير كافٍ في الرد)'); }
+  if (cool.length < 2) { cool = wc.cool; fixes.push('استُخدمت التهدئة المحلية (تهدئة غير كافية في الرد)'); }
+  if (!warm.some(w => /rope|shadow|حبل|ظل/i.test(w.name + w.nameEn))) warm.unshift(wc.warm.find(w => /rope|shadow|حبل|ظل/i.test(w.name + (w.nameEn || ''))) || wc.warm[0]);
+  const d = { duration: data.duration, warmup: warm, exercises: out.map(e => Object.assign({}, e)), cooldown: cool };
+  const before = d.exercises.length, hybridKeep = P.isHybrid ? d.exercises.map(e => e.block) : null;
+  lxFit(d);
+  if (d.exercises.length < before) fixes.push('قُصّرت الحصة لتناسب ' + data.duration + ' دقيقة (حُذف ' + (before - d.exercises.length) + ' تمرين/تمارين)');
+  const tot = sessionMinutes(d);
+  if (tot < data.duration * 0.8) issues.push('الحصة قصيرة (~' + Math.round(tot) + ' د) والمطلوب ' + data.duration + ' دقيقة — أضف حجماً أو تمريناً');
+  if (P.isHybrid && hybridKeep && !d.exercises.some(e => e.block === 'strength')) issues.push('بعد ملاءمة الوقت ضاعت كتلة القوة');
+  const blocks = d.exercises.filter(e => { const x = lxFind(e.nameEn); return x && x.fmt === 'm'; });
+  return { d: d, issues: issues, fixes: fixes, tot: tot, blocks: blocks };
+}
+async function martialAiBuild(data) {
+  const P = martialAiParams(data), SYS = 'أنت مدرب كيك بوكسينغ ومواي تاي وملاكمة معتمد. تلتزم بمستوى المتدرب وإصاباته ومعداته بدقة. أرجع JSON فقط بدون أي نص إضافي.';
+  const chain = await aiGetModelChain(), key = getOpenRouterKey();
+  const run = async (prompt, models) => aiRunModelChain(key, [{ role: 'system', content: SYS }, { role: 'user', content: prompt }], { models: models, temperature: 0.4, max_tokens: 4500, validate: p => { const r = martialAiNormalize(p, data, P); const hard = r.issues.filter(x => /بلا كتلة|ضاعت/.test(x)); if (hard.length) throw aiErr('badjson', hard[0]); } });
+  let out = await run(buildMartialAiPrompt(data, P), chain), r = martialAiNormalize(out.parsed, data, P);
+  if (r.issues.length) { // محاولة إصلاح واحدة بقائمة المشاكل
+    try { const models = [out.model].concat(chain.filter(m => m !== out.model)), out2 = await run(buildMartialAiPrompt(data, P, r.issues), models), r2 = martialAiNormalize(out2.parsed, data, P); if (r2.issues.length <= r.issues.length) { out = out2; r = r2; } } catch (e) { console.warn('[martial AI] repair failed, keeping first', e); }
+  }
+  const d = r.d, p = out.parsed;
+  const session = {
+    name: mAiClean(p.name, 50) || (/^حصة/.test(P.type) ? P.type : 'حصة ' + P.type), style: data.style, type: P.type,
+    warmup: d.warmup, exercises: d.exercises.map(e => ({ name: e.name, nameEn: e.nameEn, sets: e.sets, reps: e.reps, rest: e.rest, weight: e.weight, notes: e.notes })), cooldown: d.cooldown,
+    totalMinutes: Math.round(sessionMinutes(d)), duration: data.duration, rounds: data.rounds, isHybrid: P.isHybrid, setsOverride: null,
+    coach: true, learned: P.learned.notes, learnedTotal: P.learned.total, injuries: P.f.injuries.slice(), intensity: P.intensity,
+    linked: { rounds: data.rounds, roundsApplied: r.blocks.length ? Math.max.apply(null, r.blocks.map(b => b.sets)) : null, roundDuration: data.roundDuration, rest: data.rest, intensity: P.intensity, setsIntensity: P.setsI, cardio: P.cardio, strengthMode: P.hy45 ? P.mode : null },
+    ai: true, aiModel: String(out.model || '').replace(/[<>&"']/g, '').slice(0, 60), aiSummary: mAiClean(p.summary, 220), aiTips: (Array.isArray(p.tips) ? p.tips : []).slice(0, 4).map(t => mAiClean(t, 140)).filter(Boolean), aiFixes: r.fixes.slice(0, 6)
+  };
+  return session;
+}
+let martialAiBusy = false, martialAiToken = 0;
+async function generateMartialAI() {
+  if (martialAiBusy) return;
+  try { playClick(); } catch (e) {}
+  const localCoach = (why) => { if (why) { try { showInAppNotification('🧠', why); } catch (e) {} } generateMartialLocal(true); };
+  if (!navigator.onLine) return localCoach('لا يوجد إنترنت — تم توليد حصة المدرب الذكي المحلية');
+  if (!hasAnyAIKey()) { try { showInAppNotification('🔑', 'أضف مفتاح Groq أو OpenRouter من الإعدادات لتوليد AI — هذه حصة محلية'); } catch (e) {} return generateMartialLocal(true); }
+  martialAiBusy = true; const token = ++martialAiToken;
+  const form = document.getElementById('martialForm');
+  form.innerHTML = '<div class="form-card sc-loading" id="martialAiLoading"><div style="font-size:1.6rem">🧠</div><div class="sc-big">المدرب الذكي يصمّم حصتك بمستوى «' + LEVEL_LABELS[martialData.level] + '»…</div><div class="sc-sub">يختار التمارين المناسبة لمستواك وإصاباتك ومعداتك ويتحقق منها (قد يستغرق حتى دقيقة)</div><button class="mrc-btn" style="margin-top:0.8rem" onclick="martialAiCancel()">استخدم المولّد المحلي بدلاً من الانتظار</button></div>';
+  try {
+    const session = await martialAiBuild(martialData);
+    if (token !== martialAiToken) return;
+    lastMartialSession = session; aiRecentPush(session); renderMartialResult(session); try { playFinish(); showInAppNotification('✨', 'حصة AI جاهزة'); } catch (e) {}
+  } catch (err) {
+    if (token !== martialAiToken) return;
+    console.error('[martial AI] failed:', err);
+    let reason = (err && err.message) ? err.message : String(err);
+    if (err && err.aiKind === 'credit') reason = 'انتهت الحصة المجانية اليومية للمزوّد';
+    localCoach('تعذّر توليد AI (' + reason.substring(0, 90) + ') — حصة المدرب الذكي المحلية بدلاً منها');
+  } finally { if (token === martialAiToken) martialAiBusy = false; }
+}
+function martialAiCancel() { martialAiToken++; martialAiBusy = false; generateMartialLocal(true); }
 
 /* ============ 🧠 المدرب الذكي (محلي بالكامل — لا شبكة) ============ */
 let scState = { active: false, finished: false, startAt: 0, pauseMs: 0, pausedAt: 0, cur: null, lastIdx: -1, log: [], cues: {}, fatigue: false, applied: [], autoShort: false, feed: [], mode: 'live', started: false };
@@ -9090,6 +9780,34 @@ function martialSavedHtml() {
   return '<div class="form-card" id="martialSavedList" style="margin-top:1rem;"><div class="wiz-section-title">💾 حصصي المحفوظة</div>' + a.map((s, i) =>
     '<div class="workout-ex-line"><div><b>' + s.name + '</b><div class="workout-ex-note">' + s.duration + ' دقيقة · ' + s.exercises.length + ' تمارين</div></div><span><button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="openSavedMartial(' + i + ')">فتح</button> <button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="deleteSavedMartial(' + i + ')" aria-label="حذف">✕</button></span></div>').join('') + '</div>';
 }
+
+/* ============================================================
+   🧠 آخر 5 حصص AI: تُحفظ تلقائياً لتبقى متاحة دون إنترنت
+   ============================================================ */
+function aiRecentGet() { try { const a = JSON.parse(safeGet('aiRecentSessions', '[]')); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+function aiRecentPush(session) {
+  try {
+    if (!session || !Array.isArray(session.exercises) || !session.exercises.length) return;
+    const rec = Object.assign({}, session, { aiAt: Date.now() });
+    const a = aiRecentGet().filter(x => !(x && x.name === rec.name && Math.abs((x.aiAt || 0) - rec.aiAt) < 5000));
+    a.unshift(rec);
+    safeSet('aiRecentSessions', a.slice(0, 5));
+  } catch (e) { console.warn('[aiRecent]', e); }
+}
+function openRecentAi(i) {
+  const s = aiRecentGet()[i]; if (!s) return;
+  playClick(); haptic('light');
+  lastMartialSession = s; renderMartialResult(s);
+}
+function martialRecentHtml() {
+  const a = aiRecentGet(); if (!a.length) return '';
+  const ago = t => { const m = Math.floor((Date.now() - (t || 0)) / 60000); return m < 1 ? 'الآن' : m < 60 ? 'قبل ' + m + ' د' : m < 1440 ? 'قبل ' + Math.floor(m / 60) + ' س' : 'قبل ' + Math.floor(m / 1440) + ' يوم'; };
+  return '<div class="form-card" id="martialRecentAi" style="margin-top:1rem;"><div class="wiz-section-title">🧠 آخر حصص AI <span style="font-size:.7rem;color:var(--accent-success);font-weight:800;">📴 تعمل دون إنترنت</span></div>' +
+    a.map((s, i) => '<div class="workout-ex-line"><div><b>' + escapeHTML(s.name || 'حصة AI') + '</b><div class="workout-ex-note">' + escapeHTML(String(s.duration || '')) + ' دقيقة · ' + ((s.exercises || []).length) + ' تمارين · ' + ago(s.aiAt) + '</div></div><span><button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="openRecentAi(' + i + ')">فتح</button></span></div>').join('') + '</div>';
+}
+const _martialSavedHtmlBase = martialSavedHtml;
+martialSavedHtml = function () { return martialRecentHtml() + _martialSavedHtmlBase(); };
+
 function martialItemKey(ar, en) { const lx = lxFind(en), names = lx ? lx.aliases.concat([lx.ar]) : [en]; for (const n of names) { for (const [k, v] of Object.entries(exerciseDescriptions)) { if (n && v.en && String(v.en).toLowerCase() === String(n).toLowerCase()) return k; } } return mpDescKey(ar, ''); }
 function martialSessionToRunner(s) {
   const key = martialItemKey;
@@ -10696,7 +11414,7 @@ function renderSportPlan(plan) {
   html += `<div class="workout-ex-line"><div>${mpLink(nameEn, ex.notes)}${nameAr ? `<div class="workout-ex-note workout-ex-note-ar">${nameAr}</div>` : ''}${ex.notes ? `<div class="workout-ex-note">${ex.notes}</div>` : ''}</div><span class="ex-sets">${setsReps}${ex.rest ? ` / ${ex.rest}` : ''}</span></div>`; 
 });
     if (day.cooldown && day.cooldown.length) { html += `<div class="wd-subtitle">🧊 تهدئة</div>`; day.cooldown.forEach(w => { html += `<div class="workout-ex-line"><span>${mpLink(w.name, w.notes, 'span')}</span><span class="ex-sets">${w.duration || ''}</span></div>`; }); }
-    html += `<button class="btn-startday" onclick="startProgramDay(${i})">${ICO('play')} ابدأ اليوم (بمؤقت تلقائي)</button></div></div>`;
+    html += adjustRowHTML(i) + `<button class="btn-startday" onclick="startProgramDay(${i})">${ICO('play')} ابدأ اليوم (بمؤقت تلقائي)</button></div></div>`;
   });
   el.innerHTML = html;
 }
@@ -10716,7 +11434,8 @@ let programRunnerState = {
   restSeconds: 20
 };
 
-function startProgramDay(dayIndex) {
+function startProgramDay(dayIndex) { withReadiness(() => _startProgramDayCore(dayIndex)); }
+function _startProgramDayCore(dayIndex) {
   // [REVIEW-1] مشغّل البرنامج يشارك عناصر customRunner*: لا نبدأ بينما جلسة مخصصة تعمل
   if (customRunnerState && ['prepare', 'work', 'rest'].indexOf(customRunnerState.phase) > -1) { showInAppNotification('⚠️', 'أوقف الجلسة المخصصة أولاً'); return; }
   playClick(); haptic('medium');
@@ -10770,6 +11489,7 @@ function startProgramDay(dayIndex) {
     phase: 'cooldown'
   }));
   if (exercises.length === 0) { showInAppNotification('⚠️', 'لا توجد تمارين في هذا اليوم'); return; }
+  programApplyReadiness(exercises);
   programRunnerState.dayId = dayIndex;
   programRunnerState.exercises = exercises;
   programRunnerState.currentIndex = 0;
@@ -13209,6 +13929,7 @@ function settingsGoBack() {
 }
 
 function showSettingsPage(page, isBack) {
+  if (page === 'data') { try { renderBackupInfo(); } catch (e) {} }
   document.querySelectorAll('.settings-page').forEach(el => el.classList.remove('active', 'slide-back'));
   const target = document.querySelector(`.settings-page[data-page="${page}"]`);
   if (target) {
@@ -13322,10 +14043,36 @@ syncVoiceLangButtons();
 function toggleLastTen(enabled) { timerSettings.showLastTen = enabled; safeSet('timerSettings', timerSettings); }
 function fullReset() { playClick(); showConfirm('⚠️', 'إعادة تعيين كل شيء', 'سيتم حذف كل التقدم والبيانات نهائياً!', (confirmed) => { if (confirmed) { localStorage.clear(); location.reload(); } }, true); }
 // FIX #9: the API key is no longer written into backup files.
-function exportData() { playClick(); try { const data = {}; ['userProfile','onboardingComplete','completedDays','boxingCompletedDays','programProgress','bbProgress','workoutHistory','unlockedAchievements','totalXP','lastKnownLevel','myProgramData','favoriteExercises','exerciseNotes','exerciseWeightLogs','customYoutubeUrls','appTheme','timerSettings','soundMuted','ttsEnabled','hapticsEnabled','boxingCallsEnabled','customCombos','comboWorkouts','lastComboCategory','boxingView'].forEach(k => { const v = localStorage.getItem(k); if (v !== null) data[k] = v; }); const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `coach-backup-${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url); showInAppNotification('✅', 'تم تصدير البيانات'); } catch (e) { showInAppNotification('⚠️', 'فشل التصدير'); } }
+function exportData() {
+  playClick();
+  try {
+    const data = {}; let n = 0;
+    BACKUP_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v !== null) { data[k] = v; n++; } });
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const fname = `coach-backup-${new Date().toISOString().split('T')[0]}.json`;
+    const done = () => { try { localStorage.setItem('lastBackupAt', String(Date.now())); } catch (e) {} showInAppNotification('✅', 'تم تصدير النسخة الاحتياطية (' + n + ' عنصر)'); try { renderBackupInfo(); } catch (e) {} };
+    try {
+      const file = new File([blob], fname, { type: 'application/json' });
+      if (navigator.canShare && navigator.canShare({ files: [file] }) && /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) {
+        navigator.share({ files: [file], title: 'نسخة احتياطية — المدرب' }).then(done).catch(() => { /* أُلغيت المشاركة */ });
+        return;
+      }
+    } catch (e) { /* نكمل بالتنزيل العادي */ }
+    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500);
+    done();
+  } catch (e) { showInAppNotification('⚠️', 'فشل التصدير'); }
+}
+function renderBackupInfo() {
+  const el = document.getElementById('backupInfo'); if (!el) return;
+  const t = parseInt(localStorage.getItem('lastBackupAt') || '0', 10);
+  if (!t) { el.textContent = '⚠️ لم تُنشئ نسخة احتياطية بعد'; return; }
+  const days = Math.floor((Date.now() - t) / 86400000);
+  el.textContent = (days > 14 ? '⚠️ ' : '✅ ') + 'آخر نسخة: ' + (days === 0 ? 'اليوم' : 'قبل ' + days + ' يوماً') + (days > 14 ? ' — يُنصح بنسخة جديدة' : '');
+}
 /* [T8.2/T8.3] استيراد آمن: حدّ 5MB + مخطط صارم (مفاتيح مسموحة فقط، قيم نصية، JSON صالح) */
-const BACKUP_KEYS = ['userProfile','onboardingComplete','completedDays','boxingCompletedDays','programProgress','bbProgress','workoutHistory','unlockedAchievements','totalXP','lastKnownLevel','myProgramData','favoriteExercises','exerciseNotes','exerciseWeightLogs','customYoutubeUrls','appTheme','timerSettings','soundMuted','ttsEnabled','hapticsEnabled','boxingCallsEnabled','customCombos','comboWorkouts','lastComboCategory','boxingView'];
-const BACKUP_PLAIN_STRING_KEYS = ['appTheme', 'lastComboCategory', 'boxingView']; // تُخزَّن كنص خام لا JSON
+const BACKUP_KEYS = ['userProfile','onboardingComplete','completedDays','boxingCompletedDays','programProgress','bbProgress','workoutHistory','unlockedAchievements','totalXP','lastKnownLevel','myProgramData','favoriteExercises','exerciseNotes','exerciseWeightLogs','customYoutubeUrls','appTheme','timerSettings','soundMuted','ttsEnabled','hapticsEnabled','boxingCallsEnabled','customCombos','comboWorkouts','lastComboCategory','boxingView','savedMartialSessions','martialCoachHistory','martialCoachLast','martialCoachLearn','martialNextAdjust','userTemplates','customExercises','freeTimerSettings','readinessLog','aiRecentSessions','hbCallStyle','hbAudioLevel'];
+const BACKUP_PLAIN_STRING_KEYS = ['appTheme', 'lastComboCategory', 'boxingView', 'hbCallStyle', 'hbAudioLevel'];
+const BACKUP_ARRAY_KEYS = ['workoutHistory', 'unlockedAchievements', 'savedMartialSessions', 'martialCoachHistory', 'readinessLog', 'aiRecentSessions']; // تُخزَّن كنص خام لا JSON
 function validateBackup(data) {
   const errs = [];
   if (!data || typeof data !== 'object' || Array.isArray(data)) return ['الملف ليس كائناً صالحاً'];
@@ -13336,7 +14083,7 @@ function validateBackup(data) {
     if (v.length > 2 * 1024 * 1024) { errs.push(k + ': قيمة كبيرة جداً'); return; }
     if (BACKUP_PLAIN_STRING_KEYS.indexOf(k) >= 0) return;
     let parsed; try { parsed = JSON.parse(v); } catch (e) { errs.push(k + ': JSON غير صالح'); return; }
-    if ((k === 'workoutHistory' || k === 'unlockedAchievements') && !Array.isArray(parsed)) errs.push(k + ': يجب أن تكون قائمة');
+    if (BACKUP_ARRAY_KEYS.indexOf(k) >= 0 && !Array.isArray(parsed)) errs.push(k + ': يجب أن تكون قائمة');
     if (k === 'workoutHistory' && Array.isArray(parsed) && parsed.some(w => !w || typeof w !== 'object' || typeof w.type !== 'string' || typeof w.duration !== 'number')) errs.push('workoutHistory: عناصر غير صالحة');
     if (/__proto__|constructor\.prototype/.test(v)) errs.push(k + ': محتوى مرفوض');
   });
@@ -13578,7 +14325,7 @@ function switchBoxingView(view) {
   if (btn) btn.classList.add('active');
   if (viewEl) viewEl.classList.add('active');
   if (view === 'combos') { const lastCat = safeGet('lastComboCategory', 'boxing'); switchCombosLibrary(lastCat); }
-  if (view === 'heavybag') { renderHeavybagProtocols(); }
+  if (view === 'heavybag') { renderHeavybagProtocols(); renderHbCallStyle(); }
   if (view === 'freetimer') { renderFreeTimerSetup(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -13600,7 +14347,7 @@ function switchCombosLibrary(category) {
   const openGroups = safeParse('comboOpenGroups', {});
   const customCombos = getCustomCombos(category);
   
-  let html = '';
+  let html = category === 'boxing' ? comboLegendHTML() : '';
   
   // ═══ كومبوهاتي المخصصة ═══
   if (customCombos.length > 0) {
@@ -13657,12 +14404,14 @@ function switchCombosLibrary(category) {
     
     group.combos.forEach((combo, idx) => {
       const safeAr = jsAttr(combo.ar);
-      html += `<div class="combo-card" onclick="speakCombo('${safeAr}')">
+      const cnTok = comboTokens(combo.ar);
+      html += `<div class="combo-card" onclick="previewComboCall(this,'${safeAr}')">
         <div class="combo-number">${idx + 1}</div>
         <div class="combo-body">
-          <div class="combo-name-en">${combo.name}</div>
+          <div class="combo-name-en">${combo.name}<span class="combo-code">${escapeHTML(comboCode(cnTok))}</span></div>
           <div class="combo-name-ar">${combo.ar}</div>
           <div class="combo-desc">${combo.desc}</div>
+          <div class="combo-chips-row">${comboChipsHTML(cnTok, 'sm')}</div>
         </div>
         <div class="combo-play-icon">🔊</div>
       </div>`;
@@ -13671,7 +14420,7 @@ function switchCombosLibrary(category) {
     html += `</div></div></div>`;
   });
   
-  html += `<div class="combos-hint">💡 اضغط على أي كومبو لسماعه</div>`;
+  html += `<div class="combos-hint">💡 اضغط على أي كومبو ليناديه المدرب بالأرقام</div>`;
   content.innerHTML = html;
   
   const searchEl = document.getElementById('comboSearchInput');
@@ -14693,6 +15442,7 @@ const CoachChat = (function () {
       const p = safeParse('myProgramData', null);
       if (p) c.program = { goal: p.overview && p.overview.goalSummary, week: p.sportPlan && p.sportPlan.weeklyStructure, days: p.sportPlan && (p.sportPlan.days || []).map(d => d.dayName + ':' + d.focus) };
       c.prefs = safeParse('myProgramPreferences', {});
+      c.readiness = getReadiness() || undefined; c.readinessLog = safeParse('readinessLog', []).slice(-7).map(x => [x.date, x.sleep, x.sore, x.energy, x.mode]);
       c.profile = safeParse('userProfile', {});
       if (typeof formData !== 'undefined') c.injuries = formData.injuries, c.goal = (typeof getGoals === 'function') ? getGoals(formData).join('+') : formData.goal;
     } catch (e) {}
@@ -14740,7 +15490,7 @@ const CoachChat = (function () {
     const key = getOpenRouterKey(); if (!hasAnyAIKey()) { noKey(); return; }
     busy = true; $('coachSend').disabled = true;
     const b = bubble('ai', ''); b.innerHTML = '<span class="coach-typing"><i></i><i></i><i></i></span>';
-    const sys = 'أنت مدرب لياقة وملاكمة ودود وخبير. أجب بالعربية بإيجاز (أقل من 120 كلمة) وبنصائح عملية وآمنة. لا تعطِ تشخيصات طبية. بيانات المتدرب (JSON): ' + context();
+    const sys = 'أنت مدرب لياقة وملاكمة ودود وخبير. أجب بالعربية بإيجاز (أقل من 120 كلمة) وبنصائح عملية وآمنة. لا تعطِ تشخيصات طبية. إن وُجدت readiness/readinessLog (نوم/ألم/طاقة) فاعتمد عليها في تخفيف الشدة أو رفعها بدل التخمين. بيانات المتدرب (JSON): ' + context();
     const messages = [{ role: 'system', content: sys }].concat(msgs.slice(-12).map(m => ({ role: m.role, content: m.content })));
     let shown = '', pending = '', raf = 0, reply = null, lastErr = null;
     const pump = () => { // typewriter: reveal buffered tokens gradually
