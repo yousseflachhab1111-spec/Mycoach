@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
  <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <!-- [إصلاح] بعض بيئات WebView توفّر console ناقصاً (بلا assert/info/group/table) فيتوقف السكربت كاملاً. هذا الـ shim يكمّل الدوال الناقصة. -->
   
 <script>
@@ -17967,5 +17967,14 @@ body:not(.focus-mode) .exercise-card .timer-controls > * { flex: 1 1 3.5rem; min
 /* شارة الصعوبة: في الزاوية البعيدة عن الأيقونة (كما كانت) وبحجم أصغر */
 html body .day-card .diff-badge { width: 14px; height: 14px; inset-block-start: .65rem; inset-inline-start: auto; inset-inline-end: .75rem; box-shadow: 0 0 0 2px rgba(255,255,255,.14), 0 0 8px var(--diff-c, #facc15); }
 </style>
+<style id="ux-polish-v15">
+/* منع التكبير بالإصبعين (سلوك التطبيقات) مع إبقاء التمرير */
+html, body { touch-action: pan-x pan-y; }
+input, textarea, select { touch-action: manipulation; }
+</style>
+<script>
+/* سفاري iOS يتجاهل user-scalable، فنمنع إيماءة التكبير صراحةً */
+['gesturestart', 'gesturechange'].forEach(function (t) { document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+</script>
 </body>
 </html>
