@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&amp;family=Cinzel:wght@600;700&amp;display=swap" rel="stylesheet">
-  <title>مدربك الشخصي — Ultimate v12.3</title>
+  <title>مدربك الشخصي — Ultimate v12.4</title>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow-x: hidden; }
@@ -4695,7 +4695,7 @@ body.floor-mode #floorHint.show { display:block; }
     <div class="splash-percent" id="splashPercent">0%</div>
    </div>
    <div class="splash-title">مدربك الشخصي</div>
-   <div class="splash-subtitle">Ultimate v12.3 — كل شيء في تطبيق واحد</div>
+   <div class="splash-subtitle">Ultimate v12.4 — كل شيء في تطبيق واحد</div>
    <div class="splash-loading-text" id="splashLoadingText">جاري التحميل...</div>
    <div class="splash-loader">
     <div class="splash-loader-fill" id="splashLoaderFill"></div>
@@ -4832,7 +4832,7 @@ body.floor-mode #floorHint.show { display:block; }
     <span class="hbadge"><svg class="ico"><use href="#ico-timer"/></svg> ~45 دقيقة</span>
     <span class="hbadge"><svg class="ico"><use href="#ico-flame"/></svg> حرق دهون</span>
   </div>
-  <span class="version">v12.3 Ultimate</span>
+  <span class="version">v12.4 Ultimate</span>
 </div>
      <button class="boss-battle-btn" onclick="openBossBattle()">
       <span class="bb-icon"><svg class="ico"><use href="#ico-dices"/></svg></span>
@@ -5437,7 +5437,7 @@ body.floor-mode #floorHint.show { display:block; }
        <div class="item-info">
         <span class="item-icon"><svg class="ico"><use href="#ico-dumbbell"/></svg></span>
         <div class="item-text">
-         <span class="item-title">حول التطبيق</span> <span class="item-desc">v12.3 Ultimate</span>
+         <span class="item-title">حول التطبيق</span> <span class="item-desc">v12.4 Ultimate</span>
         </div>
        </div>
        <span class="settings-chevron">‹</span>
@@ -5728,7 +5728,7 @@ body.floor-mode #floorHint.show { display:block; }
      <div style="text-align:center;padding:1rem 0 1.5rem;">
       <div style="font-size:3rem;margin-bottom:0.5rem;"><svg class="ico"><use href="#ico-dumbbell"/></svg></div>
       <div style="font-size:1.2rem;font-weight:800;color:var(--text-primary);">مدربك الشخصي</div>
-      <div style="font-size:0.8rem;color:var(--accent-warning);font-weight:700;margin-top:0.3rem;">v12.3 Ultimate</div>
+      <div style="font-size:0.8rem;color:var(--accent-warning);font-weight:700;margin-top:0.3rem;">v12.4 Ultimate</div>
      </div>
      <div class="settings-section">
       <div class="settings-section-title"><svg class="ico"><use href="#ico-bar-chart"/></svg> إحصائيات الاستخدام</div>
@@ -15079,7 +15079,7 @@ loadBackground();
   else { focusModeActive = false; document.body.classList.remove('focus-mode'); document.querySelectorAll('.focus-toggle-btn').forEach(t => t.classList.remove('active')); safeSet('focusMode', false); }
   lastKnownLevel = getUserLevel().currentLevel.level;
   safeSet('lastKnownLevel', lastKnownLevel);
-  console.log('🎉 مدربك الشخصي v12.3 Ultimate — Wake Lock + Audio Unlock + Aurora');
+  console.log('🎉 مدربك الشخصي v12.4 Ultimate — Wake Lock + Audio Unlock + Aurora');
   setTimeout(() => { if (typeof updateNavIndicator === 'function') updateNavIndicator(); }, 50);
   if (!('wakeLock' in navigator) && !(typeof _wl !== 'undefined' && _wl.notified)) {
     setTimeout(() => showInAppNotification('⚠️', 'متصفحك لا يدعم منع انطفاء الشاشة — فعّل «عدم إطفاء الشاشة» من إعدادات الهاتف'), 3500);
@@ -17859,26 +17859,54 @@ body.timer-running:not(.focus-mode):not(:has(.phase-content.active .exercise-car
 html body:not(.focus-mode):not(.gym-mode) .workout-topbar { background: var(--bg-primary); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border-color); box-shadow: 0 10px 18px -14px rgba(0,0,0,.7); }
 </style>
 <script>
-/* [UX] عند انتقال حالة "current" لبطاقة جديدة: انزل إليها تلقائياً (مهما كان مسار الانتقال) */
+/* [UX] عند انتقال حالة "current" لبطاقة جديدة: افتح مرحلتها إن كانت مخفية ثم انزل إليها تلقائياً (مهما كان مسار الانتقال) */
 (function () {
   var timer = null;
-  function scrollCurrent(card) {
+  function ensurePhaseVisible(card) {
+    var pc = card.closest && card.closest('.phase-content');
+    if (!pc || pc.classList.contains('active')) return;
+    var id = pc.id || '';
+    var key = id.replace(/^(boxing-)?phase-/, '');
+    var btn = document.querySelector('.phase-btn[onclick*="Phase(\'' + key + '\'"]');
+    try {
+      if (btn) btn.click();
+      else if (/^phase-/.test(id) && typeof showPhase === 'function') showPhase(key, null);
+      else if (/^boxing-phase-/.test(id) && typeof showBoxingPhase === 'function') showBoxingPhase(key, null);
+    } catch (e) {}
+  }
+  function scrollCurrent(card, instant) {
     if (document.body.classList.contains('focus-mode')) return;
     if (!card || card.offsetParent === null) return;
     var r = card.getBoundingClientRect();
     if (r.top >= 80 && r.bottom <= window.innerHeight - 96) return;
-    try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { card.scrollIntoView(); }
+    try { card.scrollIntoView({ behavior: instant ? 'auto' : 'smooth', block: 'center' }); } catch (e) { card.scrollIntoView(); }
   }
+  var lastRun = 0;
+  new MutationObserver(function () { if (document.body.classList.contains('timer-running')) lastRun = Date.now(); else if (lastRun && !lastRunEnded) lastRun = Date.now(); })
+    .observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  var lastRunEnded = false;
   var obs = new MutationObserver(function (muts) {
     for (var i = 0; i < muts.length; i++) {
       var m = muts[i], el = m.target;
+      /* انتقال تلقائي لمرحلة جديدة أثناء الحصة: انزل لأول تمرين فيها بدل ترك الصفحة في منتصفها */
+      if (el.classList && el.classList.contains('phase-content') && el.classList.contains('active') &&
+          (m.oldValue || '').split(' ').indexOf('active') === -1 && Date.now() - lastRun < 4500) {
+        setTimeout(function (ph) {
+          return function () {
+            var first = ph.querySelector('.exercise-card.current') || ph.querySelector('.exercise-card');
+            if (first && !document.body.classList.contains('focus-mode')) { try { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
+          };
+        }(el), 700);
+      }
       if (el.classList && el.classList.contains('exercise-card') && el.classList.contains('current') &&
           (m.oldValue || '').split(' ').indexOf('current') === -1) {
         clearTimeout(timer);
         timer = setTimeout(function (c) {
           return function () {
-            requestAnimationFrame(function () { requestAnimationFrame(function () { scrollCurrent(c); }); });
-            setTimeout(function () { scrollCurrent(c); }, 450);
+            ensurePhaseVisible(c);
+            requestAnimationFrame(function () { requestAnimationFrame(function () { scrollCurrent(c, false); }); });
+            setTimeout(function () { scrollCurrent(c, false); }, 500);
+            setTimeout(function () { scrollCurrent(c, true); }, 1100);
           };
         }(el), 60);
       }
@@ -17926,6 +17954,18 @@ button[data-d] { min-width: 40px; min-height: 40px; }
 html body .desc-btn { min-height: 40px !important; height: auto !important; padding-block: .45rem; }
 /* توهج الحلقة لا يُقصّ بمربع */
 .ct-ring-wrap, .ct-ring-wrap svg, .cw-runner svg, .hb-runner svg { overflow: visible; }
+</style>
+<style id="ux-polish-v13">
+/* ===== [UX] تناسب الأحجام مع عرض الشاشة (حجم العرض) وحجم خط النظام ===== */
+/* الخط الجذري كان ثابتاً 13.5px؛ صار يتدرج مع العرض: ~13.5px عند 390 ويصغر/يكبر قليلاً حول ذلك */
+html { font-size: clamp(12.5px, calc(13.5px + (100vw - 390px) * 0.028), 16px); }
+/* أزرار المؤقت تلتف تلقائياً بدل أن تنضغط نصوصها عند الخط الكبير أو العرض الضيق */
+body:not(.focus-mode) .exercise-card .timer-controls { flex-wrap: wrap; }
+body:not(.focus-mode) .exercise-card .timer-controls > * { flex: 1 1 3.5rem; min-width: 0; }
+</style>
+<style id="ux-polish-v14">
+/* شارة الصعوبة: في الزاوية البعيدة عن الأيقونة (كما كانت) وبحجم أصغر */
+html body .day-card .diff-badge { width: 14px; height: 14px; inset-block-start: .65rem; inset-inline-start: auto; inset-inline-end: .75rem; box-shadow: 0 0 0 2px rgba(255,255,255,.14), 0 0 8px var(--diff-c, #facc15); }
 </style>
 </body>
 </html>
