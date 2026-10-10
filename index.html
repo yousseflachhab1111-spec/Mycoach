@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
  <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <!-- [إصلاح] بعض بيئات WebView توفّر console ناقصاً (بلا assert/info/group/table) فيتوقف السكربت كاملاً. هذا الـ shim يكمّل الدوال الناقصة. -->
   
 <script>
@@ -4906,12 +4906,17 @@ body.floor-mode #floorHint.show { display:block; }
      </div>
      <div id="boxing-heavybag-view" class="boxing-view">
       <div class="heavybag-header">
-       <h1><svg class="ico"><use href="#ico-briefcase"/></svg> مدرب الكيس الثقيل</h1>
-       <p>6 بروتوكولات احترافية مع جولات صوتية كاملة</p>
-       <div class="hb-call-style" id="hbCallStyle"><button data-style="numbered" onclick="setHbCallStyle('numbered')">🔢 نداء مرقّم (1، 2، 3…)</button><button data-style="names" onclick="setHbCallStyle('names')">🗣️ بأسماء الضربات</button></div>
-       <div style="text-align:center"><span class="rdy-chip" id="readyChip" onclick="openReadiness(true)"></span></div>
-       <div class="hb-audio-lv-title">🎧 مستوى جلسة «صوت فقط»</div>
-       <div class="hb-call-style" id="hbAudioLevel" style="margin-top:.3rem"><button data-lv="مبتدئ" onclick="setHbAudioLevel('مبتدئ')">مبتدئ</button><button data-lv="متوسط" onclick="setHbAudioLevel('متوسط')">متوسط</button><button data-lv="متقدم" onclick="setHbAudioLevel('متقدم')">متقدم</button></div>
+       <details class="hb-settings" id="hbSettings">
+        <summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-sliders"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">إعدادات الجلسة</span><span class="hb-sum-now" id="hbSettingsNow"></span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary>
+        <div class="hb-set-body">
+         <div class="hb-set-group"><div class="hb-set-label">أسلوب النداء</div>
+          <div class="hb-call-style" id="hbCallStyle"><button data-style="numbered" onclick="setHbCallStyle('numbered')"><svg class="ico"><use href="#ico-clipboard-list"/></svg> مرقّم (1، 2، 3…)</button><button data-style="names" onclick="setHbCallStyle('names')"><svg class="ico"><use href="#ico-megaphone"/></svg> بأسماء الضربات</button></div></div>
+         <div class="hb-set-group"><div class="hb-set-label">الجاهزية</div>
+          <div class="hb-set-ready"><span class="rdy-chip" id="readyChip" onclick="openReadiness(true)"></span></div></div>
+         <div class="hb-set-group"><div class="hb-set-label"><svg class="ico"><use href="#ico-volume-2"/></svg> مستوى جلسة «صوت فقط»</div>
+          <div class="hb-call-style" id="hbAudioLevel"><button data-lv="مبتدئ" onclick="setHbAudioLevel('مبتدئ')">مبتدئ</button><button data-lv="متوسط" onclick="setHbAudioLevel('متوسط')">متوسط</button><button data-lv="متقدم" onclick="setHbAudioLevel('متقدم')">متقدم</button></div></div>
+        </div>
+       </details>
       </div>
       <div id="heavybagProtocolsGrid"></div>
      </div>
@@ -4919,7 +4924,10 @@ body.floor-mode #floorHint.show { display:block; }
       <div class="fr-setup-card">
        <h2 style="color:var(--accent-boxing);border-color:var(--accent-boxing);margin-top:0;"><svg class="ico"><use href="#ico-timer"/></svg> مؤقت الجولات الحر</h2>
        <p style="color:var(--text-secondary);font-size:0.82rem;margin-bottom:1.1rem;">اضبط عدد الجولات ومدتها بالكامل — تماماً كمؤقتات الملاكمة الاحترافية</p>
-       <div id="frSetupBody"></div>
+       <details class="hb-settings fr-fold" open>
+        <summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-sliders"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">ضبط الجولات</span><span class="hb-sum-now">الجولات · العمل · الراحة · التنبيهات</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary>
+        <div class="hb-set-body"><div id="frSetupBody"></div></div>
+       </details>
        <button class="generate-btn" style="background:var(--gradient-boxing);width:100%;" onclick="startFreeRoundTimer()"><svg class="ico"><use href="#ico-play"/></svg> ابدأ الجولات</button>
       </div>
      </div>
@@ -5016,7 +5024,7 @@ body.floor-mode #floorHint.show { display:block; }
      <div id="bldClassic">
      <div class="builder-section">
       <div class="builder-section-title">
-       <svg class="ico"><use href="#ico-check-circle"/></svg> التمارين المختارة (<span id="selectedCount">0</span>)
+       <svg class="ico"><use href="#ico-check-circle"/></svg> التمارين المختارة <span id="selectedCount" class="sel-count">0</span>
       </div>
       <div class="selected-exercises" id="selectedExercises"></div>
       <button class="clear-selected-btn" onclick="clearSelectedExercises()"><svg class="ico"><use href="#ico-trash"/></svg> إزالة الكل</button>
@@ -5893,7 +5901,7 @@ body.floor-mode #floorHint.show { display:block; }
    </div>
    <div class="cw-runner-confetti" id="cwConfetti"></div>
   </div>
-<button id="floorBtn" type="button" aria-label="وضع الهاتف على الأرض" title="وضع الهاتف على الأرض — اسحبه لتحريكه">📱</button>
+<button id="floorBtn" type="button" aria-label="وضع الهاتف على الأرض" title="وضع الهاتف على الأرض — اسحبه لتحريكه"><svg class="ico"><use href="#ico-vibrate"/></svg></button>
 <div id="floorHint">المس الشاشة لإظهار التحكم</div>
 <div id="floorCtl"><button onclick="floorTogglePause()">⏯ إيقاف / استئناف</button><button onclick="exitFloorMode()">⤴ خروج</button></div>
   <div class="hb-runner" id="hbRunner">
@@ -7266,6 +7274,10 @@ function setHbAudioLevel(lv) { playClick(); haptic('light'); safeSet('hbAudioLev
 function renderHbAudioLevel() {
   const lv = safeGet('hbAudioLevel', 'متوسط');
   document.querySelectorAll('#hbAudioLevel button').forEach(b => b.classList.toggle('active', b.dataset.lv === lv));
+  try {
+    const now = document.getElementById('hbSettingsNow');
+    if (now) now.textContent = (hbCallStyle() === 'names' ? 'بأسماء الضربات' : 'نداء مرقّم') + ' · ' + lv;
+  } catch (e) {}
 }
 function hbAudioLoop(myLoopId) {
   const comboEl = document.getElementById('hbRunnerCombo');
@@ -7486,7 +7498,12 @@ let timerStyleMode = (function () {
   let v = safeGet('timerStyleMode', '');
   if (TIMER_STYLES.indexOf(v) === -1) {
     // ترحيل من الإعداد القديم (cleanTimerMode = '1' → clean)
-    v = safeGet('cleanTimerMode', '0') === '1' ? 'clean' : 'classic';
+    v = safeGet('cleanTimerMode', '0') === '1' ? 'clean' : 'compact';
+  }
+  // [UX] ترحيل لمرة واحدة: من كان محفوظاً عنده «كلاسيكي» (الافتراضي القديم) ينتقل إلى «مدمج»؛ واختياره اللاحق يُحترم
+  if (safeGet('timerStyleMigrated', '') !== '2') {
+    safeSet('timerStyleMigrated', '2');
+    if (v === 'classic') { v = 'compact'; safeSet('timerStyleMode', 'compact'); }
   }
   return v;
 })();
@@ -8624,7 +8641,53 @@ const exerciseDescriptions = {
   elbow_strike: { ar: 'كوع', en: 'Elbow Strike', fr: 'Coup de Coude', desc: 'اضرب بكوعك بحركة أفقية أو صاعدة من مسافة قريبة.', search_ar: 'كوع مواي تاي', search_en: 'elbow strike muay thai', search_fr: 'coup de coude' },
   spinning_elbow: { ar: 'كوع دوار', en: 'Spinning Elbow', fr: 'Coude Tournant', desc: 'دوّر جسمك 180 درجة واضرب بكوعك بحركة أفقية مفاجئة.', search_ar: 'كوع دوار', search_en: 'spinning elbow muay thai', search_fr: 'coude tournant' },
   teep_kick: { ar: 'تيب (دفع)', en: 'Teep Kick', fr: 'Teep', desc: 'ادفع خصمك بباطن قدمك لإبعاده، مع رفع الركبة قبل المد.', search_ar: 'تيب مواي تاي', search_en: 'teep push kick muay thai', search_fr: 'teep' },
-  clinch_knee: { ar: 'ركبة في الاشتباك', en: 'Clinch Knee', fr: 'Genou en Clinch', desc: 'اسحب رأس خصمك للأسفل وارفع ركبتك بسرعة في الاشتباك.', search_ar: 'ركبة اشتباك', search_en: 'clinch knee muay thai', search_fr: 'genou clinch' }
+  clinch_knee: { ar: 'ركبة في الاشتباك', en: 'Clinch Knee', fr: 'Genou en Clinch', desc: 'اسحب رأس خصمك للأسفل وارفع ركبتك بسرعة في الاشتباك.', search_ar: 'ركبة اشتباك', search_en: 'clinch knee muay thai', search_fr: 'genou clinch' },
+  butt_kicks: { ar:'ركل المؤخرة بالكعبين', en:'Butt Kicks', fr:'Talons-Fesses', desc:'اركض في مكانك مع رفع كعبيك نحو مؤخرتك وأبقِ صدرك مرفوعاً.', search_ar:'ركل المؤخرة بالكعبين', search_en:'butt kicks', search_fr:'talons-fesses' },
+  lateral_shuffle: { ar:'الحركة الجانبية السريعة', en:'Lateral Shuffle', fr:'Pas Chasses Lateraux', desc:'انزل بركبتين مثنيتين وتحرّك جانباً بخطوات سريعة دون أن تضم قدميك.', search_ar:'الحركة الجانبية السريعة', search_en:'lateral shuffle', search_fr:'pas chasses lateraux' },
+  seal_jack: { ar:'جامبينغ جاك بالذراعين للأمام', en:'Seal Jacks', fr:'Seal Jacks', desc:'نفّذ جامبينغ جاك مع فتح الذراعين جانباً ثم ضمهما أمام صدرك.', search_ar:'جامبينغ جاك بالذراعين للأمام', search_en:'seal jack', search_fr:'seal jacks' },
+  squat_thrust: { ar:'قفزة القرفصاء إلى البلانك', en:'Squat Thrusts', fr:'Squat Thrust', desc:'انزل وضع يديك على الأرض، اقفز بقدميك للخلف ثم عد بسرعة للوقوف.', search_ar:'قفزة القرفصاء إلى البلانك', search_en:'squat thrust', search_fr:'squat thrust' },
+  sprint_in_place: { ar:'ركض سريع في المكان', en:'Sprint in Place', fr:'Sprint sur Place', desc:'اركض في مكانك بأقصى سرعة مع تحريك ذراعيك بقوة.', search_ar:'ركض سريع في المكان', search_en:'running in place', search_fr:'sprint sur place' },
+  reverse_lunge: { ar:'طعنة خلفية', en:'Reverse Lunge', fr:'Fente Arriere', desc:'خذ خطوة واسعة للخلف وانزل حتى تتوازى فخذك الأمامية مع الأرض ثم عد.', search_ar:'طعنة خلفية', search_en:'reverse lunge', search_fr:'fente arriere' },
+  single_leg_deadlift: { ar:'رفعة ميتة بساق واحدة', en:'Single-Leg Deadlift', fr:'Souleve de Terre Unijambiste', desc:'قف على ساق واحدة وانحنِ من الورك وارفع الساق الأخرى للخلف مع ظهر مستقيم.', search_ar:'رفعة ميتة بساق واحدة', search_en:'single leg deadlift', search_fr:'souleve de terre unijambiste' },
+  cossack_squat: { ar:'سكوات القوزاق', en:'Cossack Squat', fr:'Squat Cosaque', desc:'انزل جانباً على ساق واحدة وأبقِ الأخرى ممدودة ثم بدّل الجهة.', search_ar:'سكوات القوزاق', search_en:'cossack squat', search_fr:'squat cosaque' },
+  squat_hold: { ar:'ثبات القرفصاء', en:'Squat Hold', fr:'Squat Isometrique', desc:'انزل إلى وضعية القرفصاء السفلى وثبّتها مع إبقاء الصدر مرفوعاً.', search_ar:'ثبات القرفصاء', search_en:'squat hold', search_fr:'squat isometrique' },
+  incline_pushup: { ar:'ضغط مائل', en:'Incline Push-Up', fr:'Pompes Inclinees', desc:'ضع يديك على سطح مرتفع كالكرسي ونفّذ الضغط بجسم مستقيم.', search_ar:'ضغط مائل', search_en:'incline push up', search_fr:'pompes inclinees' },
+  knee_pushup: { ar:'ضغط على الركبتين', en:'Knee Push-Up', fr:'Pompes sur les Genoux', desc:'ثبّت ركبتيك على الأرض وانزل بصدرك مع إبقاء الجسم مستقيماً من الركبة إلى الرأس.', search_ar:'ضغط على الركبتين', search_en:'knee push up', search_fr:'pompes sur les genoux' },
+  clap_pushup: { ar:'ضغط بالتصفيق', en:'Clap Push-Up', fr:'Pompes avec Claquement', desc:'ادفع جسمك بقوة لأعلى حتى ترتفع يداك وصفّق ثم اهبط بلطف.', search_ar:'ضغط بالتصفيق', search_en:'clap push up', search_fr:'pompes avec claquement' },
+  hindu_pushup: { ar:'ضغط هندي', en:'Hindu Push-Up', fr:'Pompes Hindoues', desc:'من وضعية الكلب المقلوب انزل بصدرك للأمام ثم ارفع جسمك للأعلى وعد للخلف.', search_ar:'ضغط هندي', search_en:'hindu push up', search_fr:'pompes hindoues' },
+  swimmer: { ar:'السباح', en:'Swimmer', fr:'Nage', desc:'استلقِ على بطنك وارفع ذراعيك وساقيك وبدّل الذراع والساق المعاكسة بإيقاع ثابت.', search_ar:'السباح', search_en:'swimmer', search_fr:'nage' },
+  reverse_snow_angel: { ar:'ملاك الثلج المعكوس', en:'Reverse Snow Angel', fr:'Ange des Neiges Inverse', desc:'استلقِ على بطنك وارفع صدرك وحرّك ذراعيك من الأعلى إلى الجانبين.', search_ar:'ملاك الثلج المعكوس', search_en:'reverse snow angel', search_fr:'ange des neiges inverse' },
+  prone_y_raise: { ar:'رفع الذراعين على شكل Y', en:'Prone Y-Raise', fr:'Elevation en Y', desc:'استلقِ على بطنك وارفع ذراعيك على شكل حرف Y مع الضغط على لوحي الكتف.', search_ar:'رفع الذراعين على شكل Y', search_en:'prone y raise', search_fr:'elevation en y' },
+  good_morning: { ar:'انحناءة صباح الخير', en:'Good Morning', fr:'Good Morning', desc:'ضع يديك خلف رأسك وانحنِ من الورك بظهر مستقيم ثم ارجع للوقوف.', search_ar:'انحناءة صباح الخير', search_en:'good morning', search_fr:'good morning' },
+  crunch: { ar:'كرانش', en:'Crunch', fr:'Crunch Abdominal', desc:'استلقِ على ظهرك وارفع كتفيك عن الأرض بتقلص البطن ثم انزل ببطء.', search_ar:'كرانش', search_en:'crunch', search_fr:'crunch abdominal' },
+  sit_up: { ar:'سيت أب', en:'Sit-Up', fr:'Redressement Assis', desc:'من الاستلقاء اجلس حتى يصبح جذعك عمودياً ثم انزل بتحكم.', search_ar:'سيت أب', search_en:'sit up', search_fr:'redressement assis' },
+  windshield_wiper: { ar:'مساحات الزجاج', en:'Windshield Wipers', fr:'Essuie-Glaces', desc:'استلقِ وارفع ساقيك لأعلى ثم حرّكهما يميناً ويساراً كمساحة السيارة.', search_ar:'مساحات الزجاج', search_en:'windshield wiper', search_fr:'essuie-glaces' },
+  hip_dips: { ar:'ميلان الحوض في البلانك الجانبي', en:'Hip Dips', fr:'Hip Dips', desc:'من البلانك الجانبي اخفض حوضك نحو الأرض ثم ارفعه عالياً.', search_ar:'ميلان الحوض في البلانك الجانبي', search_en:'hip dip', search_fr:'hip dips' },
+  duck_walk: { ar:'مشية البطة', en:'Duck Walk', fr:'Marche du Canard', desc:'انزل إلى قرفصاء عميقة وامشِ للأمام مع إبقاء الصدر مرفوعاً.', search_ar:'مشية البطة', search_en:'duck walk', search_fr:'marche du canard' },
+  frog_jump: { ar:'قفزة الضفدع', en:'Frog Jump', fr:'Saut de Grenouille', desc:'انزل إلى قرفصاء عميقة ويداك على الأرض ثم اقفز للأمام بقوة واهبط بلطف.', search_ar:'قفزة الضفدع', search_en:'frog jump', search_fr:'saut de grenouille' },
+  worlds_greatest_stretch: { ar:'أعظم إطالة', en:'Worlds Greatest Stretch', fr:'Meilleur Etirement du Monde', desc:'من وضعية الطعنة ضع يداً على الأرض وافتح صدرك للأعلى ثم بدّل الجهة.', search_ar:'أعظم إطالة', search_en:'world greatest stretch', search_fr:'meilleur etirement du monde' },
+  scorpion: { ar:'إطالة العقرب', en:'Scorpion Stretch', fr:'Etirement Scorpion', desc:'استلقِ على بطنك وارفع ساقاً مثنية عبر جسمك نحو اليد المعاكسة.', search_ar:'إطالة العقرب', search_en:'scorpion stretch', search_fr:'etirement scorpion' },
+  goblet_squat: { ar:'سكوات الكأس', en:'Goblet Squat', fr:'Squat Gobelet', desc:'امسك وزناً أمام صدرك وانزل بقرفصاء عميقة مع ظهر مستقيم.', search_ar:'سكوات الكأس', search_en:'goblet squat', search_fr:'squat gobelet' },
+  db_row: { ar:'تجديف بالدمبل', en:'Dumbbell Row', fr:'Rowing Haltere', desc:'ضع ركبتك ويدك على مقعد وارفع الدمبل نحو خصرك مع شد لوح الكتف.', search_ar:'تجديف بالدمبل', search_en:'dumbbell row', search_fr:'rowing haltere' },
+  db_shoulder_press: { ar:'ضغط الكتف بالدمبل', en:'Dumbbell Shoulder Press', fr:'Developpe Epaules Halteres', desc:'ادفع الدمبلين من مستوى الكتفين إلى الأعلى ثم انزل بتحكم.', search_ar:'ضغط الكتف بالدمبل', search_en:'dumbbell shoulder press', search_fr:'developpe epaules halteres' },
+  farmer_walk: { ar:'مشية الفلاح', en:'Farmers Walk', fr:'Marche du Fermier', desc:'امسك وزناً ثقيلاً في كل يد وامشِ بخطوات ثابتة وكتفين مشدودين.', search_ar:'مشية الفلاح', search_en:'farmers walk', search_fr:'marche du fermier' },
+  box_jab_cross: { ar:'جاب وكروس', en:'Jab-Cross', fr:'Direct-Croise', desc:'نفّذ لكمة الجاب الأمامية ثم الكروس الخلفية مع دوران الورك.', search_ar:'جاب وكروس', search_en:'jab cross', search_fr:'direct-croise' },
+  box_hooks: { ar:'ضربات الهوك', en:'Hooks', fr:'Crochets', desc:'لف جسمك ونفّذ لكمة جانبية وكوعك بزاوية قائمة.', search_ar:'ضربات الهوك', search_en:'boxing hook', search_fr:'crochets' },
+  box_uppercuts: { ar:'ضربات الأبركت', en:'Uppercuts', fr:'Uppercuts', desc:'اثنِ ركبتيك قليلاً وادفع قبضتك للأعلى من تحت ذقن الخصم.', search_ar:'ضربات الأبركت', search_en:'uppercut', search_fr:'uppercuts' },
+  box_slip_roll: { ar:'التفادي والانحناء', en:'Slip and Roll', fr:'Esquive et Rotation', desc:'تفادَ الضربة بإمالة الرأس جانباً ثم انحنِ وانزلق للجهة الأخرى.', search_ar:'التفادي والانحناء', search_en:'slip and roll', search_fr:'esquive et rotation' },
+  box_shadow: { ar:'ملاكمة الظل', en:'Shadow Boxing', fr:'Boxe dans le Vide', desc:'تحرك وكرر مجموعات الضربات في الهواء مع الاهتمام بالقدمين وحماية الوجه.', search_ar:'ملاكمة الظل', search_en:'shadow boxing', search_fr:'boxe dans le vide' },
+  hip_flexor_stretch: { ar:'إطالة عضلات الورك', en:'Hip Flexor Stretch', fr:'Etirement des Flechisseurs de la Hanche', desc:'اجلس في وضعية الطعنة بركبة على الأرض وادفع حوضك للأمام.', search_ar:'إطالة عضلات الورك', search_en:'hip flexor stretch', search_fr:'etirement des flechisseurs de la hanche' },
+  triceps_stretch: { ar:'إطالة الترايسبس', en:'Triceps Stretch', fr:'Etirement des Triceps', desc:'ارفع ذراعك فوق رأسك وثنِ الكوع ثم اضغط عليه بيدك الأخرى برفق.', search_ar:'إطالة الترايسبس', search_en:'triceps stretch', search_fr:'etirement des triceps' },
+  spinal_twist: { ar:'التواء العمود الفقري جالساً', en:'Seated Spinal Twist', fr:'Torsion de la Colonne', desc:'اجلس واثنِ ساقاً وأدر جذعك نحو الجهة المعاكسة مع شد العمود الفقري.', search_ar:'التواء العمود الفقري جالساً', search_en:'seated spinal twist', search_fr:'torsion de la colonne' },
+  butterfly_stretch: { ar:'إطالة الفراشة', en:'Butterfly Stretch', fr:'Etirement Papillon', desc:'اجلس وضم باطن قدميك معاً ودع ركبتيك تسقطان نحو الجانبين.', search_ar:'إطالة الفراشة', search_en:'butterfly stretch', search_fr:'etirement papillon' },
+  side_kick: { ar:'ركلة جانبية', en:'Side Kick', fr:'Coup de Pied Lateral', desc:'ارفع ركبتك ثم ادفع قدمك للجانب بكعب القدم مع ميل الجذع.', search_ar:'ركلة جانبية', search_en:'side kick', search_fr:'coup de pied lateral' },
+  hook_kick: { ar:'ركلة الخطاف', en:'Hook Kick', fr:'Coup de Pied en Crochet', desc:'ارفع قدمك للأمام ثم اسحبها في قوس نحو الخلف لتضرب بالكعب.', search_ar:'ركلة الخطاف', search_en:'hook kick', search_fr:'coup de pied en crochet' },
+  axe_kick: { ar:'ركلة الفأس', en:'Axe Kick', fr:'Coup de Pied Hache', desc:'ارفع ساقك عالياً ثم اخفضها بقوة من الأعلى إلى الأسفل.', search_ar:'ركلة الفأس', search_en:'axe kick', search_fr:'coup de pied hache' },
+  switch_kick: { ar:'ركلة التبديل', en:'Switch Kick', fr:'Coup de Pied Switch', desc:'بدّل وضعية قدميك بسرعة ثم نفّذ ركلة دائرية بالساق الأمامية.', search_ar:'ركلة التبديل', search_en:'switch kick', search_fr:'coup de pied switch' },
+  upward_elbow: { ar:'كوع صاعد', en:'Upward Elbow', fr:'Coude Montant', desc:'ارفع كوعك من الأسفل إلى الأعلى نحو ذقن الخصم مع لف الورك.', search_ar:'كوع صاعد', search_en:'upward elbow', search_fr:'coude montant' },
+  diagonal_elbow: { ar:'كوع قطري', en:'Diagonal Elbow', fr:'Coude Diagonal', desc:'اضرب بالكوع بزاوية قطرية من الأعلى للأسفل مع نقل وزنك للأمام.', search_ar:'كوع قطري', search_en:'diagonal elbow', search_fr:'coude diagonal' },
+  horizontal_elbow: { ar:'كوع أفقي', en:'Horizontal Elbow', fr:'Coude Horizontal', desc:'أدر جسمك وادفع كوعك أفقياً أمامك على مستوى الوجه.', search_ar:'كوع أفقي', search_en:'horizontal elbow', search_fr:'coude horizontal' },
+  diagonal_knee: { ar:'ركبة قطرية', en:'Diagonal Knee', fr:'Genou Diagonal', desc:'ارفع ركبتك بقوس قطري نحو جانب الخصم مع دوران الورك.', search_ar:'ركبة قطرية', search_en:'diagonal knee', search_fr:'genou diagonal' }
 };
 
 const MUSCLE_MAP = { default: ['الجسم بالكامل'], squat: ['الفخذ الأمامي', 'المؤخرة', 'السمانة'], jump: ['الفخذ', 'السمانة', 'القلب'], push: ['الصدر', 'الترايسبس', 'الكتف الأمامي'], pull: ['الظهر', 'البايسبس', 'الكتف الخلفي'], punch: ['الكتف', 'الذراع', 'الجذع', 'القلب'], kick: ['الفخذ', 'المؤخرة', 'الجذع'], twist: ['البطن', 'الجانبية', 'الجذع'], hold: ['البطن', 'الجذع', 'الظهر السفلي'], run: ['الفخذ', 'السمانة', 'القلب'], rope: ['السمانة', 'الكتف', 'القلب'], swing: ['المؤخرة', 'الفخذ الخلفي', 'الظهر السفلي'], slip: ['الجذع', 'الرقبة', 'الفخذ'], raise: ['السمانة', 'الكتف الجانبي'] };
@@ -11852,7 +11915,53 @@ const ALL_EXERCISES_FOR_BUILDER = [
   { id: 'elbow_strike', name: 'Elbow Strike', emoji: '💪', descKey: 'elbow_strike', group: 'مواي تاي' },
   { id: 'spinning_elbow', name: 'Spinning Elbow', emoji: '💪', descKey: 'spinning_elbow', group: 'مواي تاي' },
   { id: 'teep_kick', name: 'Teep Kick', emoji: '🦶', descKey: 'teep_kick', group: 'مواي تاي' },
-  { id: 'clinch_knee', name: 'Clinch Knee', emoji: '🦵', descKey: 'clinch_knee', group: 'مواي تاي' }
+  { id: 'clinch_knee', name: 'Clinch Knee', emoji: '🦵', descKey: 'clinch_knee', group: 'مواي تاي' },
+  { id: 'butt_kicks', name: 'Butt Kicks', emoji: '👟', descKey: 'butt_kicks', group: 'كارديو' },
+  { id: 'lateral_shuffle', name: 'Lateral Shuffle', emoji: '↔️', descKey: 'lateral_shuffle', group: 'كارديو' },
+  { id: 'seal_jack', name: 'Seal Jacks', emoji: '🦭', descKey: 'seal_jack', group: 'كارديو' },
+  { id: 'squat_thrust', name: 'Squat Thrusts', emoji: '💥', descKey: 'squat_thrust', group: 'كارديو' },
+  { id: 'sprint_in_place', name: 'Sprint in Place', emoji: '🏃', descKey: 'sprint_in_place', group: 'كارديو' },
+  { id: 'reverse_lunge', name: 'Reverse Lunge', emoji: '↩️', descKey: 'reverse_lunge', group: 'أرجل' },
+  { id: 'single_leg_deadlift', name: 'Single-Leg Deadlift', emoji: '🦩', descKey: 'single_leg_deadlift', group: 'أرجل' },
+  { id: 'cossack_squat', name: 'Cossack Squat', emoji: '🪖', descKey: 'cossack_squat', group: 'أرجل' },
+  { id: 'squat_hold', name: 'Squat Hold', emoji: '🧱', descKey: 'squat_hold', group: 'أرجل' },
+  { id: 'incline_pushup', name: 'Incline Push-Up', emoji: '📈', descKey: 'incline_pushup', group: 'صدر' },
+  { id: 'knee_pushup', name: 'Knee Push-Up', emoji: '🧎', descKey: 'knee_pushup', group: 'صدر' },
+  { id: 'clap_pushup', name: 'Clap Push-Up', emoji: '👏', descKey: 'clap_pushup', group: 'صدر' },
+  { id: 'hindu_pushup', name: 'Hindu Push-Up', emoji: '🕉️', descKey: 'hindu_pushup', group: 'صدر' },
+  { id: 'swimmer', name: 'Swimmer', emoji: '🏊', descKey: 'swimmer', group: 'ظهر' },
+  { id: 'reverse_snow_angel', name: 'Reverse Snow Angel', emoji: '👼', descKey: 'reverse_snow_angel', group: 'ظهر' },
+  { id: 'prone_y_raise', name: 'Prone Y-Raise', emoji: '🙌', descKey: 'prone_y_raise', group: 'ظهر' },
+  { id: 'good_morning', name: 'Good Morning', emoji: '🌅', descKey: 'good_morning', group: 'ظهر' },
+  { id: 'crunch', name: 'Crunch', emoji: '🔼', descKey: 'crunch', group: 'بطن' },
+  { id: 'sit_up', name: 'Sit-Up', emoji: '🛌', descKey: 'sit_up', group: 'بطن' },
+  { id: 'windshield_wiper', name: 'Windshield Wipers', emoji: '🚗', descKey: 'windshield_wiper', group: 'بطن' },
+  { id: 'hip_dips', name: 'Hip Dips', emoji: '🌊', descKey: 'hip_dips', group: 'بطن' },
+  { id: 'duck_walk', name: 'Duck Walk', emoji: '🦆', descKey: 'duck_walk', group: 'حركات' },
+  { id: 'frog_jump', name: 'Frog Jump', emoji: '🐸', descKey: 'frog_jump', group: 'حركات' },
+  { id: 'worlds_greatest_stretch', name: 'Worlds Greatest Stretch', emoji: '🌍', descKey: 'worlds_greatest_stretch', group: 'حركات' },
+  { id: 'scorpion', name: 'Scorpion Stretch', emoji: '🦂', descKey: 'scorpion', group: 'حركات' },
+  { id: 'goblet_squat', name: 'Goblet Squat', emoji: '🏆', descKey: 'goblet_squat', group: 'أوزان' },
+  { id: 'db_row', name: 'Dumbbell Row', emoji: '🏋️', descKey: 'db_row', group: 'أوزان' },
+  { id: 'db_shoulder_press', name: 'Dumbbell Shoulder Press', emoji: '🏋️', descKey: 'db_shoulder_press', group: 'أوزان' },
+  { id: 'farmer_walk', name: 'Farmers Walk', emoji: '🚜', descKey: 'farmer_walk', group: 'أوزان' },
+  { id: 'box_jab_cross', name: 'Jab-Cross', emoji: '🥊', descKey: 'box_jab_cross', group: 'ملاكمة' },
+  { id: 'box_hooks', name: 'Hooks', emoji: '🥊', descKey: 'box_hooks', group: 'ملاكمة' },
+  { id: 'box_uppercuts', name: 'Uppercuts', emoji: '🥊', descKey: 'box_uppercuts', group: 'ملاكمة' },
+  { id: 'box_slip_roll', name: 'Slip and Roll', emoji: '🛡️', descKey: 'box_slip_roll', group: 'ملاكمة' },
+  { id: 'box_shadow', name: 'Shadow Boxing', emoji: '🌑', descKey: 'box_shadow', group: 'ملاكمة' },
+  { id: 'hip_flexor_stretch', name: 'Hip Flexor Stretch', emoji: '🧘', descKey: 'hip_flexor_stretch', group: 'إطالة' },
+  { id: 'triceps_stretch', name: 'Triceps Stretch', emoji: '💪', descKey: 'triceps_stretch', group: 'إطالة' },
+  { id: 'spinal_twist', name: 'Seated Spinal Twist', emoji: '🌀', descKey: 'spinal_twist', group: 'إطالة' },
+  { id: 'butterfly_stretch', name: 'Butterfly Stretch', emoji: '🦋', descKey: 'butterfly_stretch', group: 'إطالة' },
+  { id: 'side_kick', name: 'Side Kick', emoji: '🦵', descKey: 'side_kick', group: 'كيك بوكسينغ' },
+  { id: 'hook_kick', name: 'Hook Kick', emoji: '🦵', descKey: 'hook_kick', group: 'كيك بوكسينغ' },
+  { id: 'axe_kick', name: 'Axe Kick', emoji: '🪓', descKey: 'axe_kick', group: 'كيك بوكسينغ' },
+  { id: 'switch_kick', name: 'Switch Kick', emoji: '🔁', descKey: 'switch_kick', group: 'كيك بوكسينغ' },
+  { id: 'upward_elbow', name: 'Upward Elbow', emoji: '💪', descKey: 'upward_elbow', group: 'مواي تاي' },
+  { id: 'diagonal_elbow', name: 'Diagonal Elbow', emoji: '💪', descKey: 'diagonal_elbow', group: 'مواي تاي' },
+  { id: 'horizontal_elbow', name: 'Horizontal Elbow', emoji: '💪', descKey: 'horizontal_elbow', group: 'مواي تاي' },
+  { id: 'diagonal_knee', name: 'Diagonal Knee', emoji: '🦵', descKey: 'diagonal_knee', group: 'مواي تاي' }
 ];
 function renderExercisePicker() {
   const picker = document.getElementById('exercisePicker');
@@ -11877,27 +11986,50 @@ function renderExercisePicker() {
   });
   
   // عرض كل مجموعة
+  // [UX] المجموعات قابلة للطي؛ الحالة تُحفظ (الافتراضي: أول مجموعة مفتوحة فقط)
+  let openList = safeParse('pickerOpenGroups', null);
+  if (!Array.isArray(openList)) openList = orderedGroups.length ? [orderedGroups[0]] : [];
   orderedGroups.forEach(groupName => {
     const exercises = groups[groupName] || [];
     if (exercises.length === 0) return;
-    
-    // عنوان المجموعة
+    const isOpen = openList.indexOf(groupName) !== -1;
+    const selCount = exercises.filter(e => selectedExercises.some(s => s.id === e.id)).length;
+
     const groupHeader = document.createElement('div');
-    groupHeader.className = 'picker-group-header';
-    groupHeader.style.cssText = 'grid-column: 1 / -1; font-size: 0.7rem; font-weight: 800; color: var(--accent-info); padding: 0.4rem 0.2rem 0.2rem; border-bottom: 1px solid var(--border-color); margin-top: 0.3rem;';
-    groupHeader.textContent = '📁 ' + groupName + ' (' + exercises.length + ')';
+    groupHeader.className = 'picker-group-header' + (isOpen ? ' open' : '');
+    groupHeader.setAttribute('role', 'button');
+    groupHeader.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    groupHeader.tabIndex = 0;
+    groupHeader.style.cssText = 'grid-column: 1 / -1;';
+    const t = document.createElement('span'); t.className = 'pgh-title'; t.textContent = groupName;
+    const n = document.createElement('span'); n.className = 'pgh-count'; n.textContent = exercises.length;
+    groupHeader.appendChild(t); groupHeader.appendChild(n);
+    if (selCount) { const sc = document.createElement('span'); sc.className = 'pgh-sel'; sc.textContent = selCount + ' مختار'; groupHeader.appendChild(sc); }
+    const ch = document.createElement('span'); ch.className = 'pgh-chev'; ch.setAttribute('aria-hidden', 'true'); ch.textContent = '▾';
+    groupHeader.appendChild(ch);
+    const toggleGroup = () => {
+      const cur = safeParse('pickerOpenGroups', null);
+      let list = Array.isArray(cur) ? cur.slice() : (orderedGroups.length ? [orderedGroups[0]] : []);
+      const at = list.indexOf(groupName);
+      if (at === -1) list.push(groupName); else list.splice(at, 1);
+      safeSet('pickerOpenGroups', list);
+      playClick();
+      renderExercisePicker();
+    };
+    groupHeader.onclick = toggleGroup;
+    groupHeader.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGroup(); } };
     picker.appendChild(groupHeader);
-    
-    // التمارين
+
+    if (!isOpen) return;
     exercises.forEach(ex => {
       const item = document.createElement('div');
       item.className = 'exercise-pick-item' + (selectedExercises.some(s => s.id === ex.id) ? ' selected' : '');
       item.onclick = () => toggleExerciseSelection(ex);
-      
+
       const desc = exerciseDescriptions[ex.id] || {};
       const nameEn = desc.en || ex.name;
       const nameAr = desc.ar || ex.name;
-      
+
       item.innerHTML = `
         <span class="pick-name-en">${nameEn}</span>
         <span class="pick-name-ar">${nameAr}</span>
@@ -12067,7 +12199,7 @@ function bldTotalSec() {
 }
 function bldCue() { return (BLD_INT.find(i => i[0] === bldS.intensity) || BLD_INT[1])[3]; }
 function cwSpeak(t) { if (bldS.mode === 'modern' && !bldS.audio) return; speak(t); }
-function bldUpdateTotal() { if (typeof bldS === 'undefined') return; const t = document.getElementById('bldTotal'); if (t) t.textContent = mmss(bldTotalSec()); const sb = document.getElementById('bldSbInfo'); if (sb) { sb.querySelector('b').textContent = mmss(bldTotalSec()); sb.querySelector('small').textContent = bldS.rounds + ' rounds · ' + selectedExercises.length + ' exercises'; } const s = document.getElementById('bldSum'); if (s) s.textContent = bldS.rounds + ' rounds · ' + selectedExercises.length + ' exercises · ' + mmss(bldS.work) + ' work / ' + mmss(bldS.rest) + ' rest'; }
+function bldUpdateTotal() { if (typeof bldS === 'undefined') return; const t = document.getElementById('bldTotal'); if (t) t.textContent = mmss(bldTotalSec()); const sb = document.getElementById('bldSbInfo'); if (sb) { sb.querySelector('b').textContent = mmss(bldTotalSec()); sb.querySelector('small').textContent = bldS.rounds + ' جولات · ' + selectedExercises.length + ' تمارين'; } const s = document.getElementById('bldSum'); if (s) s.textContent = bldS.rounds + ' rounds · ' + selectedExercises.length + ' exercises · ' + mmss(bldS.work) + ' work / ' + mmss(bldS.rest) + ' rest'; }
 function bldLoadCustom() { safeParse('customExercises', []).forEach(bldRegister); }
 function bldRegister(c) {
   if (!c || !c.id || ALL_EXERCISES_FOR_BUILDER.some(e => e.id === c.id)) return;
@@ -12778,7 +12910,53 @@ const EXERCISE_MEDIA = {
   elbow_strike: { pinnedIds: [], queries: ['elbow strike', 'muay thai elbow'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع', englishName: 'Elbow Strike' },
   spinning_elbow: { pinnedIds: [], queries: ['spinning elbow', 'muay thai spinning elbow'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع دوار', englishName: 'Spinning Elbow' },
   teep_kick: { pinnedIds: [], queries: ['teep kick', 'push kick', 'muay thai teep'], category: 'muaythai', fallbackType: 'svg', arabicName: 'تيب (دفع)', englishName: 'Teep Kick' },
-  clinch_knee: { pinnedIds: [], queries: ['clinch knee', 'muay thai clinch'], category: 'muaythai', fallbackType: 'svg', arabicName: 'ركبة في الاشتباك', englishName: 'Clinch Knee' }
+  clinch_knee: { pinnedIds: [], queries: ['clinch knee', 'muay thai clinch'], category: 'muaythai', fallbackType: 'svg', arabicName: 'ركبة في الاشتباك', englishName: 'Clinch Knee' },
+  butt_kicks: { pinnedIds: [], queries: ['butt kicks', 'butt kick', 'high heel kicks'], category: 'cardio', fallbackType: 'svg', arabicName: 'ركل المؤخرة بالكعبين', englishName: 'Butt Kicks' },
+  lateral_shuffle: { pinnedIds: [], queries: ['lateral shuffle', 'side shuffle', 'lateral shuffle drill'], category: 'cardio', fallbackType: 'svg', arabicName: 'الحركة الجانبية السريعة', englishName: 'Lateral Shuffle' },
+  seal_jack: { pinnedIds: [], queries: ['seal jack', 'jumping jack', 'arm jack'], category: 'cardio', fallbackType: 'svg', arabicName: 'جامبينغ جاك بالذراعين للأمام', englishName: 'Seal Jacks' },
+  squat_thrust: { pinnedIds: [], queries: ['squat thrust', 'burpee', 'burpees'], category: 'cardio', fallbackType: 'svg', arabicName: 'قفزة القرفصاء إلى البلانك', englishName: 'Squat Thrusts' },
+  sprint_in_place: { pinnedIds: [], queries: ['running in place', 'sprint', 'high speed run'], category: 'cardio', fallbackType: 'svg', arabicName: 'ركض سريع في المكان', englishName: 'Sprint in Place' },
+  reverse_lunge: { pinnedIds: [], queries: ['reverse lunge', 'dumbbell reverse lunge', 'rear lunge'], category: 'legs', fallbackType: 'svg', arabicName: 'طعنة خلفية', englishName: 'Reverse Lunge' },
+  single_leg_deadlift: { pinnedIds: [], queries: ['single leg deadlift', 'one leg romanian deadlift', 'single leg rdl'], category: 'legs', fallbackType: 'svg', arabicName: 'رفعة ميتة بساق واحدة', englishName: 'Single-Leg Deadlift' },
+  cossack_squat: { pinnedIds: [], queries: ['cossack squat', 'side squat', 'lateral squat'], category: 'legs', fallbackType: 'svg', arabicName: 'سكوات القوزاق', englishName: 'Cossack Squat' },
+  squat_hold: { pinnedIds: [], queries: ['squat hold', 'isometric squat', 'bodyweight squat'], category: 'legs', fallbackType: 'svg', arabicName: 'ثبات القرفصاء', englishName: 'Squat Hold' },
+  incline_pushup: { pinnedIds: [], queries: ['incline push up', 'incline pushup', 'push up incline'], category: 'chest', fallbackType: 'svg', arabicName: 'ضغط مائل', englishName: 'Incline Push-Up' },
+  knee_pushup: { pinnedIds: [], queries: ['knee push up', 'modified push up', 'push up knees'], category: 'chest', fallbackType: 'svg', arabicName: 'ضغط على الركبتين', englishName: 'Knee Push-Up' },
+  clap_pushup: { pinnedIds: [], queries: ['clap push up', 'plyometric push up', 'clapping pushup'], category: 'chest', fallbackType: 'svg', arabicName: 'ضغط بالتصفيق', englishName: 'Clap Push-Up' },
+  hindu_pushup: { pinnedIds: [], queries: ['hindu push up', 'dive bomber push up', 'hindu pushup'], category: 'chest', fallbackType: 'svg', arabicName: 'ضغط هندي', englishName: 'Hindu Push-Up' },
+  swimmer: { pinnedIds: [], queries: ['swimmer', 'superman swimmer', 'prone swimming'], category: 'back', fallbackType: 'svg', arabicName: 'السباح', englishName: 'Swimmer' },
+  reverse_snow_angel: { pinnedIds: [], queries: ['reverse snow angel', 'prone snow angel', 'snow angel back'], category: 'back', fallbackType: 'svg', arabicName: 'ملاك الثلج المعكوس', englishName: 'Reverse Snow Angel' },
+  prone_y_raise: { pinnedIds: [], queries: ['prone y raise', 'y raise', 'lying y raise'], category: 'back', fallbackType: 'svg', arabicName: 'رفع الذراعين على شكل Y', englishName: 'Prone Y-Raise' },
+  good_morning: { pinnedIds: [], queries: ['good morning', 'bodyweight good morning', 'good morning exercise'], category: 'back', fallbackType: 'svg', arabicName: 'انحناءة صباح الخير', englishName: 'Good Morning' },
+  crunch: { pinnedIds: [], queries: ['crunch', 'abdominal crunch', 'crunches'], category: 'core', fallbackType: 'svg', arabicName: 'كرانش', englishName: 'Crunch' },
+  sit_up: { pinnedIds: [], queries: ['sit up', 'sit-up', 'situp'], category: 'core', fallbackType: 'svg', arabicName: 'سيت أب', englishName: 'Sit-Up' },
+  windshield_wiper: { pinnedIds: [], queries: ['windshield wiper', 'windshield wipers', 'lying leg rotation'], category: 'core', fallbackType: 'svg', arabicName: 'مساحات الزجاج', englishName: 'Windshield Wipers' },
+  hip_dips: { pinnedIds: [], queries: ['hip dip', 'side plank hip dip', 'side plank hip lift'], category: 'core', fallbackType: 'svg', arabicName: 'ميلان الحوض في البلانك الجانبي', englishName: 'Hip Dips' },
+  duck_walk: { pinnedIds: [], queries: ['duck walk', 'squat walk', 'low squat walk'], category: 'legs', fallbackType: 'svg', arabicName: 'مشية البطة', englishName: 'Duck Walk' },
+  frog_jump: { pinnedIds: [], queries: ['frog jump', 'squat jump forward', 'frog hop'], category: 'cardio', fallbackType: 'svg', arabicName: 'قفزة الضفدع', englishName: 'Frog Jump' },
+  worlds_greatest_stretch: { pinnedIds: [], queries: ['world greatest stretch', 'lunge with rotation', 'spiderman stretch'], category: 'mobility', fallbackType: 'svg', arabicName: 'أعظم إطالة', englishName: 'Worlds Greatest Stretch' },
+  scorpion: { pinnedIds: [], queries: ['scorpion stretch', 'scorpion', 'lying scorpion'], category: 'mobility', fallbackType: 'svg', arabicName: 'إطالة العقرب', englishName: 'Scorpion Stretch' },
+  goblet_squat: { pinnedIds: [], queries: ['goblet squat', 'kettlebell goblet squat', 'dumbbell goblet squat'], category: 'legs', fallbackType: 'svg', arabicName: 'سكوات الكأس', englishName: 'Goblet Squat' },
+  db_row: { pinnedIds: [], queries: ['dumbbell row', 'one arm dumbbell row', 'db row'], category: 'back', fallbackType: 'svg', arabicName: 'تجديف بالدمبل', englishName: 'Dumbbell Row' },
+  db_shoulder_press: { pinnedIds: [], queries: ['dumbbell shoulder press', 'shoulder press', 'seated dumbbell press'], category: 'shoulders', fallbackType: 'svg', arabicName: 'ضغط الكتف بالدمبل', englishName: 'Dumbbell Shoulder Press' },
+  farmer_walk: { pinnedIds: [], queries: ['farmers walk', 'farmer carry', 'dumbbell farmer walk'], category: 'core', fallbackType: 'svg', arabicName: 'مشية الفلاح', englishName: 'Farmers Walk' },
+  box_jab_cross: { pinnedIds: [], queries: ['jab cross', 'boxing jab cross', 'shadow boxing'], category: 'boxing', fallbackType: 'svg', arabicName: 'جاب وكروس', englishName: 'Jab-Cross' },
+  box_hooks: { pinnedIds: [], queries: ['boxing hook', 'left hook', 'hook punch'], category: 'boxing', fallbackType: 'svg', arabicName: 'ضربات الهوك', englishName: 'Hooks' },
+  box_uppercuts: { pinnedIds: [], queries: ['uppercut', 'boxing uppercut', 'uppercut punch'], category: 'boxing', fallbackType: 'svg', arabicName: 'ضربات الأبركت', englishName: 'Uppercuts' },
+  box_slip_roll: { pinnedIds: [], queries: ['slip and roll', 'boxing slip', 'bob and weave'], category: 'boxing', fallbackType: 'svg', arabicName: 'التفادي والانحناء', englishName: 'Slip and Roll' },
+  box_shadow: { pinnedIds: [], queries: ['shadow boxing', 'boxing drill', 'boxing footwork'], category: 'boxing', fallbackType: 'svg', arabicName: 'ملاكمة الظل', englishName: 'Shadow Boxing' },
+  hip_flexor_stretch: { pinnedIds: [], queries: ['hip flexor stretch', 'kneeling hip flexor stretch', 'lunge stretch'], category: 'stretching', fallbackType: 'svg', arabicName: 'إطالة عضلات الورك', englishName: 'Hip Flexor Stretch' },
+  triceps_stretch: { pinnedIds: [], queries: ['triceps stretch', 'overhead triceps stretch', 'tricep stretch'], category: 'stretching', fallbackType: 'svg', arabicName: 'إطالة الترايسبس', englishName: 'Triceps Stretch' },
+  spinal_twist: { pinnedIds: [], queries: ['seated spinal twist', 'seated twist stretch', 'spinal twist'], category: 'stretching', fallbackType: 'svg', arabicName: 'التواء العمود الفقري جالساً', englishName: 'Seated Spinal Twist' },
+  butterfly_stretch: { pinnedIds: [], queries: ['butterfly stretch', 'seated butterfly', 'groin stretch'], category: 'stretching', fallbackType: 'svg', arabicName: 'إطالة الفراشة', englishName: 'Butterfly Stretch' },
+  side_kick: { pinnedIds: [], queries: ['side kick', 'kickboxing side kick', 'side kick martial arts'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة جانبية', englishName: 'Side Kick' },
+  hook_kick: { pinnedIds: [], queries: ['hook kick', 'kickboxing hook kick', 'heel hook kick'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة الخطاف', englishName: 'Hook Kick' },
+  axe_kick: { pinnedIds: [], queries: ['axe kick', 'kickboxing axe kick', 'downward kick'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة الفأس', englishName: 'Axe Kick' },
+  switch_kick: { pinnedIds: [], queries: ['switch kick', 'kickboxing switch kick', 'roundhouse switch'], category: 'kickboxing', fallbackType: 'svg', arabicName: 'ركلة التبديل', englishName: 'Switch Kick' },
+  upward_elbow: { pinnedIds: [], queries: ['upward elbow', 'muay thai elbow', 'uppercut elbow'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع صاعد', englishName: 'Upward Elbow' },
+  diagonal_elbow: { pinnedIds: [], queries: ['diagonal elbow', 'muay thai elbow strike', 'downward elbow'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع قطري', englishName: 'Diagonal Elbow' },
+  horizontal_elbow: { pinnedIds: [], queries: ['horizontal elbow', 'muay thai horizontal elbow', 'elbow strike'], category: 'muaythai', fallbackType: 'svg', arabicName: 'كوع أفقي', englishName: 'Horizontal Elbow' },
+  diagonal_knee: { pinnedIds: [], queries: ['diagonal knee', 'muay thai knee', 'knee strike'], category: 'muaythai', fallbackType: 'svg', arabicName: 'ركبة قطرية', englishName: 'Diagonal Knee' }
 };
 
 // تصنيف تلقائي للتمارين الديناميكية (bb_* والمخصّصة) غير الموجودة في الجدول
@@ -13436,7 +13614,53 @@ const EXERCISE_RELATIONSHIPS = {
   elbow_strike: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
   spinning_elbow: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
   teep_kick: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
-  clinch_knee: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null }
+  clinch_knee: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  butt_kicks: { primaryMuscle: 'cardio', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  lateral_shuffle: { primaryMuscle: 'cardio', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  seal_jack: { primaryMuscle: 'cardio', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  squat_thrust: { primaryMuscle: 'cardio', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  sprint_in_place: { primaryMuscle: 'cardio', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  reverse_lunge: { primaryMuscle: 'legs', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  single_leg_deadlift: { primaryMuscle: 'legs', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  cossack_squat: { primaryMuscle: 'legs', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  squat_hold: { primaryMuscle: 'legs', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  incline_pushup: { primaryMuscle: 'chest', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  knee_pushup: { primaryMuscle: 'chest', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  clap_pushup: { primaryMuscle: 'chest', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  hindu_pushup: { primaryMuscle: 'chest', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  swimmer: { primaryMuscle: 'back', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  reverse_snow_angel: { primaryMuscle: 'back', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  prone_y_raise: { primaryMuscle: 'back', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  good_morning: { primaryMuscle: 'back', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  crunch: { primaryMuscle: 'core', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  sit_up: { primaryMuscle: 'core', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  windshield_wiper: { primaryMuscle: 'core', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  hip_dips: { primaryMuscle: 'core', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  duck_walk: { primaryMuscle: 'legs', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  frog_jump: { primaryMuscle: 'cardio', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  worlds_greatest_stretch: { primaryMuscle: 'mobility', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  scorpion: { primaryMuscle: 'mobility', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  goblet_squat: { primaryMuscle: 'legs', equipment: 'kettlebell', youtubeUrl: '', ytSource: '', alternatives: null },
+  db_row: { primaryMuscle: 'back', equipment: 'dumbbell', youtubeUrl: '', ytSource: '', alternatives: null },
+  db_shoulder_press: { primaryMuscle: 'shoulders', equipment: 'dumbbell', youtubeUrl: '', ytSource: '', alternatives: null },
+  farmer_walk: { primaryMuscle: 'core', equipment: 'dumbbell', youtubeUrl: '', ytSource: '', alternatives: null },
+  box_jab_cross: { primaryMuscle: 'boxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  box_hooks: { primaryMuscle: 'boxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  box_uppercuts: { primaryMuscle: 'boxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  box_slip_roll: { primaryMuscle: 'boxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  box_shadow: { primaryMuscle: 'boxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  hip_flexor_stretch: { primaryMuscle: 'stretching', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  triceps_stretch: { primaryMuscle: 'stretching', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  spinal_twist: { primaryMuscle: 'stretching', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  butterfly_stretch: { primaryMuscle: 'stretching', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  side_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  hook_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  axe_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  switch_kick: { primaryMuscle: 'kickboxing', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  upward_elbow: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  diagonal_elbow: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  horizontal_elbow: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null },
+  diagonal_knee: { primaryMuscle: 'muaythai', equipment: 'bodyweight', youtubeUrl: '', ytSource: '', alternatives: null }
 };
 /* تصحيح تصنيفات خاطئة: تحدد البدائل المقترحة */
 [['bb_squat','legs'],['bb_lateral','shoulders'],['bb_legcurl','legs'],['bb_hanging','core']].forEach(([k, m]) => { if (EXERCISE_RELATIONSHIPS[k]) EXERCISE_RELATIONSHIPS[k].primaryMuscle = m; });
@@ -13566,7 +13790,53 @@ const DM_MUSCLES = {
  diamond_pushup:['الترايسبس','الصدر','الكتف الأمامي'], decline_pushup:['الصدر العلوي','الكتف الأمامي','الترايسبس'], plank_up_down:['الكتف','الترايسبس','البطن'],
  spiderman_plank:['البطن','الجانبية','الكتف'], wood_chop:['الجانبية','البطن','الكتف'], v_sit_hold:['البطن','عضلات الورك'], l_sit:['البطن','عضلات الورك','الترايسبس'],
  jumping_lunge:['الفخذ الأمامي','المؤخرة','القلب'], skater_jump:['الفخذ','المؤخرة','القلب'], broad_jump:['الفخذ','المؤخرة','السمانة'], burpee_pushup:['الجسم بالكامل','الصدر','القلب'],
- mountain_climber_fast:['البطن','الكتف','القلب'], plank_jack:['البطن','الكتف','القلب']
+ mountain_climber_fast:['البطن','الكتف','القلب'], plank_jack:['البطن','الكتف','القلب'],
+ butt_kicks:['الفخذ الخلفي', 'السمانة', 'القلب'],
+ lateral_shuffle:['الفخذ', 'المؤخرة', 'القلب'],
+ seal_jack:['الكتف', 'الصدر', 'القلب'],
+ squat_thrust:['الجسم بالكامل', 'الصدر', 'القلب'],
+ sprint_in_place:['الفخذ', 'السمانة', 'القلب'],
+ reverse_lunge:['الفخذ الأمامي', 'المؤخرة', 'الفخذ الخلفي'],
+ single_leg_deadlift:['الفخذ الخلفي', 'المؤخرة', 'الظهر السفلي'],
+ cossack_squat:['الفخذ الأمامي', 'المؤخرة', 'عضلات الورك'],
+ squat_hold:['الفخذ الأمامي', 'المؤخرة', 'السمانة'],
+ incline_pushup:['الصدر', 'الترايسبس', 'الكتف الأمامي'],
+ knee_pushup:['الصدر', 'الترايسبس'],
+ clap_pushup:['الصدر', 'الترايسبس', 'الكتف'],
+ hindu_pushup:['الصدر', 'الكتف', 'الترايسبس'],
+ swimmer:['الظهر السفلي', 'أعلى الظهر', 'المؤخرة'],
+ reverse_snow_angel:['أعلى الظهر', 'الكتف الخلفي', 'الظهر السفلي'],
+ prone_y_raise:['الكتف الخلفي', 'أعلى الظهر'],
+ good_morning:['الظهر السفلي', 'الفخذ الخلفي', 'المؤخرة'],
+ crunch:['البطن'],
+ sit_up:['البطن', 'عضلات الورك'],
+ windshield_wiper:['البطن', 'الجانبية', 'الجذع'],
+ hip_dips:['الجانبية', 'البطن', 'الجذع'],
+ duck_walk:['الفخذ الأمامي', 'المؤخرة', 'السمانة'],
+ frog_jump:['الفخذ', 'المؤخرة', 'القلب'],
+ worlds_greatest_stretch:['الجسم بالكامل', 'الوركان', 'العمود الفقري'],
+ scorpion:['الظهر السفلي', 'الوركان', 'المؤخرة'],
+ goblet_squat:['الفخذ الأمامي', 'المؤخرة', 'الجذع'],
+ db_row:['الظهر العريض', 'البايسبس', 'الكتف الخلفي'],
+ db_shoulder_press:['الكتف', 'الترايسبس'],
+ farmer_walk:['الساعد', 'الجذع', 'الكتف'],
+ box_jab_cross:['الكتف', 'الذراع', 'الجذع', 'القلب'],
+ box_hooks:['الكتف', 'الجذع', 'القلب'],
+ box_uppercuts:['الكتف', 'الذراع', 'الجذع', 'القلب'],
+ box_slip_roll:['الجذع', 'الفخذ', 'القلب'],
+ box_shadow:['الكتف', 'الذراع', 'الجذع', 'القلب'],
+ hip_flexor_stretch:['عضلات الورك', 'الفخذ الأمامي'],
+ triceps_stretch:['الترايسبس', 'الكتف'],
+ spinal_twist:['العمود الفقري', 'الظهر السفلي', 'الجذع'],
+ butterfly_stretch:['الوركان', 'باطن الفخذ'],
+ side_kick:['الفخذ', 'المؤخرة', 'الجذع'],
+ hook_kick:['الفخذ الخلفي', 'المؤخرة', 'الجذع'],
+ axe_kick:['الفخذ', 'عضلات الورك', 'الجذع'],
+ switch_kick:['الفخذ', 'المؤخرة', 'الجذع', 'القلب'],
+ upward_elbow:['الكتف', 'الذراع', 'الجذع'],
+ diagonal_elbow:['الكتف', 'الذراع', 'الجذع'],
+ horizontal_elbow:['الكتف', 'الذراع', 'الجذع'],
+ diagonal_knee:['الفخذ', 'المؤخرة', 'الجذع']
 };
 const DM_INFER = [
  [/leg press|ضغط (ال)?أرجل/, ['الفخذ الأمامي','المؤخرة']], [/leg curl|أرجل خلفي/, ['الفخذ الخلفي']], [/leg extension|أرجل أمامي/, ['الفخذ الأمامي']],
@@ -17442,6 +17712,220 @@ html body .bottom-nav .bottom-nav-item .icon .ico,
 html body .bottom-nav #nav-martial .icon .ico,
 html body .bottom-nav #nav-martial .icon{width:1.5rem;height:1.5rem}
 html body .bottom-nav .bottom-nav-item .label{font-size:.74rem;font-weight:800;line-height:1.3}
+</style>
+
+<style id="ux-polish-v1">
+/* ===== [UX] قسم الكيس الثقيل: إعدادات الجلسة قابلة للطي ===== */
+.heavybag-header { padding-bottom: .9rem; }
+.hb-settings { max-width: 440px; margin: .9rem auto 0; text-align: start; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; }
+.hb-settings[open] { border-color: color-mix(in srgb, var(--accent-boxing) 45%, var(--border-color)); }
+.hb-settings-sum { list-style: none; display: flex; align-items: center; gap: .7rem; padding: .7rem .9rem; cursor: pointer; min-height: 52px; -webkit-user-select: none; user-select: none; }
+.hb-settings-sum::-webkit-details-marker { display: none; }
+.hb-sum-ico { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--accent-boxing-glow); flex: none; }
+.hb-sum-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.hb-sum-title { font-size: .92rem; font-weight: 800; color: var(--text-primary); line-height: 1.3; }
+.hb-sum-now { font-size: .74rem; color: var(--text-secondary); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hb-sum-chev { font-size: 1.1rem; color: var(--text-secondary); transition: transform .25s var(--ease-smooth); flex: none; }
+.hb-settings[open] .hb-sum-chev { transform: rotate(180deg); }
+.hb-set-body { padding: .2rem .9rem .9rem; display: flex; flex-direction: column; gap: .85rem; border-top: 1px solid var(--border-color); padding-top: .85rem; }
+.hb-set-group { display: flex; flex-direction: column; gap: .35rem; }
+.hb-set-label { font-size: .76rem; font-weight: 800; color: var(--text-secondary); }
+.hb-set-body .hb-call-style { margin: 0; max-width: none; background: var(--bg-primary); }
+.hb-set-body .hb-call-style button { min-height: 40px; }
+.hb-set-ready .rdy-chip { display: block; margin: 0; text-align: center; padding: .6rem .8rem; font-size: .8rem; border-radius: var(--radius-md); background: var(--bg-primary); }
+.hb-audio-lv-title { display: none; }
+
+/* ===== [UX] أرقام الضربات: الكود تحت الأيقونات بدل جانبها (يبقى الحجم كما هو) ===== */
+.hb-runner-combo { flex-direction: column; gap: .35rem; }
+.hb-runner-combo .cn-sub { margin-top: 0; padding: .12rem .6rem; border-radius: 999px; background: rgba(255,255,255,.10); font-size: .36em; letter-spacing: 1.5px; opacity: .9; direction: ltr; }
+.hb-runner-combo .cn-chip { border-radius: 28%; filter: drop-shadow(0 .12em .18em rgba(0,0,0,.35)); }
+.hb-runner-combo .cn-chips.live .cn-chip.on { filter: drop-shadow(0 0 .45em rgba(255,255,255,.6)) drop-shadow(0 .12em .18em rgba(0,0,0,.35)); }
+
+/* ===== [UX] المؤقت العادي: WORK وأرقام وأزرار أوضح وأكبر قليلاً ===== */
+body[data-timer-style].clean-timer-active .hb-runner-phase,
+body.clean-timer-active .hb-runner-phase { font-size: clamp(1.15rem, 4.8vw, 1.55rem) !important; letter-spacing: 7px !important; font-weight: 900; }
+body.clean-timer-active .hb-runner-combo .cn-chips { font-size: 1.05em; gap: .32em; }
+body[data-timer-style].clean-timer-active .hb-runner-combo { gap: .5rem; }
+body.clean-timer-active .hb-runner-btn { width: 64px; height: 64px; }
+body.clean-timer-active .hb-runner-btn.primary { width: 82px; height: 82px; }
+body.clean-timer-active .hb-runner-bottom { gap: 1.4rem; }
+body.clean-timer-active .hb-runner-stop, body.clean-timer-active .ct-gear-btn, body.clean-timer-active .ct-share-btn { width: 48px; height: 48px; }
+body.clean-timer-active .hb-runner-round { font-size: 1.2rem !important; }
+/* الزران العائمان (📱 / 🔄): نفس الحجم والشكل، أحادي اللون */
+#floorBtn, .runner-switcher-btn { width: 52px !important; height: 52px !important; border-radius: 50%; background: rgba(255,255,255,.10) !important; border: 1.5px solid rgba(255,255,255,.22) !important; box-shadow: 0 4px 14px rgba(0,0,0,.4) !important; }
+#floorBtn { font-size: 1.15rem; }
+.hb-set-label .ico, .hb-call-style button .ico { width: 1.15em; height: 1.15em; margin-inline-end: .2rem; }
+.runner-switcher-btn .ico { width: 1.4rem; height: 1.4rem; }
+
+/* ===== [UX] وضع الهاتف على الأرض (الخلفية الحمراء): نفس الأحجام بمظهر أفضل ===== */
+body.floor-mode .hb-runner.active, body.floor-mode .cw-runner.active {
+  background:
+    radial-gradient(120% 65% at 50% 58%, color-mix(in srgb, var(--ct-accent, #b91c1c) 52%, #000) 0%, color-mix(in srgb, var(--ct-accent, #b91c1c) 34%, #000) 55%, color-mix(in srgb, var(--ct-accent, #b91c1c) 16%, #000) 100%) !important;
+}
+body.floor-mode .hb-runner-round, body.floor-mode .cw-runner-progress { text-shadow: 0 2px .35em rgba(0,0,0,.45); opacity: .96; }
+body.floor-mode .hb-runner-phase, body.floor-mode .cw-runner-phase { text-shadow: 0 2px .4em rgba(0,0,0,.45); font-weight: 900; }
+body.floor-mode .hb-runner-timer, body.floor-mode .cw-runner-timer {
+  font-family: 'Cairo', sans-serif; font-weight: 900; letter-spacing: -.02em !important;
+  text-shadow: 0 .035em 0 rgba(0,0,0,.22), 0 .08em .3em rgba(0,0,0,.45), 0 0 .5em rgba(255,255,255,.10) !important;
+}
+body.floor-mode .hb-runner-combo .cn-chip { filter: drop-shadow(0 .14em .22em rgba(0,0,0,.45)); }
+body.floor-mode .hb-runner-combo .cn-sub { background: rgba(0,0,0,.28); color: #fff; opacity: 1; font-size: .4em; }
+@media (prefers-reduced-motion: reduce) { .hb-sum-chev { transition: none; } }
+</style>
+
+<style id="ux-polish-v2">
+/* ===== [UX] الشريط السفلي: خلفية معتمة بدل الشفافة حتى لا يظهر ما خلفه ===== */
+html body .bottom-nav { background: color-mix(in srgb, var(--bg-secondary) 96%, transparent); -webkit-backdrop-filter: blur(16px) saturate(1.3); backdrop-filter: blur(16px) saturate(1.3); border: 1px solid var(--border-color); box-shadow: 0 -6px 24px -8px rgba(0,0,0,.45), 0 8px 24px -10px rgba(0,0,0,.5); }
+/* مساحة سفلية كافية كي لا يغطي الشريط آخر عنصر في الصفحة */
+body:not(.focus-mode) { padding-bottom: calc(9rem + env(safe-area-inset-bottom, 0px)); }
+
+/* ===== [UX] زر المحادثة: أصغر وأخف ولا يغطي النص خلفه ===== */
+html body .coach-fab { width: 46px; height: 46px; font-size: 1.25rem; opacity: .88; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+html body .coach-fab:active { opacity: 1; }
+
+/* ===== [UX] الوسوم: أكبر وأوضح مع مسافات أريح ===== */
+html body .meta-tag, html body .hb-protocol-meta .meta-tag { font-size: .74rem; padding: .22rem .65rem; line-height: 1.5; }
+html body .hb-protocol-meta { gap: .45rem; margin-top: .15rem; }
+html body .hb-protocol-desc { line-height: 1.6; }
+html body .hb-protocol-card { padding: 1.05rem 1rem; gap: .9rem; }
+
+/* ===== [UX] تباين النص الخافت ===== */
+.hb-runner-next { color: rgba(255,255,255,.72); font-size: .95rem; }
+body.clean-timer-active .hb-runner-next { font-weight: 700; }
+</style>
+<style id="ux-polish-v3">
+.fr-fold { max-width: none; margin: 0 0 1rem; }
+.fr-fold .hb-set-body { padding-inline: .6rem; }
+.fr-setup-card .generate-btn { min-height: 54px; font-size: 1rem; }
+</style>
+<style id="ux-polish-v4">
+.heavybag-header { margin-bottom: 1rem; padding-bottom: .9rem; }
+.heavybag-header .hb-settings { margin-top: 0; }
+html body .bottom-nav { background: var(--bg-secondary); -webkit-backdrop-filter: none; backdrop-filter: none; }
+</style>
+<style id="ux-polish-v5">
+/* الزر العائم 🔄 لا يغطي عنوان التمرين: أصغر وأخف خارج المؤقتات الكاملة */
+body:not(.clean-timer-active):not(.focus-mode) .runner-switcher-btn { width: 42px !important; height: 42px !important; opacity: .8; }
+body:not(.clean-timer-active):not(.focus-mode) .runner-switcher-btn .ico { width: 1.15rem; height: 1.15rem; }
+</style>
+<style id="ux-polish-v6">
+/* ===== [UX] صفحة بناء الحصة ===== */
+/* لا تمرير داخلي داخل التمرير: القائمة تمتد مع الصفحة */
+.exercise-picker { max-height: none; overflow: visible; padding: .6rem; gap: .5rem; }
+.exercise-pick-item { min-height: 64px; padding: .5rem .3rem; border-radius: var(--radius-md); }
+.exercise-pick-item.selected { border-color: var(--accent-hiit); background: color-mix(in srgb, var(--accent-hiit) 14%, var(--bg-card)); }
+/* عناوين المجموعات: أوضح وبلا رموز مجلدات */
+html body .picker-group-header { font-size: .86rem !important; font-weight: 900 !important; color: var(--text-primary) !important; padding: .8rem .2rem .45rem !important; margin-top: .5rem !important; border-bottom: 1px solid var(--border-color) !important; display: flex; align-items: center; justify-content: flex-start; }
+html body .picker-group-header:first-child { margin-top: 0 !important; padding-top: .2rem !important; }
+/* عداد التمارين المختارة كشارة */
+.sel-count { display: inline-flex; align-items: center; justify-content: center; min-width: 1.7rem; height: 1.7rem; padding: 0 .45rem; margin-inline-start: .35rem; border-radius: 999px; background: var(--accent-hiit); color: #fff; font-size: .8rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+/* زر «إزالة الكل» يظهر فقط عند وجود تمارين مختارة */
+.builder-section:has(.selected-exercises:empty) .clear-selected-btn { display: none; }
+.selected-exercises:empty { min-height: 0; padding-block: .9rem; }
+</style>
+<style id="ux-polish-v7">
+/* ===== [UX] وضع الهاتف على الأرض: المؤقت في المنتصف تماماً ===== */
+/* السبب: غلاف الحلقة كان بعرض 100vw داخل حاوية لها هوامش فيزيح المحتوى جهة اليسار في الواجهة العربية */
+body.floor-mode .ct-ring-wrap { width: 100% !important; max-width: 100% !important; margin-inline: auto !important; display: flex; align-items: center; justify-content: center; }
+body.floor-mode .hb-runner-main, body.floor-mode .cw-runner-main { width: 100%; padding-inline: 0; align-items: center; }
+body.floor-mode .hb-runner-timer, body.floor-mode .cw-runner-timer { width: 100%; text-align: center; letter-spacing: 0 !important; margin: 0; padding: 0; direction: ltr; }
+/* ===== [UX] اسم التمرين: الإنجليزي فوق العربي بدل أن يتجاورا في سطر واحد ===== */
+.cw-runner-combo { flex-direction: column; gap: .15rem; }
+body.floor-mode .cw-runner-combo > div:first-child:not(:last-child) { font-size: .55em !important; letter-spacing: 3px; }
+</style>
+<style id="ux-polish-v8">
+/* ===== [UX] مجموعات التمارين القابلة للطي ===== */
+html body .picker-group-header { display: flex !important; align-items: center; gap: .55rem; justify-content: flex-start !important; cursor: pointer; min-height: 52px; padding: .5rem .35rem !important; margin-top: .35rem !important; border: 1px solid var(--border-color) !important; border-radius: var(--radius-md); background: var(--bg-card); -webkit-user-select: none; user-select: none; }
+html body .picker-group-header.open { border-color: color-mix(in srgb, var(--accent-hiit) 45%, var(--border-color)) !important; }
+html body .picker-group-header:first-child { margin-top: 0 !important; padding-top: .5rem !important; }
+.pgh-title { flex: 1; font-size: .95rem; font-weight: 900; color: var(--text-primary); }
+.pgh-count { min-width: 1.7rem; height: 1.7rem; padding: 0 .5rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--bg-elevated); color: var(--text-secondary); font-size: .76rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pgh-sel { height: 1.7rem; padding: 0 .6rem; display: inline-flex; align-items: center; border-radius: 999px; background: var(--accent-hiit); color: #fff; font-size: .74rem; font-weight: 800; }
+.pgh-chev { font-size: 1.1rem; color: var(--text-secondary); transition: transform .25s var(--ease-smooth); }
+.picker-group-header.open .pgh-chev { transform: rotate(180deg); }
+.picker-group-header:focus-visible { outline: 2px solid var(--accent-hiit); outline-offset: 2px; }
+.exercise-picker { gap: .5rem; }
+/* شريط بدء الحصة: معتم فلا يظهر ما خلفه */
+html body #bldStartBar { background: var(--bg-secondary) !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (prefers-reduced-motion: reduce) { .pgh-chev { transition: none; } }
+</style>
+<style id="ux-polish-v9">
+/* ===== [UX] تمويه البطاقات غير الحالية: أقوى قليلاً + لا يُطبَّق إلا إذا وُجدت بطاقة حالية ===== */
+body.timer-running:not(.focus-mode) .exercise-card:not(.current) { filter: blur(4px); opacity: .42; }
+body.timer-running:not(.focus-mode) #bgCanvas { filter: blur(9px); }
+/* لو لم توجد بطاقة حالية في المرحلة المعروضة فلا تمويه إطلاقاً (كان يموّه كل شيء) */
+body.timer-running:not(.focus-mode):not(:has(.phase-content.active .exercise-card.current)) .exercise-card { filter: none; opacity: 1; }
+/* ===== [UX] الشريط العلوي للتمرين: معتم بلا شفافية كي لا يظهر ما خلفه ===== */
+html body:not(.focus-mode):not(.gym-mode) .workout-topbar { background: var(--bg-primary); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border-color); box-shadow: 0 10px 18px -14px rgba(0,0,0,.7); }
+</style>
+<script>
+/* [UX] عند انتقال حالة "current" لبطاقة جديدة: انزل إليها تلقائياً (مهما كان مسار الانتقال) */
+(function () {
+  var timer = null;
+  function scrollCurrent(card) {
+    if (document.body.classList.contains('focus-mode')) return;
+    if (!card || card.offsetParent === null) return;
+    var r = card.getBoundingClientRect();
+    if (r.top >= 80 && r.bottom <= window.innerHeight - 96) return;
+    try { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { card.scrollIntoView(); }
+  }
+  var obs = new MutationObserver(function (muts) {
+    for (var i = 0; i < muts.length; i++) {
+      var m = muts[i], el = m.target;
+      if (el.classList && el.classList.contains('exercise-card') && el.classList.contains('current') &&
+          (m.oldValue || '').split(' ').indexOf('current') === -1) {
+        clearTimeout(timer);
+        timer = setTimeout(function (c) {
+          return function () {
+            requestAnimationFrame(function () { requestAnimationFrame(function () { scrollCurrent(c); }); });
+            setTimeout(function () { scrollCurrent(c); }, 450);
+          };
+        }(el), 60);
+      }
+    }
+  });
+  function attach() {
+    document.querySelectorAll('.workout-screen').forEach(function (w) {
+      obs.observe(w, { attributes: true, attributeFilter: ['class'], subtree: true, attributeOldValue: true });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach); else attach();
+})();
+</script>
+<style id="ux-polish-v10">
+/* النمط الكلاسيكي (إن اختاره المستخدم): الأرقام داخل الحلقة لا تتجاوزها */
+body[data-timer-style="classic"]:not(.focus-mode) .exercise-card .timer-display { font-size: clamp(2.1rem, 9.5vw, 2.8rem); }
+</style>
+<style id="ux-polish-v11">
+/* ===== [UX] أهداف اللمس: لا تقل عن ~40px ===== */
+.water-row button, [data-pw] { min-height: 36px; min-width: 24px; display: inline-flex; align-items: center; justify-content: center; }
+button[data-d] { min-width: 40px; min-height: 40px; }
+.program-ex-check { min-width: 40px; }
+.pro-chal { min-height: 40px; }
+.template-card { min-height: 44px; }
+.desc-btn { min-height: 40px; }
+/* شارة الصعوبة على بطاقات الأيام: أصغر وأوضح وداخل البطاقة */
+.day-card .diff-badge { width: 12px; height: 12px; inset-block-start: 10px; inset-inline-start: 12px; box-shadow: 0 0 0 2px rgba(255,255,255,.18), 0 0 8px var(--diff-c, #facc15); }
+/* زر المحادثة يتلاشى أثناء التمرير فلا يغطي المحتوى */
+#coachFab { transition: opacity .25s ease, transform .25s ease; }
+#coachFab.fab-away { opacity: .12 !important; transform: scale(.85); pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { #coachFab { transition: none; } }
+</style>
+<script>
+(function () {
+  var t = null;
+  window.addEventListener('scroll', function () {
+    var f = document.getElementById('coachFab'); if (!f) return;
+    f.classList.add('fab-away');
+    clearTimeout(t);
+    t = setTimeout(function () { f.classList.remove('fab-away'); }, 650);
+  }, { passive: true });
+})();
+</script>
+<style id="ux-polish-v12">
+html body .desc-btn { min-height: 40px !important; height: auto !important; padding-block: .45rem; }
+/* توهج الحلقة لا يُقصّ بمربع */
+.ct-ring-wrap, .ct-ring-wrap svg, .cw-runner svg, .hb-runner svg { overflow: visible; }
 </style>
 </body>
 </html>
