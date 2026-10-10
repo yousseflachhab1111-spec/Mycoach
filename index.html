@@ -5468,14 +5468,14 @@ body.floor-mode #floorHint.show { display:block; }
         <span class="item-title">مفتاح OpenRouter API</span> <span class="item-desc">احصل على مفتاح مجاني من openrouter.ai</span>
        </div>
       </div>
-      <input type="password" class="form-input" id="openRouterKeyInput" placeholder="sk-or-v1-..." style="margin-top:0.3rem;">
+      <input autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" type="password" class="form-input" id="openRouterKeyInput" placeholder="sk-or-v1-..." style="margin-top:0.3rem;">
       <!-- FIX #9: security warning + opt-in persistence for the API key -->
       <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;color:var(--text-secondary);margin-top:0.3rem;cursor:pointer;"><input type="checkbox" id="openRouterKeyRemember"> تذكّر المفتاح على هذا الجهاز</label>
       <div id="openRouterKeyWarn" style="font-size:0.68rem;color:var(--accent-warning);line-height:1.5;margin:0.3rem 0;"><svg class="ico"><use href="#ico-alert-triangle"/></svg> افتراضياً يُحفظ المفتاح لهذه الجلسة فقط ويُحذف عند إغلاق التطبيق. عند تفعيل «تذكّر» يُخزَّن داخل المتصفح بنص غير مشفّر ويمكن لأي سكربت في هذه الصفحة قراءته — استخدم مفتاحاً بحدّ إنفاق منخفض.</div>
       <button class="local-btn" style="margin:0;font-size:0.8rem;padding:0.6rem;min-height:auto;" onclick="saveOpenRouterKey()"><svg class="ico"><use href="#ico-save"/></svg> حفظ المفتاح</button>
        <div style="margin-top:0.8rem;padding-top:0.6rem;border-top:1px solid rgba(128,128,128,0.25);">
         <div style="font-size:0.8rem;font-weight:700;margin-bottom:0.3rem;">⚡ مفتاح Groq (موصى به — مجاني وسريع، 1000 طلب/يوم)</div>
-        <input type="password" class="form-input" id="groqKeyInput" dir="ltr" placeholder="gsk_..." style="margin-top:0.2rem;">
+        <input type="password" class="form-input" id="groqKeyInput" dir="ltr" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="gsk_..." style="margin-top:0.2rem;">
         <button class="local-btn" style="margin:0.3rem 0 0;font-size:0.8rem;padding:0.6rem;min-height:auto;" onclick="saveGroqKey()"><svg class="ico"><use href="#ico-save"/></svg> حفظ مفتاح Groq</button>
         <div style="font-size:0.7rem;color:var(--text-muted);margin:0.3rem 0 0.5rem;line-height:1.5;">يُجرَّب Groq أولاً، وعند فشله أو نفاد حصته يُستخدم OpenRouter تلقائياً ثم الحساب المحلي. احصل على المفتاح من <a href="https://console.groq.com/keys" target="_blank" style="color:var(--accent-ai);">console.groq.com/keys</a></div>
        </div>
@@ -10244,9 +10244,11 @@ function closeShareCanvas() { playClick(); document.getElementById('shareCanvasM
 
 // ============ AI PROGRAM ============
 // FIX #9: the API key now lives in sessionStorage by default (gone when the app/tab session ends). Users who tick "remember" — and existing users who already have a saved key — keep the old localStorage behaviour, so nothing breaks.
+/* [iOS] لوحة مفاتيح آيفون تحوّل - إلى – وتضيف علامات اتجاه/مسافات خفية؛ ترويسة Authorization ترفض أي رمز غير ASCII فيفشل الطلب */
+function aiCleanKey(k) { return String(k == null ? '' : k).replace(/[\u2010-\u2015\u2212\uFE58\uFE63\uFF0D]/g, '-').replace(/[^\x21-\x7E]/g, ''); }
 function getOpenRouterKey() {
-  try { const k = sessionStorage.getItem('openrouterKey'); if (k) return k; } catch (e) {}
-  return safeGet('openrouterKey', '');
+  try { const k = sessionStorage.getItem('openrouterKey'); if (k) return aiCleanKey(k); } catch (e) {}
+  return aiCleanKey(safeGet('openrouterKey', ''));
 }
 // FIX #9: single place that decides where the key is stored.
 function setOpenRouterKey(key, remember) {
@@ -10256,10 +10258,10 @@ function setOpenRouterKey(key, remember) {
   } catch (e) { try { localStorage.setItem('openrouterKey', key); } catch (e2) {} }
 }
 // FIX #9: store via setOpenRouterKey() (session by default, localStorage only when the user opts in).
-function saveOpenRouterKey() { playClick(); const key = document.getElementById('openRouterKeyInput').value.trim(); if (!key) { showInAppNotification('⚠️', 'أدخل المفتاح أولاً'); return; } if (!key.startsWith('sk-or-v1-')) { showInAppNotification('⚠️', 'المفتاح يبدأ بـ sk-or-v1-'); return; } const keyRemember = !!(document.getElementById('openRouterKeyRemember') || {}).checked; setOpenRouterKey(key, keyRemember); showInAppNotification('✅', keyRemember ? 'تم حفظ مفتاح OpenRouter على هذا الجهاز' : 'تم حفظ المفتاح لهذه الجلسة فقط'); haptic('medium'); }
+function saveOpenRouterKey() { playClick(); const key = aiCleanKey(document.getElementById('openRouterKeyInput').value); if (!key) { showInAppNotification('⚠️', 'أدخل المفتاح أولاً'); return; } if (!key.startsWith('sk-or-v1-')) { showInAppNotification('⚠️', 'المفتاح يبدأ بـ sk-or-v1-'); return; } const keyRemember = !!(document.getElementById('openRouterKeyRemember') || {}).checked; setOpenRouterKey(key, keyRemember); showInAppNotification('✅', keyRemember ? 'تم حفظ مفتاح OpenRouter على هذا الجهاز' : 'تم حفظ المفتاح لهذه الجلسة فقط'); haptic('medium'); }
 // ===== Groq (مزوّد مجاني بديل/رئيسي) =====
 const AI_GROQ_MODELS = ['llama-3.3-70b-versatile', 'openai/gpt-oss-120b'];
-function getGroqKey() { try { const k = sessionStorage.getItem('groqKey'); if (k) return k; } catch (e) {} return safeGet('groqKey', ''); }
+function getGroqKey() { try { const k = sessionStorage.getItem('groqKey'); if (k) return aiCleanKey(k); } catch (e) {} return aiCleanKey(safeGet('groqKey', '')); }
 function setGroqKey(key, remember) {
   try { if (remember) { localStorage.setItem('groqKey', key); sessionStorage.removeItem('groqKey'); } else { sessionStorage.setItem('groqKey', key); localStorage.removeItem('groqKey'); } }
   catch (e) { try { localStorage.setItem('groqKey', key); } catch (e2) {} }
@@ -10267,7 +10269,7 @@ function setGroqKey(key, remember) {
 function hasAnyAIKey() { return !!(getGroqKey() || getOpenRouterKey()); }
 function refreshKeyStatus() { const el = document.getElementById('settingsKeyStatus'); if (el) { const ok = hasAnyAIKey(); el.textContent = ok ? '✅ مُعدّ' : '⚠️ غير مُعدّ'; el.style.color = ok ? 'var(--accent-success)' : 'var(--accent-warning)'; } }
 function saveGroqKey() {
-  playClick(); const key = (document.getElementById('groqKeyInput').value || '').trim();
+  playClick(); const key = aiCleanKey(document.getElementById('groqKeyInput').value || '');
   if (!key) { showInAppNotification('⚠️', 'أدخل مفتاح Groq أولاً'); return; }
   if (!key.startsWith('gsk_')) { showInAppNotification('⚠️', 'مفتاح Groq يبدأ بـ gsk_'); return; }
   const rem = !!(document.getElementById('openRouterKeyRemember') || {}).checked; setGroqKey(key, rem); refreshKeyStatus();
@@ -17976,5 +17978,10 @@ input, textarea, select { touch-action: manipulation; }
 /* سفاري iOS يتجاهل user-scalable، فنمنع إيماءة التكبير صراحةً */
 ['gesturestart', 'gesturechange'].forEach(function (t) { document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
 </script>
+<style id="ux-polish-v16">
+/* الإشعار: تحت جزيرة/نوتش آيفون وفوق كل الطبقات */
+.in-app-notification { top: calc(env(safe-area-inset-top, 0px) + 14px); z-index: 2147483000; max-width: min(92vw, 520px); box-shadow: 0 10px 30px rgba(0,0,0,.55); background: var(--bg-card); }
+body.focus-mode .in-app-notification { top: calc(5.6rem + env(safe-area-inset-top, 0px)); }
+</style>
 </body>
 </html>
