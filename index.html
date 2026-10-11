@@ -4885,7 +4885,7 @@ body.floor-mode #floorHint.show { display:block; }
       <button class="boxing-nav-btn active" id="boxing-nav-workouts" onclick="switchBoxingView('workouts')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-boxing-glove"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">التمارين</span><span class="boxing-nav-sub">6 أيام</span></span></button>
       <button class="boxing-nav-btn" id="boxing-nav-combos" onclick="switchBoxingView('combos')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-zap"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">COMBOS</span><span class="boxing-nav-sub">مكتبة الكومبوهات</span></span></button>
       <button class="boxing-nav-btn" id="boxing-nav-heavybag" onclick="switchBoxingView('heavybag')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-briefcase"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">كيس ثقيل</span><span class="boxing-nav-sub">جولات جاهزة</span></span></button>
-      <button class="boxing-nav-btn" id="boxing-nav-guide" onclick="switchBoxingView('guide')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-info"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">دليل الضربات</span><span class="boxing-nav-sub">ماذا تعني 1، 2، 3؟</span></span></button>
+      <button class="boxing-nav-btn" id="boxing-nav-guide" onclick="switchBoxingView('guide')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-info"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">دليل الضربات</span><span class="boxing-nav-sub">كل المصطلحات والحركات</span></span></button>
      </div>
      <div id="boxing-workouts-view" class="boxing-view active">
       <div class="days-grid" id="boxingDaysGrid"></div>
@@ -4916,6 +4916,8 @@ body.floor-mode #floorHint.show { display:block; }
           <div class="hb-set-ready"><span class="rdy-chip" id="readyChip" onclick="openReadiness(true)"></span></div></div>
          <div class="hb-set-group"><div class="hb-set-label"><svg class="ico"><use href="#ico-volume-2"/></svg> مستوى جلسة «صوت فقط»</div>
           <div class="hb-call-style" id="hbAudioLevel"><button data-lv="مبتدئ" onclick="setHbAudioLevel('مبتدئ')">مبتدئ</button><button data-lv="متوسط" onclick="setHbAudioLevel('متوسط')">متوسط</button><button data-lv="متقدم" onclick="setHbAudioLevel('متقدم')">متقدم</button></div></div>
+         <div class="hb-set-group"><div class="hb-set-label"><svg class="ico"><use href="#ico-repeat"/></svg> عدد الجولات</div><div id="hbRoundsCtl" class="seg-rounds"></div><div class="seg-hint">يُطبَّق على أي بروتوكول تبدأه. «تلقائي» = عدد جولات البروتوكول نفسه.</div></div>
+         <div class="hb-set-group"><div id="segHost-hb"></div></div>
         </div>
        </details>
       </div>
@@ -4950,17 +4952,13 @@ body.floor-mode #floorHint.show { display:block; }
    <div id="content-freetimer" class="main-content">
      <div id="fr-view" class="fr-view">
       <div class="fr-setup-card">
-       <h2 style="color:var(--accent-boxing);border-color:var(--accent-boxing);margin-top:0;"><svg class="ico"><use href="#ico-timer"/></svg> مؤقت الجولات الحر</h2>
-       <p style="color:var(--text-secondary);font-size:0.82rem;margin-bottom:1.1rem;">اضبط عدد الجولات ومدتها بالكامل — تماماً كمؤقتات الملاكمة الاحترافية</p>
-       <details class="hb-settings fr-fold" open>
-        <summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-sliders"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">ضبط الجولات</span><span class="hb-sum-now">الجولات · العمل · الراحة · التنبيهات</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary>
-        <div class="hb-set-body"><div id="frSetupBody"></div></div>
-       </details>
-       <button class="generate-btn" style="background:var(--gradient-boxing);width:100%;" onclick="startFreeRoundTimer()"><svg class="ico"><use href="#ico-play"/></svg> ابدأ الجولات</button>
+       <h1 class="fr-title">المؤقت</h1>
+       <div id="frSetupBody"></div>
+       <button class="generate-btn fr-start" onclick="startFreeRoundTimer()"><svg class="ico"><use href="#ico-play"/></svg> ابدأ المؤقت</button>
       </div>
      </div>
     </div>
-   <div id="content-program" class="main-content">
+    <div id="content-program" class="main-content">
     <div class="prog-subtabs" id="progSubtabs">
      <button class="prog-sub active" data-sub="cur" onclick="progSub('cur')">البرنامج الحالي</button>
      <button class="prog-sub" data-sub="bbfb" onclick="progSub('bbfb')">Full Body</button>
@@ -7282,7 +7280,7 @@ function renderHbAudioLevel() {
   document.querySelectorAll('#hbAudioLevel button').forEach(b => b.classList.toggle('active', b.dataset.lv === lv));
   try {
     const now = document.getElementById('hbSettingsNow');
-    if (now) now.textContent = (hbCallStyle() === 'names' ? 'بأسماء الضربات' : 'نداء مرقّم') + ' · ' + lv;
+    if (now) now.textContent = (hbCallStyle() === 'names' ? 'بأسماء الضربات' : 'نداء مرقّم') + ' · ' + lv + (window.SEG ? SEG.summaryExtra() : '');
   } catch (e) {}
 }
 function hbAudioLoop(myLoopId) {
@@ -8107,17 +8105,6 @@ function renderHeavybagProtocols() {
     `;
     grid.appendChild(card);
   });
-  const cu = document.createElement('div');
-  cu.className = 'hb-protocol-card';
-  cu.onclick = () => switchMainTab('freetimer');
-  cu.innerHTML = `
-      <div class="hb-protocol-icon">${emoIco('⏱️')}</div>
-      <div class="hb-protocol-info">
-        <div class="hb-protocol-title">مخصص</div>
-        <div class="hb-protocol-desc">اضبط عدد الجولات ومدتها وراحتها بنفسك، وقسّم الجولة إلى مراحل برنّة</div>
-        <div class="hb-protocol-meta"><span class="meta-tag red">1–50 جولة</span><span class="meta-tag">مراحل داخل الجولة</span></div>
-      </div>`;
-  grid.appendChild(cu);
 }
 
 function startHeavyBagWorkout(protocolId) { withReadiness(() => _startHeavyBagWorkoutCore(protocolId)); }
@@ -8126,7 +8113,7 @@ function _startHeavyBagWorkoutCore(protocolId) {
   currentActiveRunner = 'hb'; showRunnerSwitcher();
   const p = HEAVY_BAG_PROTOCOLS.find(x => x.id === protocolId);
   if (!p) return;
-  hbRunnerState.protocol = hbApplyReadiness(p);
+  hbRunnerState.protocol = (window.SEG ? SEG.applyHb(hbApplyReadiness(p)) : hbApplyReadiness(p));
   hbEnterAudioMode(hbRunnerState.protocol);
   hbRunnerState.round = 1;
   hbRunnerState.phase = 'prepare';
@@ -8182,10 +8169,12 @@ startHbComboLoop();
   const nextRound = hbRunnerState.round + 1;
   nextEl.textContent = nextRound <= p.rounds ? `التالي: جولة ${nextRound}` : '🏁 الجولة الأخيرة';
   hbUpdateTimer();
+  if (window.SEG) SEG.begin(phaseEl, speak);
   ctOnPhaseStart('hb', 'work', p.work, p.rounds, hbRunnerState.round);
   ctDriftSafeCountdown(hbRunnerState, p.work, (remaining) => {
     hbUpdateTimer();
     ctUpdateRing('hb', remaining, p.work);
+    if (window.SEG) SEG.tick(remaining, p.work, phaseEl, speak);
     ctSetUrgentEffects('hbRunnerTimer', 'hbRunnerRingWrap', remaining);
     if (p.work > 15 && remaining === 10) { playHalfwayTone(); haptic('medium'); hbWarn10('work'); }
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); speak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
@@ -8724,7 +8713,7 @@ function toggleFavoriteExercise() { playClick(); haptic('light'); if(!currentDes
 function getExerciseNotes(){ try{return JSON.parse(localStorage.getItem('exerciseNotes')||'{}');}catch(e){return {};} }
 function saveExerciseNote(text){ if(!currentDescKey) return; const notes = getExerciseNotes(); notes[currentDescKey] = text; safeSet('exerciseNotes', notes); showInAppNotification('💾','تم حفظ ملاحظتك'); }
 function getWeightLogs(){ try{return JSON.parse(localStorage.getItem('exerciseWeightLogs')||'{}');}catch(e){return {};} }
-function addWeightLog(){ playClick(); const input = document.getElementById('weightLogInput'); const val = parseFloat(input.value); if(!val || val < 0.5 || val > 500 || !currentDescKey){ showInAppNotification('⚠️','أدخل وزناً صحيحاً (بين 0.5 و 500 كجم)'); return; } const logs = getWeightLogs(); if(!logs[currentDescKey]) logs[currentDescKey]=[]; logs[currentDescKey].push({w:val, d:new Date().toISOString()}); safeSet('exerciseWeightLogs', logs); input.value=''; updateWeightLogDisplay(); showInAppNotification('✅','تم حفظ الوزن'); haptic('light'); }
+function addWeightLog(){ playClick(); const input = document.getElementById('weightLogInput'); const val = parseFloat(input.value); if(!val || !currentDescKey){ showInAppNotification('⚠️','أدخل وزناً صحيحاً'); return; } const logs = getWeightLogs(); if(!logs[currentDescKey]) logs[currentDescKey]=[]; logs[currentDescKey].push({w:val, d:new Date().toISOString()}); safeSet('exerciseWeightLogs', logs); input.value=''; updateWeightLogDisplay(); showInAppNotification('✅','تم حفظ الوزن'); haptic('light'); }
 /* updateWeightLogDisplay: see exercise-modal v2 block */
 
 function getCustomYoutubeUrls() { return safeParse('customYoutubeUrls', {}); }
@@ -9341,11 +9330,6 @@ function martialDurDefault() { return martialData.style === 'hybrid' ? 90 : 45; 
 function mChip(group, val, label, active) {
   return '<button class="wiz-chip' + (active ? ' active' : '') + '" data-val="' + val + '" onclick="martialPick(\'' + group + '\',\'' + val + '\')">' + label + '</button>';
 }
-function mRoundsStepper() {
-  const b = 'class="fr-seg-btn" style="flex:0 0 56px"';
-  return '<div class="fr-seg-actions" style="align-items:center;justify-content:center;gap:1rem"><button ' + b + ' onclick="martialRoundsStep(-1)" aria-label="أنقص">−</button><b style="font-size:1.15rem;min-width:5rem;text-align:center">' + martialData.rounds + ' جولة</b><button ' + b + ' onclick="martialRoundsStep(1)" aria-label="زِد">+</button></div>';
-}
-function martialRoundsStep(dlt) { martialData.rounds = Math.max(1, Math.min(30, (parseInt(martialData.rounds) || 4) + dlt)); renderMartialWizard(); }
 function mSection(icon, title) { return '<div class="wiz-section-title"><svg class="ico"><use href="#' + icon + '"/></svg> ' + title + '</div>'; }
 function martialPick(group, val) {
   const d = martialData;
@@ -9387,8 +9371,8 @@ function martialStepHtml(n) {
   if (n === 3) {
     const hint = d.style === 'hybrid' ? '<div class="wiz-hint" id="martialDurHint">الحصة الهجينة تحتاج 60-90 دقيقة للهيكل الكامل</div>' : '';
     return mSection('ico-timer', 'مدة الحصة (دقيقة)') + '<div class="wiz-chip-grid" id="mgDuration">' + martialDurOptions().map(x => mChip('duration', x, x, d.duration === x)).join('') + '</div>' + hint +
-      mSection('ico-repeat', 'عدد الجولات') + '<div class="wiz-chip-grid" id="mgRounds">' + [3, 4, 5, 6, 8, 10, 12, 15, 20].map(x => mChip('rounds', x, x, d.rounds === x)).join('') + '</div>' + mRoundsStepper() +
-      mSection('ico-clock', 'مدة الجولة (دقيقة)') + '<div class="wiz-chip-grid" id="mgRoundDur">' + [1, 1.5, 2, 3, 4, 5].map(x => mChip('roundDuration', x, x, d.roundDuration === x)).join('') + '</div>' +
+      mSection('ico-repeat', 'عدد الجولات') + '<div class="wiz-chip-grid" id="mgRounds">' + [3, 4, 5, 6, 8, 12].map(x => mChip('rounds', x, x, d.rounds === x)).join('') + '</div>' +
+      mSection('ico-clock', 'مدة الجولة (دقيقة)') + '<div class="wiz-chip-grid" id="mgRoundDur">' + [1, 2, 3, 5].map(x => mChip('roundDuration', x, x, d.roundDuration === x)).join('') + '</div>' +
       mSection('ico-timer', 'مدة الراحة (ثانية)') + '<div class="wiz-chip-grid" id="mgRest">' + [30, 45, 60, 90, 120].map(x => mChip('rest', x, x, d.rest === x)).join('') + '</div>';
   }
   if (n === 4) {
@@ -9589,7 +9573,7 @@ function martialAiNormalize(parsed, data, P) {
     }
     used.add(lx.en);
     const isM = lx.fmt === 'm';
-    let sets = isM ? Math.max(1, Math.min(30, data.rounds)) : P.setsI;
+    let sets = isM ? Math.max(1, Math.min(12, data.rounds)) : P.setsI;
     let reps = isM ? data.roundDuration + ' د' : mAiUnit(raw.reps, lx.fmt === 't' ? '40 ث' : '10-12', 'reps');
     let rest = isM ? data.rest + ' ثانية' : mAiUnit(raw.rest, lx.fmt === 'r' ? '60 ثانية' : '25 ثانية', 'reps');
     if (!isM && lx.pat === 'hiit' && lx.fmt === 't') { if (P.cardio === 'interval') { reps = '40 ث'; rest = '20 ث'; } else if (P.cardio === 'continuous') { sets = 1; reps = '3 د'; rest = '10 ث'; } else { reps = '45 ث'; rest = '30 ث'; } }
@@ -10382,21 +10366,7 @@ function collectMeasurements() {
   formData.bodyFat = parseFloat(document.getElementById('aiBodyFat').value) || null;
 }
 function collectRestOfForm() { formData.water = parseFloat(document.getElementById('aiWater').value) || 2; formData.medications = document.getElementById('aiMedications').value.trim(); formData.restrictions = document.getElementById('aiRestrictions').value.trim(); }
-function validateStep2() {
-  collectMeasurements();
-  const chk = (v, min, max, msg) => { if (!v || v < min || v > max) { showInAppNotification('⚠️', msg + ' (بين ' + min + ' و ' + max + ')'); return false; } return true; };
-  const opt = (v, min, max, msg) => { if (v != null && (v < min || v > max)) { showInAppNotification('⚠️', msg + ' (بين ' + min + ' و ' + max + ')'); return false; } return true; };
-  if (!chk(formData.currentWeight, 30, 250, 'أدخل وزنك الحالي بشكل صحيح')) return false;
-  if (!chk(formData.targetWeight, 30, 250, 'أدخل وزنك المستهدف بشكل صحيح')) return false;
-  if (!chk(formData.height, 100, 230, 'أدخل طولك بالسنتيمتر')) return false;
-  if (!chk(formData.age, 10, 90, 'أدخل عمرك')) return false;
-  if (!opt(formData.chest, 50, 200, 'محيط الصدر')) return false;
-  if (!opt(formData.waist, 40, 200, 'محيط الخصر')) return false;
-  if (!opt(formData.arm, 15, 80, 'محيط الذراع')) return false;
-  if (!opt(formData.thigh, 25, 120, 'محيط الفخذ')) return false;
-  if (!opt(formData.bodyFat, 3, 60, 'نسبة الدهون')) return false;
-  return true;
-}
+function validateStep2() { collectMeasurements(); if (!formData.currentWeight || formData.currentWeight < 30) { showInAppNotification('⚠️', 'أدخل وزنك الحالي'); return false; } if (!formData.targetWeight || formData.targetWeight < 30) { showInAppNotification('⚠️', 'أدخل وزنك المستهدف'); return false; } if (!formData.height || formData.height < 100) { showInAppNotification('⚠️', 'أدخل طولك'); return false; } if (!formData.age || formData.age < 10) { showInAppNotification('⚠️', 'أدخل عمرك'); return false; } return true; }
 function collectForm() { collectMeasurements(); collectRestOfForm(); formData.days = sortDaysWeek(formData.days); if (!Array.isArray(formData.goals) || !formData.goals.length) formData.goals = [formData.goal || 'fatloss']; if (!validateStep2()) return false; if (!formData.days.length) { showInAppNotification('⚠️', 'اختر يوماً واحداً على الأقل'); return false; } if (!formData.consent) { showInAppNotification('⚠️', 'يجب الموافقة على تعهد الصحة أولاً'); return false; } return true; }
 function wizardNext() {
   if (wizStep === 2 && !validateStep2()) return;
@@ -14152,7 +14122,7 @@ function handleBackButton() {
 let onboardingData = { name:'', goal:'', level:'', weight:'', freq:'' };
 function selectOnboardingOption(el, field) { playClick(); haptic('light'); const parent = el.parentElement; parent.querySelectorAll('.onboarding-option').forEach(o => o.classList.remove('selected', 'just-selected')); el.classList.add('selected'); const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; if (!reduceMotion) { el.classList.add('just-selected'); setTimeout(() => el.classList.remove('just-selected'), 400); } onboardingData[field] = el.dataset.value; }
 function skipOnboarding() { playClick(); haptic('light'); if (!onboardingData.name) onboardingData.name = 'صديقي'; if (!onboardingData.goal) onboardingData.goal = 'fitness'; if (!onboardingData.level) onboardingData.level = 'beginner'; if (!onboardingData.freq) onboardingData.freq = '3'; safeSet('userProfile', onboardingData); safeSet('onboardingComplete', 'true'); document.getElementById('onboarding').classList.remove('active'); document.getElementById('mainApp').style.display = 'block'; document.getElementById('mainApp').classList.add('app-enter'); setTimeout(() => document.getElementById('mainApp').classList.remove('app-enter'), 700); applyUserProfile(); }
-function nextOnboarding(currentStep, field) { playClick(); haptic('light'); if (field === 'name') { const name = document.getElementById('obName').value.trim(); if (!name) { showInAppNotification('⚠️', 'نحتاج معرفة اسمك'); return; } onboardingData.name = name; } if (field === 'goal' && !onboardingData.goal) { showInAppNotification('⚠️', 'اختر هدفك'); return; } if (field === 'level' && !onboardingData.level) { showInAppNotification('⚠️', 'أخبرنا بمستواك'); return; } if (field === 'weight') { const _w = document.getElementById('obWeight').value || ''; if (_w !== '' && !(parseFloat(_w) >= 30 && parseFloat(_w) <= 250)) { showInAppNotification('⚠️', 'أدخل وزناً صحيحاً (بين 30 و 250 كجم)'); return; } onboardingData.weight = _w; } goToOnboardingStep(currentStep + 1); }
+function nextOnboarding(currentStep, field) { playClick(); haptic('light'); if (field === 'name') { const name = document.getElementById('obName').value.trim(); if (!name) { showInAppNotification('⚠️', 'نحتاج معرفة اسمك'); return; } onboardingData.name = name; } if (field === 'goal' && !onboardingData.goal) { showInAppNotification('⚠️', 'اختر هدفك'); return; } if (field === 'level' && !onboardingData.level) { showInAppNotification('⚠️', 'أخبرنا بمستواك'); return; } if (field === 'weight') { onboardingData.weight = document.getElementById('obWeight').value || ''; } goToOnboardingStep(currentStep + 1); }
 function prevOnboarding(step) { playClick(); haptic('light'); goToOnboardingStep(step); }
 function goToOnboardingStep(step) {
   const current = document.querySelector('.onboarding-step.active');
@@ -14428,82 +14398,48 @@ const FR_PRESETS = {
   mma: { rounds: 3, work: 300, rest: 60 },
   muaythai: { rounds: 5, work: 180, rest: 120 }
 };
-let frSettings = Object.assign({ rounds: 3, work: 180, rest: 60, prepare: 10, warning: true, warnAt: null, noVocal: false, loud: false, segOn: false, segments: [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }] }, safeParse('freeTimerSettings', {}));
+let frSettings = Object.assign({ rounds: 3, work: 180, rest: 60, prepare: 10, warning: true, warnAt: null, noVocal: false, loud: false }, safeParse('freeTimerSettings', {}));
 if (frSettings.warnAt === null || frSettings.warnAt === undefined) frSettings.warnAt = frSettings.warning === false ? 0 : 10;
-frSanitizeSegs();
 let frState = { round: 1, phase: 'idle', remaining: 0, interval: null, paused: false };
-/* ===== تقسيم الجولة إلى مراحل (سرعة / دقة / قوة ...) برنّة عند كل مرحلة ===== */
-const FR_SEG_NAMES = ['سرعة', 'دقة', 'قوة', 'تحمل', 'دفاع', 'تركيز', 'حرية'];
-function frSanitizeSegs() {
-  let s = Array.isArray(frSettings.segments) ? frSettings.segments : [];
-  s = s.filter(x => x && typeof x === 'object').slice(0, 8).map(x => ({ n: String(x.n || 'مرحلة').slice(0, 14), s: clampFr(parseInt(x.s) || 30, 5, 300) }));
-  if (s.length < 2) s = [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }];
-  frSettings.segments = s; frSettings.segOn = !!frSettings.segOn;
-}
-function frSegActive() { return !!frSettings.segOn && Array.isArray(frSettings.segments) && frSettings.segments.length >= 2; }
-function frWorkSec() { return frSegActive() ? frSettings.segments.reduce((t, x) => t + x.s, 0) : frSettings.work; }
-function frSegChimeOnce() {
-  if (soundMuted) return; const ctx = getAudioCtx(); if (!ctx) return;
-  const now = ctx.currentTime;
-  [0, 0.16].forEach(d => [1568, 2349].forEach((freq, i) => {
-    const o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination);
-    o.type = 'triangle'; o.frequency.value = freq; const t = now + d;
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime([0.5, 0.3][i] * sfxVolume, t + 0.01); g.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
-    o.start(t); o.stop(t + 0.75);
-  }));
-}
-function frSegChime() { frSegChimeOnce(); if (frSettings.loud) setTimeout(frSegChimeOnce, 450); }
-function frSegOptions(cur) {
-  const names = FR_SEG_NAMES.includes(cur) ? FR_SEG_NAMES : FR_SEG_NAMES.concat(cur);
-  return names.map(n => '<option value="' + n + '"' + (n === cur ? ' selected' : '') + '>' + n + '</option>').join('');
-}
-function frSegCardHtml() {
-  const f = frSettings;
-  let body = '';
-  if (f.segOn) {
-    body = f.segments.map((sg, i) => '<div class="fr-seg"><div class="fr-seg-h"><select class="fr-seg-name" data-i="' + i + '" aria-label="اسم المرحلة">' + frSegOptions(sg.n) + '</select><button type="button" class="fr-seg-del" data-i="' + i + '" aria-label="حذف المرحلة"' + (f.segments.length <= 2 ? ' disabled' : '') + '>✕</button></div>' + bldRange('seg' + i, 'frwork', 'Stage ' + (i + 1), 'المرحلة ' + (i + 1), 5, 300, 5, sg.s) + '</div>').join('') +
-      '<div class="fr-seg-actions"><button type="button" class="fr-seg-btn" id="frSegAdd"' + (f.segments.length >= 8 ? ' disabled' : '') + '>+ إضافة مرحلة</button><button type="button" class="fr-seg-btn" id="frSegTpl">سرعة · دقة · قوة</button></div>' +
-      '<div class="bld-total"><span>Round length<small class="ar-sub">مجموع المراحل = مدة الجولة</small></span><b id="frSegTotal">' + mmss(frWorkSec()) + '</b></div>';
-  }
-  return '<div class="bld-sec-t">Round stages<small class="ar-sub">تقسيم الجولة إلى مراحل برنّة</small></div><div class="bld-card">' + bldSwitch('segOn', 'Split round into stages', 'تقسيم الجولة (رنّة عند كل مرحلة)', f.segOn) + body + '</div>';
-}
 function clampFr(v, min, max) { return Math.max(min, Math.min(max, v)); }
-function frTotalSec() { return frSettings.prepare + frSettings.rounds * frWorkSec() + Math.max(0, frSettings.rounds - 1) * frSettings.rest; }
+function frTotalSec() { return frSettings.rounds * (frSettings.work + frSettings.prepare) + Math.max(0, frSettings.rounds - 1) * frSettings.rest; }
 const frSpeak = t => { if (!frSettings.noVocal) speak(t); };
 function frBell(isRest) { const f = isRest ? playRoundEndBell : playBoxingBell; f(); if (frSettings.loud) setTimeout(f, 450); }
 function renderFreeTimerSetup() {
   const host = document.getElementById('frSetupBody'); if (!host) return;
   const f = frSettings;
-  f.rounds = clampFr(parseInt(f.rounds) || 3, 1, 30); frSanitizeSegs(); f.work = clampFr(parseInt(f.work) || 180, 10, 600);
-  f.rest = clampFr(parseInt(f.rest) || 0, 0, 300); f.prepare = clampFr(parseInt(f.prepare) || 0, 0, 180); f.warnAt = clampFr(parseInt(f.warnAt) || 0, 0, 60);
+  f.rounds = clampFr(parseInt(f.rounds) || 3, 1, 30); f.work = clampFr(parseInt(f.work) || 180, 10, 300);
+  f.rest = clampFr(parseInt(f.rest) || 0, 0, 120); f.prepare = clampFr(parseInt(f.prepare) || 0, 0, 30); f.warnAt = clampFr(parseInt(f.warnAt) || 0, 0, 60);
+  /* صف مضغوط: القيمة + الوحدة بجانب شريط التمرير (تصميم صفحة كاملة) */
+  const row = (k, fmt, unit, min, max, step, val) => `<div class="fr-set"><div class="fr-lab"><b class="bld-val" data-k="${k}">${BLD_FMT[fmt](val)}</b><span class="fr-unit">${unit}</span></div><div class="bld-slider"><div class="bld-tr"><i class="bld-fill"></i></div><input class="bld-range" type="range" data-k="${k}" data-fmt="${fmt}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${unit}"></div></div>`;
+  const segOn = !!(window.SEG && SEG.active());
   host.innerHTML = `
-    <div class="bld-preset"><label for="frPreset">Load preset<small class="ar-sub">تحميل إعداد جاهز</small></label>
-      <select id="frPreset" onchange="applyFrPreset(this.value)"><option value="">—</option>
-        <option value="boxing">Boxing · 12 × 3:00 / 1:00</option><option value="mma">MMA · 3 × 5:00 / 1:00</option><option value="muaythai">Muay Thai · 5 × 3:00 / 2:00</option>
-        <option value="tabata">Tabata · 8 × 0:20 / 0:10</option><option value="hiit">HIIT · 10 × 0:45 / 0:15</option></select></div>
-    <div class="bld-card">
-      ${bldRange('rounds', 'rounds', 'Rounds', 'عدد الجولات', 1, 30, 1, f.rounds)}
-      ${f.segOn ? '' : bldRange('work', 'frwork', 'Work', 'مدة الجولة', 10, 600, 5, f.work)}
-      ${bldRange('rest', 'rest', 'Rest', 'مدة الراحة', 0, 300, 5, f.rest)}
-      ${bldRange('prepare', 'prep', 'Get ready', 'التهيئة (مرة واحدة في البداية)', 0, 180, 5, f.prepare)}
-      <div class="bld-total"><span>Total workout time<small class="ar-sub">الزمن الكلي</small></span><b id="frTotal">0:00</b></div>
+    <div class="fr-sec-t">الجولات<small>ROUNDS</small></div>
+    <div class="fr-card">
+      ${row('rounds', 'rounds', 'جولة', 1, 30, 1, f.rounds)}
+      ${segOn ? SEG.workRowHTML() : row('work', 'frwork', '/ الجولة', 10, 300, 5, f.work)}
+      ${row('rest', 'rest', 'راحة', 0, 120, 5, f.rest)}
+      ${row('prepare', 'prep', 'تهيئة في البداية', 0, 30, 1, f.prepare)}
+      <div class="fr-total"><span>إجمالي وقت التمرين</span><b id="frTotal">0:00</b></div>
     </div>
-    ${frSegCardHtml()}
-    <div class="bld-sec-t">Advanced<small class="ar-sub">خيارات متقدمة</small></div>
-    <div class="bld-card">
-      ${bldSwitch('noVocal', 'No vocal cues', 'بدون تعليمات صوتية', f.noVocal)}
-      ${bldSwitch('loud', 'Louder round change', 'جرس أعلى عند تغيير الجولة', f.loud)}
-      ${bldRange('warnAt', 'warn', 'End of round warning', 'تنبيه قبل نهاية الجولة', 0, 60, 5, f.warnAt)}
+    <div class="fr-sec-t">مراحل الجولة<small>ROUND STAGES</small></div>
+    <div class="fr-card" id="segHost-fr"></div>
+    <div class="fr-sec-t">تحميل مؤقت<small>LOAD A TIMER</small></div>
+    <div class="fr-card">
+      <label class="fr-preset-row"><span>استخدم قواعد من</span>
+        <select id="frPreset" onchange="applyFrPreset(this.value)"><option value="">—</option>
+          <option value="boxing">Boxing · 12 × 3:00 / 1:00</option><option value="mma">MMA · 3 × 5:00 / 1:00</option><option value="muaythai">Muay Thai · 5 × 3:00 / 2:00</option>
+          <option value="tabata">Tabata · 8 × 0:20 / 0:10</option><option value="hiit">HIIT · 10 × 0:45 / 0:15</option></select></label>
+    </div>
+    <div class="fr-sec-t">متقدم<small>ADVANCED</small></div>
+    <div class="fr-card">
+      ${bldSwitch('noVocal', 'No vocal cues', 'بدون إرشادات صوتية', f.noVocal)}
+      ${bldSwitch('loud', 'Louder round change', 'صوت أعلى عند تغيّر الجولة', f.loud)}
+      ${row('warnAt', 'warn', 'تنبيه قبل النهاية', 0, 60, 5, f.warnAt)}
     </div>`;
-  bldBind(host, (k, v) => {
-    if (/^seg\d+$/.test(k)) { const i = +k.slice(3); if (frSettings.segments[i]) frSettings.segments[i].s = v; const t = document.getElementById('frSegTotal'); if (t) t.textContent = mmss(frWorkSec()); syncFrSummary(); return; }
-    frSettings[k] = v; if (k === 'rounds' || k === 'work' || k === 'rest') { const p = document.getElementById('frPreset'); if (p) p.value = ''; } syncFrSummary();
-  },
-    (k, on) => { frSettings[k] = on; safeSet('freeTimerSettings', frSettings); if (k === 'segOn') { frSanitizeSegs(); renderFreeTimerSetup(); } });
-  host.querySelectorAll('.fr-seg-name').forEach(sel => sel.addEventListener('change', () => { const i = +sel.dataset.i; if (frSettings.segments[i]) { frSettings.segments[i].n = sel.value; safeSet('freeTimerSettings', frSettings); } }));
-  host.querySelectorAll('.fr-seg-del').forEach(b => b.addEventListener('click', () => { playClick(); if (frSettings.segments.length > 2) { frSettings.segments.splice(+b.dataset.i, 1); renderFreeTimerSetup(); } }));
-  const segAdd = host.querySelector('#frSegAdd'); if (segAdd) segAdd.addEventListener('click', () => { playClick(); if (frSettings.segments.length < 8) { frSettings.segments.push({ n: FR_SEG_NAMES[frSettings.segments.length % FR_SEG_NAMES.length], s: 30 }); renderFreeTimerSetup(); } });
-  const segTpl = host.querySelector('#frSegTpl'); if (segTpl) segTpl.addEventListener('click', () => { playClick(); haptic('light'); frSettings.segments = [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }]; renderFreeTimerSetup(); });
+  bldBind(host, (k, v) => { frSettings[k] = v; if (k === 'rounds' || k === 'work' || k === 'rest') { const p = document.getElementById('frPreset'); if (p) p.value = ''; } syncFrSummary(); },
+    (k, on) => { frSettings[k] = on; safeSet('freeTimerSettings', frSettings); });
+  if (window.SEG) SEG.mount('segHost-fr', 'fr');
   syncFrSummary();
 }
 function syncFrSummary() {
@@ -14513,12 +14449,13 @@ function syncFrSummary() {
 function applyFrPreset(name) {
   const p = FR_PRESETS[name]; if (!p) return;
   playClick(); haptic('medium');
-  frSettings.rounds = p.rounds; frSettings.work = p.work; frSettings.rest = p.rest; frSettings.segOn = false;
+  frSettings.rounds = p.rounds; frSettings.work = p.work; frSettings.rest = p.rest;
   renderFreeTimerSetup(); const sel = document.getElementById('frPreset'); if (sel) sel.value = name;
 }
 function startFreeRoundTimer() {
   playClick(); haptic('medium');
   currentActiveRunner = 'fr'; showRunnerSwitcher();
+  if (window.SEG && SEG.active()) frSettings.work = Math.min(900, SEG.total());
   syncFrSummary();
   safeSet('freeTimerSettings', frSettings);
   frState.round = 1; frState.paused = false;
@@ -14535,9 +14472,9 @@ function frStartPrepare() {
   const phaseEl = document.getElementById('frRunnerPhase');
   const nextEl = document.getElementById('frRunnerNext');
   document.getElementById('frRunnerRound').textContent = `جولة ${frState.round} / ${frSettings.rounds}`;
-  phaseEl.textContent = 'التهيئة'; phaseEl.classList.remove('work', 'rest');
+  phaseEl.textContent = 'استعد'; phaseEl.classList.remove('work', 'rest');
   timerEl.classList.remove('rest', 'urgent');
-  nextEl.textContent = 'ألبس القفازات · الجولة 1 تبدأ قريباً';
+  nextEl.textContent = 'الجولة تبدأ قريباً';
   if (frSettings.prepare <= 0) { frStartWork(); return; }
   const count = Math.max(frSettings.prepare, 1);
   frState.phase = 'prepare';
@@ -14555,31 +14492,18 @@ function frStartWork() {
   const phaseEl = document.getElementById('frRunnerPhase');
   const nextEl = document.getElementById('frRunnerNext');
   frState.phase = 'work';
-  document.getElementById('frRunnerRound').textContent = `جولة ${frState.round} / ${frSettings.rounds}`;
-  timerEl.classList.remove('urgent');
-  const wk = frWorkSec(), segs = frSegActive() ? frSettings.segments : null; let segIdx = -1;
-  const segEnd = i => segs.slice(0, i + 1).reduce((t, x) => t + x.s, 0);
-  const segAt = el => { for (let i = 0; i < segs.length; i++) if (el < segEnd(i)) return i; return segs.length - 1; };
-  const segNext = i => segs[i + 1] ? 'التالي: ' + segs[i + 1].n + ' · ' + segs[i + 1].s + 'ث' : (frState.round + 1 <= frSettings.rounds ? 'التالي: جولة ' + (frState.round + 1) : '🏁 الجولة الأخيرة');
-  const segEnter = (i, first) => { segIdx = i; phaseEl.textContent = segs[i].n; nextEl.textContent = segNext(i); if (!first) { frSegChime(); haptic('bell'); frSpeak(segs[i].n); } };
-  ctOnPhaseStart('fr', 'work', wk, frSettings.rounds, frState.round);
+  ctOnPhaseStart('fr', 'work', frSettings.work, frSettings.rounds, frState.round);
   phaseEl.textContent = 'العمل'; phaseEl.classList.add('work'); phaseEl.classList.remove('rest');
   timerEl.classList.remove('rest');
   frBell(false); haptic('bell'); frSpeak('Round ' + frState.round); if (!frSettings.noVocal) startCallEngine(() => frState.phase !== 'work' ? 'stop' : (!frState.paused && frState.remaining > 3));
   const nextRound = frState.round + 1;
   nextEl.textContent = nextRound <= frSettings.rounds ? `التالي: جولة ${nextRound}` : '🏁 الجولة الأخيرة';
-  timerEl.textContent = formatTime(wk);
-  if (segs) segEnter(0, true);
-  ctDriftSafeCountdown(frState, wk, (remaining) => {
+  timerEl.textContent = formatTime(frSettings.work);
+  if (window.SEG) SEG.begin(phaseEl, frSpeak);
+  ctDriftSafeCountdown(frState, frSettings.work, (remaining) => {
     timerEl.textContent = formatTime(Math.max(0, remaining));
-    if (segs && remaining > 0) {
-      const el = wk - remaining, idx = segAt(el);
-      if (idx !== segIdx) segEnter(idx, false);
-      const left = segEnd(idx) - el;
-      nextEl.textContent = 'باقي ' + formatTime(left) + ' · ' + segNext(idx);
-      if (idx < segs.length - 1 && left <= 3 && left > 0) playTick();
-    }
-    ctUpdateRing('fr', remaining, wk);
+    ctUpdateRing('fr', remaining, frSettings.work);
+    if (window.SEG) SEG.tick(remaining, frSettings.work, phaseEl, frSpeak);
     ctSetUrgentEffects('frRunnerTimer', 'frRunnerRingWrap', remaining);
     if (frSettings.warnAt > 0 && remaining === frSettings.warnAt) { playHalfwayTone(); haptic('medium'); }
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); frSpeak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
@@ -14592,7 +14516,7 @@ function frEndRound() {
   const phaseEl = document.getElementById('frRunnerPhase');
   const nextEl = document.getElementById('frRunnerNext');
   if (frState.round >= frSettings.rounds) { frFinishTimer(); return; }
-  if (frSettings.rest <= 0) { frState.round++; frStartWork(); return; }
+  if (frSettings.rest <= 0) { frState.round++; frStartPrepare(); return; }
   frState.phase = 'rest';
   ctOnPhaseStart('fr', 'rest', frSettings.rest, frSettings.rounds, frState.round);
   phaseEl.textContent = 'راحة'; phaseEl.classList.add('rest'); phaseEl.classList.remove('work');
@@ -14605,7 +14529,7 @@ function frEndRound() {
     timerEl.textContent = formatTime(Math.max(0, remaining));
     ctUpdateRing('fr', remaining, frSettings.rest);
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); frSpeak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
-  }, () => { timerEl.classList.remove('urgent'); frState.round++; frStartWork(); }, 'frRunnerRing');
+  }, () => { timerEl.classList.remove('urgent'); frState.round++; frStartPrepare(); }, 'frRunnerRing');
 }
 function frFinishTimer() {
   clearInterval(frState.interval);
@@ -14641,7 +14565,7 @@ function skipFrPhase() {
   playClick(); haptic('medium');
   clearInterval(frState.interval);
   if (frState.phase === 'work') frEndRound();
-  else if (frState.phase === 'rest') { frState.round++; frStartWork(); }
+  else if (frState.phase === 'rest') { frState.round++; frStartPrepare(); }
   else if (frState.phase === 'prepare') frStartWork();
 }
 function toggleFrPause() {
@@ -17522,7 +17446,7 @@ body[data-theme="contrast"] { --pl-on-hiit: #14110f; --pl-on-boxing: #14110f; --
 /* ═══════════════════════════════════════════════════════════════
    ٣) بطاقة التمرين — أصغر وأنظف
    ═══════════════════════════════════════════════════════════════ */
-body:not(.focus-mode):not(.pl-off) .exercise-card {
+body:not(.focus-mode):not(.gym-mode) .exercise-card {
   margin: 0 0 var(--pl-gap);
   padding: 0.55rem 0.65rem 0.5rem;
   background: var(--bg-card);
@@ -17530,43 +17454,43 @@ body:not(.focus-mode):not(.pl-off) .exercise-card {
   border-radius: min(var(--t-card-r, var(--radius-lg)), 22px);
   box-shadow: var(--pl-shadow);
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card.current {
+body:not(.focus-mode):not(.gym-mode) .exercise-card.current {
   border-color: var(--accent-hiit);
   box-shadow: var(--pl-shadow), 0 0 0 1px color-mix(in srgb, var(--accent-hiit) 45%, transparent);
 }
-body:not(.focus-mode):not(.pl-off) #content-boxing .exercise-card.current {
+body:not(.focus-mode):not(.gym-mode) #content-boxing .exercise-card.current {
   border-color: var(--accent-boxing);
   box-shadow: var(--pl-shadow), 0 0 0 1px color-mix(in srgb, var(--accent-boxing) 45%, transparent);
 }
 /* العلامة العائمة للبطاقة الحالية مكرّرة (الحدّ المميّز يكفي) */
-body:not(.focus-mode):not(.pl-off) .exercise-card.current::before,
-body:not(.focus-mode):not(.pl-off) .exercise-card.current::after { display: none; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card.current::before,
+body:not(.focus-mode):not(.gym-mode) .exercise-card.current::after { display: none; }
 
 /* ── الرأس: الاسم + الإنجليزي + المدة في سطر واحد ── */
-body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-header {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header {
   margin: 0 0 0.4rem; gap: 0; flex-wrap: nowrap; justify-content: flex-start;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-header > div {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header > div {
   display: flex; align-items: center; gap: 0.45rem; width: 100%; min-width: 0;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-title-ar {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-title-ar {
   display: inline-flex; align-items: center; gap: 0.3rem; flex: 0 1 auto; min-width: 0;
   margin: 0; font-size: 0.95rem; font-weight: 800; line-height: 1.35; letter-spacing: 0;
   color: var(--text-primary);
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-title-en {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-title-en {
   display: block; flex: 0 1 auto; min-width: 0; margin: 0;
   font-size: 0.68rem; opacity: 1; color: var(--text-secondary);
   direction: ltr; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-header .badge {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header .badge {
   margin: 0 !important; margin-inline-start: auto !important; flex: none;
   padding: 0.05rem 0.55rem; font-size: 0.66rem; line-height: 1.6;
   background: color-mix(in srgb, var(--accent-success) 16%, transparent);
   color: color-mix(in srgb, var(--accent-success) 65%, var(--text-primary));
   border: 1px solid color-mix(in srgb, var(--accent-success) 30%, transparent);
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-header .badge-red {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .exercise-header .badge-red {
   background: color-mix(in srgb, var(--accent-boxing) 16%, transparent);
   color: color-mix(in srgb, var(--accent-boxing) 60%, var(--text-primary));
   border-color: color-mix(in srgb, var(--accent-boxing) 30%, transparent);
@@ -17575,7 +17499,7 @@ body:not(.focus-mode):not(.pl-off) .exercise-card .exercise-header .badge-red {
 /* ═══════════════════════════════════════════════════════════════
    ٤) المؤقت — بحجم معقول في المنتصف
    ═══════════════════════════════════════════════════════════════ */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-widget {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-widget {
   background: var(--pl-surface);
   border-width: 1px;
   border-radius: min(var(--t-radius-md, var(--radius-md)), 16px);
@@ -17583,36 +17507,36 @@ body:not(.focus-mode):not(.pl-off) .exercise-card .timer-widget {
   margin: 0;
   box-shadow: none;
 }
-body:not(.focus-mode):not(.pl-off)[data-timer-style="clean"] .exercise-card .timer-widget {
+body:not(.focus-mode):not(.gym-mode)[data-timer-style="clean"] .exercise-card .timer-widget {
   background: transparent; border-color: transparent;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-ring-container {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-ring-container {
   width: var(--pl-ring); height: var(--pl-ring); margin: 0.1rem auto 0.5rem;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-ring-container::before,
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-ring-container::after { inset: -5px; border-width: 1.5px; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .ring-bg { stroke-width: 9; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .ring-progress { stroke-width: 10; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-display {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-ring-container::before,
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-ring-container::after { inset: -5px; border-width: 1.5px; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .ring-bg { stroke-width: 9; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .ring-progress { stroke-width: 10; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-display {
   font-size: calc(var(--pl-ring) * 0.27); line-height: 1; letter-spacing: -0.01em;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-label {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-label {
   margin-top: 2px; font-size: 0.6rem; letter-spacing: 0.4px; font-weight: 700;
   color: var(--text-secondary);
 }
 /* أيقونة الدمبل بجانب «وقت العمل» مكرّرة */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-label .ico { display: none; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-label .ico { display: none; }
 
 /* ═══════════════════════════════════════════════════════════════
    ٥) الأزرار — زر البدء بعرض كامل + صف واحد مضغوط للباقي
    (!important هنا فقط لتجاوز طبقات الإصلاح السابقة التي تستخدمه)
    ═══════════════════════════════════════════════════════════════ */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls {
   display: flex !important; flex-wrap: wrap !important; justify-content: stretch !important;
   gap: 4px !important; margin: 0; padding: 0;
 }
 /* زر البدء (الأول دائماً: .primary أو .boxing-btn) */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn:first-child {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn:first-child {
   order: 0 !important; flex: 1 1 100% !important; width: 100% !important; max-width: none !important;
   margin: 0 0 2px !important; min-height: 38px !important; padding: 0.3rem 0.9rem !important;
   font-size: 0.85rem !important; font-weight: 800 !important; border-radius: 9999px !important;
@@ -17621,13 +17545,13 @@ body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn:f
   -webkit-backdrop-filter: none; backdrop-filter: none;
   box-shadow: 0 3px 10px -4px color-mix(in srgb, var(--accent-hiit) 70%, transparent);
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn.boxing-btn:first-child {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn.boxing-btn:first-child {
   background: var(--accent-boxing); color: var(--pl-on-boxing);
   box-shadow: 0 3px 10px -4px color-mix(in srgb, var(--accent-boxing) 70%, transparent);
 }
 /* الأزرار الثانوية: أيقونة فوق نص صغير، كلها في صف واحد */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn:not(:first-child),
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-quick-btn {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn:not(:first-child),
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn {
   flex: 1 1 0 !important; min-width: 0 !important; width: auto !important;
   min-height: 42px !important; padding: 0.3rem 0.1rem !important;
   display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
@@ -17638,50 +17562,50 @@ body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-quick
   border: 1px solid var(--pl-line) !important;
   -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none !important;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn:not(:first-child) .ico,
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-quick-btn .ico { width: 1.05rem; height: 1.05rem; flex: none; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn:not(:first-child) .ico,
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn .ico { width: 1.05rem; height: 1.05rem; flex: none; }
 /* ترتيب منطقي: تنقّل ← إنهاء ← إعادة/تكرار/راحة */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls .next-btn { order: 1 !important; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls .timer-quick-btn.skip { order: 2 !important; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls .timer-btn[onclick^="finishCurrentExercise"] { order: 3 !important; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls .timer-btn[onclick^="resetTimer"] { order: 4 !important; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls .timer-btn[onclick^="repeatCurrentExercise"] { order: 5 !important; }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls .timer-quick-btn.extra-rest { order: 6 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .next-btn { order: 1 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-quick-btn.skip { order: 2 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-btn[onclick^="finishCurrentExercise"] { order: 3 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-btn[onclick^="resetTimer"] { order: 4 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-btn[onclick^="repeatCurrentExercise"] { order: 5 !important; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls .timer-quick-btn.extra-rest { order: 6 !important; }
 /* ألوان دلالية — من متغيّرات الثيم فقط */
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn.finish-btn,
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-btn[onclick^="finishCurrentExercise"] {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn.finish-btn,
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-btn[onclick^="finishCurrentExercise"] {
   color: color-mix(in srgb, var(--accent-success) 70%, var(--text-primary)) !important;
   background: color-mix(in srgb, var(--accent-success) 13%, transparent) !important;
   border-color: color-mix(in srgb, var(--accent-success) 34%, transparent) !important;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-quick-btn.skip {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn.skip {
   color: color-mix(in srgb, var(--accent-warning) 70%, var(--text-primary)) !important;
   background: color-mix(in srgb, var(--accent-warning) 13%, transparent) !important;
   border-color: color-mix(in srgb, var(--accent-warning) 34%, transparent) !important;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card .timer-controls > .timer-quick-btn.extra-rest {
+body:not(.focus-mode):not(.gym-mode) .exercise-card .timer-controls > .timer-quick-btn.extra-rest {
   color: color-mix(in srgb, var(--accent-info) 70%, var(--text-primary)) !important;
   background: color-mix(in srgb, var(--accent-info) 13%, transparent) !important;
   border-color: color-mix(in srgb, var(--accent-info) 34%, transparent) !important;
 }
 
 /* ── زر الوصف: آخر عنصر، صغير وهادئ ── */
-body:not(.focus-mode):not(.pl-off) .exercise-card > .desc-btn {
+body:not(.focus-mode):not(.gym-mode) .exercise-card > .desc-btn {
   display: inline-flex; align-items: center; gap: 0.3rem;
   margin: 0.4rem 0 0; min-height: 30px; padding: 0.1rem 0.7rem;
   font-size: 0.68rem; font-weight: 700;
   background: transparent; color: var(--text-secondary);
   border: 1px solid var(--pl-line); border-radius: var(--radius-full);
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card > .desc-btn .icon {
+body:not(.focus-mode):not(.gym-mode) .exercise-card > .desc-btn .icon {
   width: auto; height: auto; background: none; border-radius: 0; font-size: inherit;
 }
-body:not(.focus-mode):not(.pl-off) .exercise-card > .desc-btn .ico { width: 0.95rem; height: 0.95rem; }
+body:not(.focus-mode):not(.gym-mode) .exercise-card > .desc-btn .ico { width: 0.95rem; height: 0.95rem; }
 
 /* ═══════════════════════════════════════════════════════════════
    ٦) صفحة التمرين: شريط علوي ثابت — زر الرجوع دائماً في المتناول
    ═══════════════════════════════════════════════════════════════ */
-body:not(.focus-mode):not(.pl-off) .workout-topbar {
+body:not(.focus-mode):not(.gym-mode) .workout-topbar {
   position: sticky; top: 0; z-index: 60;
   margin: 0 -0.75rem 0.5rem;
   padding: calc(0.35rem + env(safe-area-inset-top, 0px)) 0.75rem 0.4rem;
@@ -17690,20 +17614,20 @@ body:not(.focus-mode):not(.pl-off) .workout-topbar {
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--pl-line);
 }
-body:not(.focus-mode):not(.pl-off) .workout-topbar .back-btn,
-body:not(.focus-mode):not(.pl-off) .workout-topbar .sound-toggle-mini {
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .back-btn,
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .sound-toggle-mini {
   width: 38px; height: 38px; min-height: 0; border-width: 1px; border-radius: var(--radius-md);
 }
-body:not(.focus-mode):not(.pl-off) .workout-topbar .title { font-size: 0.95rem; }
-body:not(.focus-mode):not(.pl-off) .workout-topbar .topbar-progress { margin-top: 0.3rem; }
-body:not(.focus-mode):not(.pl-off) .workout-screen .progress-bar { margin-bottom: 0.5rem; }
-body:not(.focus-mode):not(.pl-off) .workout-screen .phase-buttons { margin-bottom: 0.6rem; gap: 0.35rem; }
-body:not(.focus-mode):not(.pl-off) .workout-screen .phase-btn { padding: 0.4rem 0.7rem; min-height: 38px; font-size: 0.78rem; border-width: 1px; }
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .title { font-size: 0.95rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-topbar .topbar-progress { margin-top: 0.3rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-screen .progress-bar { margin-bottom: 0.5rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-screen .phase-buttons { margin-bottom: 0.6rem; gap: 0.35rem; }
+body:not(.focus-mode):not(.gym-mode) .workout-screen .phase-btn { padding: 0.4rem 0.7rem; min-height: 38px; font-size: 0.78rem; border-width: 1px; }
 
 /* ═══════════════════════════════════════════════════════════════
    ٧) الشريط السفلي — أنحف ولا يغطي المحتوى
    ═══════════════════════════════════════════════════════════════ */
-body:not(.focus-mode):not(.pl-off) { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
+body:not(.focus-mode):not(.gym-mode) { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
 html body .bottom-nav { min-height: 0; bottom: 0.4rem; padding: 0.2rem 0.3rem; }
 html body .bottom-nav .nav-indicator { top: 0.2rem; bottom: 0.2rem; }
 html body .bottom-nav .bottom-nav-item { min-height: 0; padding: 0.25rem 0.2rem; gap: 0; border-radius: var(--radius-md); }
@@ -18126,6 +18050,13 @@ html body .main-tabs .main-tab .ico { flex: none; }
 .bg-combo .cn-chip svg { width: 100%; height: 100%; }
 .bg-combo-say { font-size: .78rem; color: var(--text-secondary); font-weight: 700; }
 .bg-tips { margin: 0; padding-inline-start: 1.1rem; display: flex; flex-direction: column; gap: .4rem; font-size: .8rem; color: var(--text-secondary); line-height: 1.6; }
+.bg-tabs { display: flex; gap: .4rem; overflow-x: auto; padding: .15rem .1rem .5rem; margin-bottom: .6rem; scrollbar-width: none; position: sticky; top: 0; z-index: 5; background: var(--bg-primary); }
+.bg-tabs::-webkit-scrollbar { display: none; }
+.bg-tab { flex: none; min-height: 40px; padding: .45rem .95rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); font-family: inherit; font-weight: 800; font-size: .8rem; cursor: pointer; }
+.bg-tab.active { background: var(--accent-boxing); border-color: var(--accent-boxing); color: #fff; }
+.bg-panel[hidden] { display: none; }
+.bg-intro { border-inline-start: 3px solid var(--accent-boxing); }
+
 .bg-en { font-size: .72rem; font-weight: 600; color: var(--text-secondary); margin-inline-start: .35rem; }
 .bg-det { max-width: none; margin: 0 0 .55rem; }
 .bg-det .bg-row { background: var(--bg-card); }
@@ -18134,6 +18065,12 @@ html body .main-tabs .main-tab .ico { flex: none; }
 </style>
 <script>
 /* دليل الضربات: يبني الصفحة من نفس تعريفات الأرقام والألوان التي يستخدمها نداء الكيس الثقيل (CN_LEGEND / comboChipSVG) */
+window.bgShowTab = function (t) {
+  window.__bgTab = t;
+  document.querySelectorAll('#boxingGuideBody .bg-tab').forEach(function (b) { var on = b.getAttribute('data-t') === t; b.classList.toggle('active', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+  document.querySelectorAll('#boxingGuideBody .bg-panel').forEach(function (p) { p.hidden = p.getAttribute('data-p') !== t; });
+  var tabs = document.querySelector('#boxingGuideBody .bg-tabs'); if (tabs) { try { tabs.scrollIntoView({ block: 'nearest' }); } catch (e) {} }
+};
 window.renderBoxingGuide = function () {
   var el = document.getElementById('boxingGuideBody');
   if (!el || typeof comboChipSVG !== 'function' || typeof comboTokens !== 'function' || typeof MOVE_TRANSLATIONS === 'undefined') return;
@@ -18215,75 +18152,397 @@ window.renderBoxingGuide = function () {
     return '<div class="bg-combo">' + comboChipsHTML(o.n.map(P), 'sm') + '<span class="bg-combo-say">' + o.say + '</span></div>';
   }).join('');
 
+  /* ===== المصطلحات حسب الرياضة ===== */
+  var dictKey = function (en) {
+    if (!en) return null; var t = en.toLowerCase();
+    for (var i = 0; i < keys.length; i++) { if (MOVE_TRANSLATIONS[keys[i]].en.toLowerCase() === t) return keys[i]; }
+    return null;
+  };
+  var KIND_KEY = { def: 'مراوغة', kick: 'ركلة', knee: 'ركبة', elbow: 'كوع', other: 'تيب' };
+  var sportRow = function (it, kind) {
+    var k = dictKey(it.dk) || KIND_KEY[kind] || KIND_KEY.other;
+    return '<div class="bg-row">' + chip(k) + '<span class="bg-txt"><span class="bg-name">' + esc(it.ar) + ' <span class="bg-en" dir="ltr">' + esc(it.en) + '</span></span><span class="bg-desc">' + esc(it.d) + '</span></span></div>';
+  };
+  var sportSection = function (sec, open) {
+    return '<details class="hb-settings bg-det"' + (open ? ' open' : '') + '><summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-' + sec.ico + '"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">' + esc(sec.t) + '</span><span class="hb-sum-now">' + sec.items.length + ' حركة</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary><div class="hb-set-body"><div class="bg-list">' +
+      sec.items.map(function (it) { return sportRow(it, sec.kind); }).join('') + '</div></div></details>';
+  };
+  var SPORTS = {
+    boxing: {
+      intro: 'تعتمد على اللكمات باليدين فقط، وتتميز بأعقد وأنعم حركات القدمين ومراوغات الجذع في الفنون القتالية.',
+      sections: [
+        { t: 'الضربات واللكمات (Punches)', ico: 'boxing-glove', kind: 'punch', items: [
+          { ar: 'جاب', en: 'Jab', dk: 'Jab', d: 'اللكمة المستقيمة السريعة باليد الأمامية (لقياس المسافة والتشويش).' },
+          { ar: 'كروس', en: 'Cross', dk: 'Cross', d: 'اللكمة المستقيمة القوية باليد الخلفية مع دوران الورك.' },
+          { ar: 'هوك', en: 'Hook', dk: 'Lead Hook', d: 'اللكمة الخطافية الجانبية (بزاوية 90 درجة للذراع) نحو الرأس أو الجسم.' },
+          { ar: 'أبركات', en: 'Uppercut', dk: 'Lead Uppercut', d: 'اللكمة الصاعدة من الأسفل إلى الأعلى مستهدفة الفك أو الكبد.' },
+          { ar: 'أوفرهاند', en: 'Overhand', dk: 'Overhand', d: 'لكمة دائرية ساقطة تأتي من فوق كتف الخصم، وهي من أقوى ضربات اليد الخلفية.' }
+        ] },
+        { t: 'المراوغات والدفاع الذكي (Evasions & Defenses)', ico: 'shield', kind: 'def', items: [
+          { ar: 'سليب', en: 'Slip', dk: 'Slip', d: 'إمالة الرأس والجذع بزاوية خفيفة يميناً أو يساراً ليمر نصل اللكمة المستقيمة بجانب الأذن.' },
+          { ar: 'بوب آند ويف', en: 'Bob and Weave', d: 'النزول بالركبتين والتحرك برأسك على شكل حرف (U) للمرور من تحت اللكمات الدائرية (الهوك).' },
+          { ar: 'بول باك / لِين باك', en: 'Pull-back / Lean-back', d: 'سحب الجذع العلوي إلى الخلف لتفادي الضربات دون تحريك القدمين من مكانهما.' },
+          { ar: 'شولدر رول', en: 'Shoulder Roll', d: 'استخدام الكتف الأمامي كدرع لحماية الفك عن طريق تدوير الجسم، وتشتهر بها مدرسة فلويد مايويذر.' },
+          { ar: 'باري', en: 'Parry', d: 'إسقاط أو إبعاد لكمة الخصم بلمسة خفيفة وسريعة بكف اليد لفتح ثغرة.' },
+          { ar: 'بلوك', en: 'Block', d: 'الصد المباشر باستخدام القفازات أو الساعدين لتلقي صدمة اللكمة.' }
+        ] },
+        { t: 'التحركات وحركات القدمين (Footwork)', ico: 'footprints', kind: 'def', items: [
+          { ar: 'ستيب آند دراغ', en: 'Step and Drag', d: 'المشي الأساسي للملاكم: تتحرك القدم الأقرب للاتجاه أولاً ثم تتبعها القدم الأخرى مع الحفاظ على المسافة.' },
+          { ar: 'بيفوت', en: 'Pivot', dk: 'Pivot', d: 'الارتكاز على مشط القدم الأمامية وتدوير الجسم كاملاً بزاوية (45 إلى 90 درجة) لتغيير زاوية الهجوم والهروب من الحصار.' },
+          { ar: 'إل ستيب', en: 'L-Step', d: 'حركة تراجع للقدم الخلفية متبوعة بقفزة جانبية سريعة تصنع زاوية على شكل حرف L للخروج من خط نيران الخصم.' },
+          { ar: 'شافل', en: 'Shuffle', d: 'خطوات التبديل الراقصة السريعة لتمويه الخصم وتغيير المسافات (مثل رقصة محمد علي كلاي).' }
+        ] }
+      ]
+    },
+    kick: {
+      intro: 'يجمع بين لكمات الملاكمة وركلات الكاراتيه والتايكوندو (بأنظمته المختلفة مثل K-1 أو Glory).',
+      sections: [
+        { t: 'ضربات إضافية (بجانب لكمات الملاكمة الأساسية)', ico: 'boxing-glove', kind: 'other', items: [
+          { ar: 'سبينينغ باك فيست', en: 'Spinning Backfist', dk: 'Spinning Backfist', d: 'اللكمة الخلفية الدائرية (دوران 360 درجة والضرب بظهر القفاز).' },
+          { ar: 'سوبرمان بنش', en: 'Superman Punch', dk: 'Superman Punch', d: 'القفز للأمام مع التمويه بركلة ثم دفع اللكمة بنفس توقيت دفع الساق للخلف لإعطاء طاقة حركية قوية.' }
+        ] },
+        { t: 'الركلات (Kicks)', ico: 'footprints', kind: 'kick', items: [
+          { ar: 'لو كيك', en: 'Low Kick', dk: 'Low Kick', d: 'ركلة منخفضة تستهدف عضلات الفخذ للخصم (الداخلية أو الخارجية) لشل حركته.' },
+          { ar: 'ميدل كيك / الركلة الدائرية', en: 'Middle Kick / Roundhouse Kick', dk: 'Roundhouse Kick', d: 'الركلة الدائرية الأساسية الموجهة نحو الخاصرة والأضلاع.' },
+          { ar: 'هاي كيك', en: 'High Kick', dk: 'High Kick', d: 'ركلة دائرية عالية تستهدف الرقبة أو الرأس مباشرة بهدف القاضية.' },
+          { ar: 'فرونت كيك', en: 'Front Kick', dk: 'Front Kick', d: 'ركلة أمامية مباشرة لدفع الخصم أو لضربه في المعدة بكعب أو مشط القدم.' },
+          { ar: 'سايد كيك', en: 'Side Kick', dk: 'Side Kick', d: 'الركلة الجانبية القوية باستخدام كعب القدم عن طريق دفع الورك جانبياً.' },
+          { ar: 'آكس كيك', en: 'Axe Kick', dk: 'Axe Kick', d: 'ركلة الفأس: رفع الساق مستقيمة للأعلى ثم الهبوط بكعب القدم بقوة فوق رأس أو كتف الخصم.' },
+          { ar: 'سبينينغ باك كيك', en: 'Spinning Back Kick', dk: 'Spinning Back Kick', d: 'الركلة الخلفية الدائرية القوية التي تفاجئ الخصم بعد الدوران بكامل الظهر.' }
+        ] },
+        { t: 'ضربات الركبة (تُعتمد في بعض الأنظمة مثل K-1)', ico: 'zap', kind: 'knee', items: [
+          { ar: 'ني سترايك', en: 'Knee Strike', dk: 'Knee', d: 'توجيه ركبة مباشرة إلى بطن أو رأس الخصم.' },
+          { ar: 'الركبة الطائرة', en: 'Flying Knee', dk: 'Flying Knee', d: 'ضربة ركبة بالقفز في الهواء.' }
+        ] }
+      ]
+    },
+    thai: {
+      intro: 'يُعرف بـ «فن الأسلحة الثمانية» لأنه يسمح باستخدام اللكمات والركلات والركب والمرافق، بالإضافة إلى الالتحام «كلينش».',
+      sections: [
+        { t: 'ضربات الكوع والمرفق (Sok)', ico: 'zap', kind: 'elbow', items: [
+          { ar: 'سوك تاد', en: 'Sok Tad / Slashing Elbow', dk: 'Horizontal Elbow', d: 'ضربة كوع أفقية قاطعة تستهدف فتح جروح في وجه الخصم.' },
+          { ar: 'سوك تيون', en: 'Sok Tawan / Uppercut Elbow', dk: 'Uppercut Elbow', d: 'ضربة كوع صاعدة تخترق دفاع الخصم من المنتصف نحو الذقن.' },
+          { ar: 'سوك جاب', en: 'Sok Sab / Chopping Elbow', d: 'ضربة كوع هابطة (كالفأس) تأتي من الأعلى لتهبط على جبهة الخصم أو رأسه.' },
+          { ar: 'سوك كلاب', en: 'Sok Klap / Spinning Back Elbow', dk: 'Spinning Elbow', d: 'ضربة الكوع الخلفية الدائرية القاتلة بعد دوران الجسم.' }
+        ] },
+        { t: 'ضربات الركبة (Khao)', ico: 'zap', kind: 'knee', items: [
+          { ar: 'كاو تون', en: 'Khao Ton / Straight Knee', dk: 'Knee', d: 'دفع الركبة بشكل مستقيم وطولي إلى الأمام لضرب الأضلاع أو المعدة.' },
+          { ar: 'كاو كونغ', en: 'Khao Khong / Curving Knee', d: 'ضربة ركبة دائرية جانبية تستهدف جوانب الجذع للخصم أثناء الالتحام.' },
+          { ar: 'كاو لوي', en: 'Khao Loi / Flying Knee', dk: 'Flying Knee', d: 'القفز العالي في الهواء وتوجيه الركبة مباشرة إلى فك أو صدر الخصم.' }
+        ] },
+        { t: 'الركلات الخاصة بالتايلاندي (Teep & Te)', ico: 'footprints', kind: 'kick', items: [
+          { ar: 'تيب', en: 'Teep / Push Kick', dk: 'Teep', d: 'الركلة الأمامية الدافعة، وتُعتبر بمثابة الجاب (Jab) في الأرجل: تُستخدم للتحكم في المسافة وإخلال توازن الخصم.' },
+          { ar: 'تي تشيانغ', en: 'Te Chiang / Diagonal Kick', dk: 'Roundhouse Kick', d: 'الركلة الدائرية التايلاندية الشهيرة؛ لا تُضرب بمشط القدم بل بعظمة الساق (Shin) وتستهدف الأضلاع أو الفخذ.' }
+        ] },
+        { t: 'الالتحام والصراع القريب (Clinch / Muai Khao)', ico: 'swords', kind: 'other', items: [
+          { ar: 'الكلينش', en: 'Clinch', dk: 'Clinch', d: 'صراع المسافة القريبة والاشتباك بالأيدي خلف رقبة الخصم للتحكم في رأسه وتوجيه ضربات الركب.' },
+          { ar: 'دوم / سويب', en: 'Clinch Sweep / Dum', dk: 'Sweep', d: 'كنس قدم الخصم أو لفّ جسمه أثناء الكلينش لإسقاطه أرضاً بمهارة.' }
+        ] }
+      ]
+    }
+  };
+  var sportPanel = function (key) {
+    var sp = SPORTS[key];
+    return '<div class="bg-wrap"><div class="bg-card bg-intro"><p class="bg-sub" style="margin:0">' + esc(sp.intro) + '</p></div>' +
+      sp.sections.map(function (sec, i) { return sportSection(sec, i === 0); }).join('') + '</div>';
+  };
+
+  var panels = {
+    numbers:
+      '<div class="bg-wrap">' +
+      '<div class="bg-card"><h3 class="bg-title">الأرقام الستة</h3><p class="bg-sub">في «النداء المرقّم» يُنادى الرقم بدل اسم الضربة. للأيمن: اليد الأمامية هي اليسرى والخلفية هي اليمنى (والعكس للأعسر).</p><div class="bg-list">' + numbers + '</div></div>' +
+      '<div class="bg-card"><h3 class="bg-title">الرموز في الكومبوهات</h3><p class="bg-sub">هذه هي الرموز التي تراها على الأيقونات أثناء الكيس الثقيل والكومبوهات.</p><div class="bg-list">' + legend + '</div></div>' +
+      '<div class="bg-card"><h3 class="bg-title">أمثلة كومبو</h3><p class="bg-sub">الأرقام بالترتيب هي ترتيب الضربات.</p><div class="bg-list">' + ex + '</div></div>' +
+      '<div class="bg-card"><h3 class="bg-title">كيف تتدرّب بالأرقام؟</h3><ul class="bg-tips"><li>من «كيس ثقيل» افتح «إعدادات الجلسة» واختر «نداء مرقّم».</li><li>ابدأ بالمستوى المبتدئ ثم ارفع المستوى حين تتقن الأرقام.</li><li>ركّز على الحركة الصحيحة قبل القوة والسرعة.</li></ul></div>' +
+      '</div>',
+    boxing: sportPanel('boxing'),
+    kick: sportPanel('kick'),
+    thai: sportPanel('thai'),
+    all: '<div class="bg-wrap"><div class="bg-card"><h3 class="bg-title">قاموس كل الحركات (' + keys.length + ')</h3><p class="bg-sub">كل الحركات التي يعرفها التطبيق ويستخدمها في الكومبوهات والنداء الصوتي، بالعربية والإنجليزية.</p>' + groupHtml + '</div></div>'
+  };
+  var TABS = [['numbers', 'الأرقام والرموز'], ['boxing', 'ملاكمة'], ['kick', 'كيك بوكسينغ'], ['thai', 'مواي تاي'], ['all', 'كل الحركات']];
+  var cur = window.__bgTab && panels[window.__bgTab] ? window.__bgTab : 'numbers';
   el.innerHTML =
-    '<div class="bg-wrap">' +
-    '<div class="bg-card"><h3 class="bg-title">الأرقام الستة</h3><p class="bg-sub">في «النداء المرقّم» يُنادى الرقم بدل اسم الضربة. للأيمن: اليد الأمامية هي اليسرى والخلفية هي اليمنى (والعكس للأعسر).</p><div class="bg-list">' + numbers + '</div></div>' +
-    '<div class="bg-card"><h3 class="bg-title">الرموز في الكومبوهات</h3><p class="bg-sub">هذه هي الرموز التي تراها على الأيقونات أثناء الكيس الثقيل والكومبوهات.</p><div class="bg-list">' + legend + '</div></div>' +
-    '<div class="bg-card"><h3 class="bg-title">قاموس كل الحركات (' + keys.length + ')</h3><p class="bg-sub">كل الحركات التي يعرفها التطبيق ويستخدمها في الكومبوهات والنداء الصوتي، بالعربية والإنجليزية.</p>' + groupHtml + '</div>' +
-    '<div class="bg-card"><h3 class="bg-title">أمثلة كومبو</h3><p class="bg-sub">الأرقام بالترتيب هي ترتيب الضربات.</p><div class="bg-list">' + ex + '</div></div>' +
-    '<div class="bg-card"><h3 class="bg-title">كيف تتدرّب بالأرقام؟</h3><ul class="bg-tips"><li>من «كيس ثقيل» افتح «إعدادات الجلسة» واختر «نداء مرقّم».</li><li>ابدأ بالمستوى المبتدئ ثم ارفع المستوى حين تتقن الأرقام.</li><li>ركّز على الحركة الصحيحة قبل القوة والسرعة.</li></ul></div>' +
-    '</div>';
+    '<div class="bg-tabs" role="tablist">' + TABS.map(function (t) {
+      return '<button type="button" role="tab" class="bg-tab' + (t[0] === cur ? ' active' : '') + '" data-t="' + t[0] + '" aria-selected="' + (t[0] === cur) + '" onclick="bgShowTab(\'' + t[0] + '\')">' + t[1] + '</button>';
+    }).join('') + '</div>' +
+    TABS.map(function (t) { return '<div class="bg-panel" data-p="' + t[0] + '"' + (t[0] === cur ? '' : ' hidden') + '>' + panels[t[0]] + '</div>'; }).join('');
 };
 </script>
-<style>
-.fr-seg{padding:.5rem 0;border-top:1px solid var(--border-color)}
-.fr-seg-h{display:flex;gap:.5rem;align-items:center;margin-bottom:.3rem}
-.fr-seg-name{flex:1;min-height:42px;background:var(--bg-primary);color:var(--text-primary);border:1.5px solid var(--border-color);border-radius:var(--radius-sm);padding:.4rem .6rem;font-family:inherit;font-size:.9rem;font-weight:700}
-.fr-seg-del{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);font-size:1rem;cursor:pointer}
-.fr-seg-del:disabled,.fr-seg-btn:disabled{opacity:.35}
-.fr-seg-actions{display:flex;gap:.5rem;margin:.6rem 0}
-.fr-seg-btn{flex:1;min-height:44px;border-radius:var(--radius-full);border:1.5px solid var(--accent-boxing);background:var(--bg-card);color:var(--accent-boxing);font-family:inherit;font-weight:800;font-size:.82rem;cursor:pointer}
+<style id="ux-polish-v20">
+/* ===== تقسيم الجولة إلى مراحل + عدد الجولات ===== */
+.seg-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: .8rem; margin-top: .8rem; }
+.seg-head { display: flex; align-items: center; justify-content: space-between; gap: .8rem; cursor: pointer; }
+.seg-head b { display: block; font-size: .9rem; color: var(--text-primary); }
+.seg-head small { display: block; font-size: .72rem; color: var(--text-secondary); line-height: 1.5; margin-top: .15rem; }
+.seg-sw { appearance: none; -webkit-appearance: none; width: 46px; height: 26px; border-radius: 999px; background: var(--bg-elevated, #333); border: 1px solid var(--border-color); position: relative; flex: none; cursor: pointer; transition: background .2s; }
+.seg-sw::after { content: ""; position: absolute; top: 2px; inset-inline-start: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: inset-inline-start .2s; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.seg-sw:checked { background: var(--accent-boxing); border-color: var(--accent-boxing); }
+.seg-sw:checked::after { inset-inline-start: 22px; }
+.seg-body { margin-top: .8rem; display: flex; flex-direction: column; gap: .6rem; }
+.seg-body[hidden] { display: none; }
+.seg-presets { display: flex; gap: .4rem; flex-wrap: wrap; }
+.seg-preset { min-height: 36px; padding: .3rem .75rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-secondary); font-family: inherit; font-size: .74rem; font-weight: 800; cursor: pointer; }
+.seg-list { display: flex; flex-direction: column; gap: .45rem; }
+.seg-row { display: flex; align-items: center; gap: .45rem; padding: .4rem .45rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.seg-num { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--accent-boxing); color: #fff; font-size: .72rem; font-weight: 900; flex: none; }
+.seg-name { flex: 1; min-width: 0; height: 40px; padding: 0 .6rem; border-radius: var(--radius-sm, 8px); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-family: inherit; font-size: .85rem; font-weight: 700; }
+.seg-step { display: flex; align-items: center; gap: .2rem; flex: none; }
+.seg-step button, .seg-del, .seg-rounds button { min-width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-size: 1.1rem; font-weight: 900; font-family: inherit; cursor: pointer; }
+.seg-sec { min-width: 3.1rem; text-align: center; font-size: .85rem; font-weight: 900; color: var(--accent-boxing); font-variant-numeric: tabular-nums; }
+.seg-del { font-size: .85rem; color: var(--text-secondary); }
+.seg-add { min-height: 40px; border: 1px dashed var(--border-color); background: transparent; color: var(--text-secondary); border-radius: var(--radius-md); font-family: inherit; font-weight: 800; font-size: .8rem; cursor: pointer; }
+.seg-total { display: flex; justify-content: space-between; align-items: center; font-size: .8rem; color: var(--text-secondary); }
+.seg-total b { color: var(--text-primary); font-size: .95rem; font-variant-numeric: tabular-nums; }
+.seg-work-row { display: flex; justify-content: space-between; align-items: center; padding: .7rem .2rem; border-bottom: 1px solid var(--border-color); }
+.seg-work-row b { font-size: .9rem; }
+.seg-work-row small { display: block; font-size: .72rem; color: var(--text-secondary); font-weight: 600; }
+.seg-rounds { display: flex; align-items: center; justify-content: center; gap: .8rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: .4rem; }
+.seg-rounds .seg-rv { min-width: 6.5rem; text-align: center; font-size: .9rem; font-weight: 900; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.seg-hint { font-size: .72rem; color: var(--text-secondary); margin-top: .35rem; line-height: 1.5; }
+.bld-card .seg-card { margin-top: 0; border: 0; padding: .6rem 0 0; background: transparent; }
 </style>
 <script>
-/* ===== حارس الأرقام: يمنع القيم غير المنطقية في كل حقول الأرقام ===== */
+/* ============ تقسيم الجولة إلى مراحل (سرعة ← دقة ← قوة) برنّة عند كل انتقال ============ */
 (function () {
-  var R = window.IG_RULES = {
-    obWeight: { min: 30, max: 250, dec: 1, n: 'الوزن (كجم)' },
-    aiCurrentWeight: { min: 30, max: 250, dec: 1, n: 'الوزن الحالي (كجم)' },
-    aiTargetWeight: { min: 30, max: 250, dec: 1, n: 'الوزن المستهدف (كجم)' },
-    aiHeight: { min: 100, max: 230, dec: 0, n: 'الطول (سم)' },
-    aiAge: { min: 10, max: 90, dec: 0, n: 'العمر' },
-    aiChest: { min: 50, max: 200, dec: 1, n: 'محيط الصدر (سم)' },
-    aiWaist: { min: 40, max: 200, dec: 1, n: 'محيط الخصر (سم)' },
-    aiArm: { min: 15, max: 80, dec: 1, n: 'محيط الذراع (سم)' },
-    aiThigh: { min: 25, max: 120, dec: 1, n: 'محيط الفخذ (سم)' },
-    aiBodyFat: { min: 3, max: 60, dec: 1, n: 'نسبة الدهون %' },
-    aiWater: { min: 0.5, max: 8, dec: 1, n: 'الماء (لتر)' },
-    weightLogInput: { min: 0.5, max: 500, dec: 1, n: 'الوزن (كجم)' }
-  };
-  function rule(el) {
-    if (!el || el.tagName !== 'INPUT' || el.type !== 'number') return null;
-    if (R[el.id]) return R[el.id];
-    var mn = parseFloat(el.min), mx = parseFloat(el.max);
-    if (isNaN(mn) && isNaN(mx)) return null;
-    return { min: isNaN(mn) ? -Infinity : mn, max: isNaN(mx) ? Infinity : mx, dec: /\./.test(el.step || '') ? 1 : 0, n: el.getAttribute('aria-label') || 'القيمة' };
+  var KEY = 'roundSegments', RKEY = 'hbRoundsOverride';
+  var DEF = { on: false, parts: [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }] };
+  var PRESETS = [
+    { t: 'سرعة · دقة · قوة', p: [['سرعة', 30], ['دقة', 30], ['قوة', 30]] },
+    { t: 'سرعة · قوة', p: [['سرعة', 45], ['قوة', 45]] },
+    { t: 'إحماء · وتيرة · ذروة', p: [['إحماء', 40], ['وتيرة', 40], ['ذروة', 30]] }
+  ];
+  var MAX_PARTS = 6, MIN_S = 5, MAX_S = 300, MAX_TOTAL = 900;
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function clampN(v, a, b) { v = parseInt(v, 10); if (isNaN(v)) v = a; return Math.min(b, Math.max(a, v)); }
+  function load() {
+    try {
+      var c = safeParse(KEY, null);
+      if (c && Array.isArray(c.parts) && c.parts.length) {
+        return { on: !!c.on, parts: c.parts.slice(0, MAX_PARTS).map(function (x) { return { n: String(x.n || '').slice(0, 14) || 'مرحلة', s: clampN(x.s, MIN_S, MAX_S) }; }) };
+      }
+    } catch (e) {}
+    return clone(DEF);
   }
-  var last = 0;
-  function warn(msg) { var t = Date.now(); if (t - last < 1500) return; last = t; try { showInAppNotification('⚠️', msg); } catch (e) {} }
-  function sync(el) { var r = R[el.id]; if (r && !el.dataset.igSet) { el.min = r.min; el.max = r.max; el.dataset.igSet = '1'; if (r.dec && !el.step) el.step = 'any'; } }
-  document.addEventListener('focusin', function (e) { sync(e.target); }, true);
+  var cfg = load();
+  function save() { safeSet(KEY, cfg); }
+  function total() { var t = 0; cfg.parts.forEach(function (x) { t += x.s; }); return t; }
+  function fmt(sec) { var m = Math.floor(sec / 60), r = sec % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function idxAt(elapsed) { var acc = 0; for (var i = 0; i < cfg.parts.length; i++) { acc += cfg.parts[i].s; if (elapsed < acc) return i; } return cfg.parts.length - 1; }
+
+  /* رنّة مميزة (جرس مزدوج صاعد) تختلف عن جرس بداية الجولة ونغمة المنتصف */
+  function chime() {
+    try {
+      if (typeof soundMuted !== 'undefined' && soundMuted) return;
+      var ctx = typeof getAudioCtx === 'function' ? getAudioCtx() : null; if (!ctx) return;
+      var vol = typeof sfxVolume === 'number' ? sfxVolume : 1, now = ctx.currentTime;
+      [[1175, 0], [1568, 0.15], [2093, 0.3]].forEach(function (f) {
+        var o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination);
+        o.type = 'triangle'; o.frequency.value = f[0]; var t = now + f[1];
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.34 * vol, t + 0.015); g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
+        o.start(t); o.stop(t + 0.6);
+      });
+    } catch (e) {}
+  }
+  function hasArVoice() { try { return window.speechSynthesis.getVoices().some(function (v) { return /^ar/i.test(v.lang); }); } catch (e) { return false; } }
+  function setLabel(phaseEl, i) {
+    if (!phaseEl) return;
+    if (phaseEl.dataset.segBase === undefined) phaseEl.dataset.segBase = phaseEl.textContent;
+    phaseEl.textContent = phaseEl.dataset.segBase + ' · ' + cfg.parts[i].n;
+  }
+  var run = { idx: -1, base: null };
+  function announce(i, speakFn, withChime) {
+    if (withChime) { window.SEG.chime(); if (typeof haptic === 'function') haptic('bell'); }
+    if (speakFn && hasArVoice()) { try { speakFn(cfg.parts[i].n, 'ar-SA'); } catch (e) {} }
+  }
+
+  if (typeof BLD_FMT !== 'undefined') BLD_FMT.warn = function (v) { return v ? mmss(v) : 'إيقاف'; };
+  window.SEG = {
+    cfg: function () { return cfg; },
+    active: function () { return !!cfg.on && cfg.parts.length > 0; },
+    total: total, fmt: fmt, chime: chime,
+    /* بداية مرحلة العمل في الجولة */
+    begin: function (phaseEl, speakFn) {
+      if (!this.active()) { if (phaseEl && phaseEl.dataset.segBase !== undefined) delete phaseEl.dataset.segBase; return; }
+      if (phaseEl) { delete phaseEl.dataset.segBase; phaseEl.dataset.segBase = phaseEl.textContent; }
+      run.idx = 0; setLabel(phaseEl, 0); announce(0, speakFn, false);
+    },
+    /* كل ثانية: إن عبرنا حدّ مرحلة تُطلق رنّة واهتزاز وتتغير التسمية */
+    tick: function (remaining, totalWork, phaseEl, speakFn) {
+      if (!this.active() || remaining <= 0) return;
+      var i = idxAt(totalWork - remaining);
+      if (i !== run.idx) { run.idx = i; setLabel(phaseEl, i); announce(i, speakFn, true); }
+    },
+    /* الكيس الثقيل: عدد جولات حر + مدة الجولة = مجموع المراحل */
+    applyHb: function (proto) {
+      var q = Object.assign({}, proto), r = parseInt(safeGet(RKEY, '0'), 10) || 0;
+      if (r > 0) q.rounds = Math.min(30, r);
+      if (this.active()) q.work = total();
+      return q;
+    },
+    summaryExtra: function () {
+      var r = parseInt(safeGet(RKEY, '0'), 10) || 0, x = '';
+      if (r > 0) x += ' · ' + r + ' جولة';
+      if (this.active()) x += ' · ' + cfg.parts.length + ' مراحل';
+      return x;
+    },
+    workRowHTML: function () {
+      return '<div class="fr-set fr-work-seg"><div class="fr-lab"><b id="segWorkTotal">' + fmt(total()) + '</b><span class="fr-unit">/ الجولة (مجموع المراحل)</span></div></div>';
+    },
+    /* واجهة التحرير */
+    mount: function (hostId, kind) {
+      var host = document.getElementById(hostId); if (!host) return;
+      function render() {
+        host.innerHTML =
+          '<div class="seg-card"><label class="seg-head"><span><b>Round stages</b><small>تقسيم الجولة إلى مراحل برنّة واهتزاز عند كل انتقال (مثال: ٣٠ث سرعة ← ٣٠ث دقة ← ٣٠ث قوة)</small></span><input type="checkbox" class="seg-sw" data-a="toggle" aria-label="تقسيم الجولة إلى مراحل"' + (cfg.on ? ' checked' : '') + '></label>' +
+          '<div class="seg-body"' + (cfg.on ? '' : ' hidden') + '>' +
+          '<div class="seg-presets">' + PRESETS.map(function (p, i) { return '<button type="button" class="seg-preset" data-a="preset" data-i="' + i + '">' + p.t + '</button>'; }).join('') + '</div>' +
+          '<div class="seg-list">' + cfg.parts.map(function (x, i) {
+            return '<div class="seg-row"><span class="seg-num">' + (i + 1) + '</span><input class="seg-name" data-a="name" data-i="' + i + '" value="' + esc(x.n) + '" maxlength="14" aria-label="اسم المرحلة ' + (i + 1) + '" autocomplete="off">' +
+              '<span class="seg-step"><button type="button" data-a="dec" data-i="' + i + '" aria-label="إنقاص">−</button><span class="seg-sec">' + x.s + 'ث</span><button type="button" data-a="inc" data-i="' + i + '" aria-label="زيادة">+</button></span>' +
+              (cfg.parts.length > 2 ? '<button type="button" class="seg-del" data-a="del" data-i="' + i + '" aria-label="حذف المرحلة">✕</button>' : '') + '</div>';
+          }).join('') + '</div>' +
+          (cfg.parts.length < MAX_PARTS ? '<button type="button" class="seg-add" data-a="add">+ إضافة مرحلة</button>' : '') +
+          '<div class="seg-total"><span>مجموع الجولة</span><b id="segTotal-' + hostId + '">' + fmt(total()) + '</b></div></div></div>';
+      }
+      function changed(structural) {
+        save();
+        var tt = host.querySelector('#segTotal-' + hostId); if (tt) tt.textContent = fmt(total());
+        var wt = document.getElementById('segWorkTotal'); if (wt) wt.textContent = fmt(total());
+        if (kind === 'fr' && cfg.on) { frSettings.work = Math.min(MAX_TOTAL, total()); if (typeof syncFrSummary === 'function') syncFrSummary(); }
+        if (structural) render();
+      }
+      render();
+      host.onclick = function (e) {
+        var b = e.target.closest('[data-a]'); if (!b || !host.contains(b)) return;
+        var a = b.getAttribute('data-a'), i = parseInt(b.getAttribute('data-i'), 10);
+        if (a === 'toggle') return;      /* يُعالَج في change */
+        if (a === 'inc' || a === 'dec') {
+          var d = a === 'inc' ? 5 : -5, ns = clampN(cfg.parts[i].s + d, MIN_S, MAX_S);
+          if (total() - cfg.parts[i].s + ns > MAX_TOTAL) { if (typeof showInAppNotification === 'function') showInAppNotification('⚠️', 'الحد الأقصى لمدة الجولة ' + fmt(MAX_TOTAL)); return; }
+          cfg.parts[i].s = ns; if (typeof playClick === 'function') playClick(); changed(true);
+        } else if (a === 'del' && cfg.parts.length > 2) { cfg.parts.splice(i, 1); changed(true); }
+        else if (a === 'add' && cfg.parts.length < MAX_PARTS) { cfg.parts.push({ n: 'مرحلة ' + (cfg.parts.length + 1), s: 30 }); changed(true); }
+        else if (a === 'preset') { cfg.parts = PRESETS[i].p.map(function (x) { return { n: x[0], s: x[1] }; }); cfg.on = true; changed(true); if (kind === 'fr' && typeof renderFreeTimerSetup === 'function') renderFreeTimerSetup(); }
+      };
+      host.onchange = function (e) {
+        var t = e.target;
+        if (t.getAttribute && t.getAttribute('data-a') === 'toggle') {
+          cfg.on = !!t.checked; save();
+          if (kind === 'fr') { if (cfg.on) frSettings.work = Math.min(MAX_TOTAL, total()); if (typeof renderFreeTimerSetup === 'function') renderFreeTimerSetup(); }
+          else { render(); }
+          if (typeof renderHbAudioLevel === 'function') renderHbAudioLevel();
+        }
+      };
+      host.oninput = function (e) {
+        var t = e.target;
+        if (t.getAttribute && t.getAttribute('data-a') === 'name') { var i = parseInt(t.getAttribute('data-i'), 10); cfg.parts[i].n = (t.value || '').slice(0, 14) || 'مرحلة'; save(); }
+      };
+    }
+  };
+
+  /* ---- عدد جولات الكيس الثقيل ---- */
+  function hbRounds() { return parseInt(safeGet(RKEY, '0'), 10) || 0; }
+  window.renderHbRoundsCtl = function () {
+    var el = document.getElementById('hbRoundsCtl'); if (!el) return;
+    var r = hbRounds();
+    el.innerHTML = '<button type="button" data-d="-1" aria-label="إنقاص">−</button><span class="seg-rv">' + (r > 0 ? r + ' جولة' : 'تلقائي') + '</span><button type="button" data-d="1" aria-label="زيادة">+</button>';
+    el.onclick = function (e) {
+      var b = e.target.closest('button[data-d]'); if (!b) return;
+      var v = Math.min(30, Math.max(0, hbRounds() + parseInt(b.getAttribute('data-d'), 10)));
+      safeSet(RKEY, String(v)); if (typeof playClick === 'function') playClick();
+      window.renderHbRoundsCtl(); if (typeof renderHbAudioLevel === 'function') renderHbAudioLevel();
+    };
+  };
+  function init() { window.renderHbRoundsCtl(); SEG.mount('segHost-hb', 'hb'); if (typeof renderHbAudioLevel === 'function') renderHbAudioLevel(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+/* ============ تقييد المدخلات الرقمية بحدود منطقية ============ */
+(function () {
+  var LIM = {
+    obWeight: [30, 250], aiCurrentWeight: [30, 250], aiTargetWeight: [30, 250], aiHeight: [100, 230], aiAge: [10, 90],
+    aiChest: [50, 200], aiWaist: [40, 200], aiArm: [15, 80], aiThigh: [30, 120], aiBodyFat: [3, 60], aiWater: [0, 8],
+    weightLogInput: [20, 400], prepareTimeInput: [3, 15], restTimeInput: [5, 60]
+  };
+  var UNIT = { aiAge: 'سنة', aiHeight: 'سم', aiChest: 'سم', aiWaist: 'سم', aiArm: 'سم', aiThigh: 'سم', aiBodyFat: '%', aiWater: 'لتر' };
+  function lim(el) {
+    var L = LIM[el.id];
+    if (L) return L;
+    var mn = parseFloat(el.getAttribute('min')), mx = parseFloat(el.getAttribute('max'));
+    return [isNaN(mn) ? null : mn, isNaN(mx) ? null : mx];
+  }
+  var lastToast = 0;
+  function warn(el, L) {
+    var now = Date.now(); if (now - lastToast < 1500) return; lastToast = now;
+    if (typeof showInAppNotification === 'function') showInAppNotification('⚠️', 'القيمة المسموحة من ' + L[0] + ' إلى ' + L[1] + (UNIT[el.id] ? ' ' + UNIT[el.id] : ''));
+  }
+  function setup() {
+    Object.keys(LIM).forEach(function (id) {
+      var el = document.getElementById(id); if (!el) return;
+      el.setAttribute('min', LIM[id][0]); el.setAttribute('max', LIM[id][1]);
+      if (!el.hasAttribute('step')) el.setAttribute('step', id === 'aiWater' || id === 'weightLogInput' ? '0.1' : '1');
+      el.setAttribute('inputmode', 'decimal');
+    });
+  }
+  /* الطور الالتقاطي: يصحَّح قبل أن تقرأ بقية المستمعات القيمة */
   document.addEventListener('keydown', function (e) {
-    var r = rule(e.target); if (!r) return;
+    var el = e.target; if (!el || !el.matches || !el.matches('input[type="number"]')) return;
     if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') e.preventDefault();
-    if (!r.dec && (e.key === '.' || e.key === ',')) e.preventDefault();
   }, true);
   document.addEventListener('input', function (e) {
-    var el = e.target, r = rule(el); if (!r) return;
-    var v = el.value; if (v === '') return;
-    var m = v.match(/^(\d*)\.(\d*)$/);
-    if (m && m[2].length > r.dec) { v = r.dec ? m[1] + '.' + m[2].slice(0, r.dec) : m[1]; el.value = v; }
-    var n = parseFloat(v); if (isNaN(n)) return;
-    if (n > r.max) { el.value = r.max; warn(r.n + ': الحد الأقصى ' + r.max); }
+    var el = e.target; if (!el || !el.matches || !el.matches('input[type="number"]')) return;
+    var L = lim(el); if (L[1] === null) return;
+    var raw = String(el.value);
+    var dot = raw.indexOf('.');
+    if (dot !== -1 && raw.length - dot - 1 > 1) { el.value = raw.slice(0, dot + 2); raw = el.value; }   /* خانة عشرية واحدة */
+    var v = parseFloat(raw); if (isNaN(v)) return;
+    if (v > L[1]) { el.value = String(L[1]); warn(el, L); }
   }, true);
-  document.addEventListener('change', function (e) {
-    var el = e.target, r = rule(el); if (!r) return;
-    var v = el.value; if (v === '') return;
-    var n = parseFloat(v);
-    if (isNaN(n) || n < r.min) { el.value = r.min; warn(r.n + ': الحد الأدنى ' + r.min); }
-    else if (n > r.max) { el.value = r.max; warn(r.n + ': الحد الأقصى ' + r.max); }
+  /* الحد الأدنى عند ترك الحقل (حتى لا نمنع كتابة 7 ثم 75) */
+  document.addEventListener('focusout', function (e) {
+    var el = e.target; if (!el || !el.matches || !el.matches('input[type="number"]')) return;
+    var L = lim(el); if (L[0] === null) return;
+    var raw = String(el.value).trim(); if (raw === '') return;
+    var v = parseFloat(raw); if (isNaN(v)) { el.value = ''; return; }
+    if (v < L[0]) { el.value = String(L[0]); warn(el, L); el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
   }, true);
-  window.IGClamp = function (id, v) { var r = R[id]; return r ? Math.min(r.max, Math.max(r.min, v)) : v; };
+  window.clampNumericInputs = setup;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup); else setup();
 })();
 </script>
+<style id="ux-polish-v21">
+/* ===== صفحة «المؤقت الحر» بملء الشاشة (على نمط تطبيقات المؤقت المتخصصة) ===== */
+/* أخفِ شريط الأيقونات العلوي وزر المحادثة أثناء فتح التبويب */
+body:has(#content-freetimer.active) .main-tabs { display: none; }
+body:has(#content-freetimer.active) #coachFab { display: none; }
+#content-freetimer { padding-bottom: 9.5rem; }
+#content-freetimer .fr-setup-card { background: none; border: 0; box-shadow: none; padding: 0; }
+.fr-title { font-size: 2.1rem; font-weight: 900; margin: .3rem .2rem .2rem; color: var(--text-primary); letter-spacing: -.01em; }
+.fr-sec-t { display: flex; align-items: baseline; gap: .5rem; font-size: .8rem; font-weight: 800; color: var(--text-secondary); margin: 1.2rem .4rem .45rem; }
+.fr-sec-t small { font-size: .64rem; letter-spacing: .12em; opacity: .65; }
+.fr-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 22px; padding: .15rem 1rem; }
+.fr-set { display: flex; align-items: center; gap: .9rem; min-height: 64px; padding: .25rem 0; border-bottom: 1px solid var(--border-color); }
+.fr-lab { flex: 0 0 38%; display: flex; align-items: baseline; gap: .4rem; min-width: 0; white-space: nowrap; }
+.fr-lab .bld-val { font-size: 1.2rem; font-weight: 900; color: var(--text-primary); }
+.fr-unit { font-size: .86rem; color: var(--text-secondary); font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
+.fr-set .bld-slider { flex: 1; min-width: 0; height: 46px; margin: 0; }
+.fr-set .bld-tr { height: 12px; margin-top: -6px; }
+.fr-set .bld-fill { background: var(--accent-boxing); width: calc(3.5px + (100% - 7px) * var(--f, .5)); }
+.fr-set .bld-slider .bld-range::-webkit-slider-thumb { width: 7px; height: 34px; margin-top: 6px; border-radius: 5px; background: var(--accent-boxing); border: 0; box-shadow: 0 0 0 3px rgba(0,0,0,.18); }
+.fr-set .bld-slider .bld-range::-moz-range-thumb { width: 7px; height: 34px; border-radius: 5px; background: var(--accent-boxing); border: 0; }
+.fr-total { display: flex; justify-content: space-between; align-items: center; padding: .7rem 0 .8rem; color: var(--text-secondary); font-size: .88rem; font-weight: 700; }
+.fr-total b { color: var(--text-primary); font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.fr-work-seg .fr-lab { flex: 1 1 auto; }
+.fr-preset-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 60px; font-weight: 800; color: var(--text-primary); font-size: .95rem; }
+.fr-preset-row select { background: transparent; border: 0; color: var(--text-secondary); font: inherit; font-weight: 700; max-width: 62%; text-align: end; text-align-last: end; }
+.fr-card .bld-sw-row { min-height: 60px; }
+.fr-card .bld-sw-row:last-of-type { border-bottom: 1px solid var(--border-color); }
+.fr-card .seg-card { margin-top: 0; border: 0; background: transparent; padding: .7rem 0; }
+/* زر البدء ثابت أسفل الشاشة فوق شريط التنقل */
+.fr-start { position: fixed; left: 0; right: 0; margin-inline: auto; width: min(560px, calc(100% - 2rem)); bottom: calc(env(safe-area-inset-bottom, 0px) + 6.6rem); height: 58px; border-radius: 999px; font-size: 1.05rem; font-weight: 900; background: var(--gradient-boxing); z-index: 850; box-shadow: 0 10px 26px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; gap: .5rem; border: 0; color: #fff; cursor: pointer; }
+.fr-start .ico { width: 1.3rem; height: 1.3rem; }
+</style>
 </body>
 </html>
