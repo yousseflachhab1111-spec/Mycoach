@@ -4793,6 +4793,7 @@ body.floor-mode #floorHint.show { display:block; }
     <button class="main-tab active" id="tab-hiit" role="tab" aria-selected="true" onclick="switchMainTab('hiit')"><svg class="ico"><use href="#ico-home"/></svg> <span>HIIT</span></button>
     <button class="main-tab" id="tab-boxing" role="tab" aria-selected="false" onclick="switchMainTab('boxing')"><svg class="ico"><use href="#ico-boxing-glove"/></svg> <span>ملاكمة</span></button>
     <button class="main-tab" id="tab-program" role="tab" aria-selected="false" onclick="switchMainTab('program')"><svg class="ico"><use href="#ico-dumbbell"/></svg> <span>3 أيام</span></button>
+    <button class="main-tab" id="tab-freetimer" role="tab" aria-selected="false" onclick="switchMainTab('freetimer')"><svg class="ico"><use href="#ico-timer"/></svg> <span>مؤقت حر</span></button>
     <button class="main-tab" id="tab-myprogram" role="tab" aria-selected="false" onclick="switchMainTab('myprogram')"><svg class="ico"><use href="#ico-target"/></svg> <span>برنامجي</span></button>
    </div>
    <div id="content-hiit" class="main-content active">
@@ -4884,7 +4885,7 @@ body.floor-mode #floorHint.show { display:block; }
       <button class="boxing-nav-btn active" id="boxing-nav-workouts" onclick="switchBoxingView('workouts')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-boxing-glove"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">التمارين</span><span class="boxing-nav-sub">6 أيام</span></span></button>
       <button class="boxing-nav-btn" id="boxing-nav-combos" onclick="switchBoxingView('combos')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-zap"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">COMBOS</span><span class="boxing-nav-sub">مكتبة الكومبوهات</span></span></button>
       <button class="boxing-nav-btn" id="boxing-nav-heavybag" onclick="switchBoxingView('heavybag')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-briefcase"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">كيس ثقيل</span><span class="boxing-nav-sub">جولات جاهزة</span></span></button>
-      <button class="boxing-nav-btn" id="boxing-nav-freetimer" onclick="switchBoxingView('freetimer')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-timer"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">مؤقت حر</span><span class="boxing-nav-sub">اضبط جولاتك</span></span></button>
+      <button class="boxing-nav-btn" id="boxing-nav-guide" onclick="switchBoxingView('guide')"><span class="boxing-nav-icon"><svg class="ico"><use href="#ico-info"/></svg></span><span class="boxing-nav-text"><span class="boxing-nav-label">دليل الضربات</span><span class="boxing-nav-sub">ماذا تعني 1، 2، 3؟</span></span></button>
      </div>
      <div id="boxing-workouts-view" class="boxing-view active">
       <div class="days-grid" id="boxingDaysGrid"></div>
@@ -4920,16 +4921,8 @@ body.floor-mode #floorHint.show { display:block; }
       </div>
       <div id="heavybagProtocolsGrid"></div>
      </div>
-     <div id="boxing-freetimer-view" class="boxing-view">
-      <div class="fr-setup-card">
-       <h2 style="color:var(--accent-boxing);border-color:var(--accent-boxing);margin-top:0;"><svg class="ico"><use href="#ico-timer"/></svg> مؤقت الجولات الحر</h2>
-       <p style="color:var(--text-secondary);font-size:0.82rem;margin-bottom:1.1rem;">اضبط عدد الجولات ومدتها بالكامل — تماماً كمؤقتات الملاكمة الاحترافية</p>
-       <details class="hb-settings fr-fold" open>
-        <summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-sliders"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">ضبط الجولات</span><span class="hb-sum-now">الجولات · العمل · الراحة · التنبيهات</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary>
-        <div class="hb-set-body"><div id="frSetupBody"></div></div>
-       </details>
-       <button class="generate-btn" style="background:var(--gradient-boxing);width:100%;" onclick="startFreeRoundTimer()"><svg class="ico"><use href="#ico-play"/></svg> ابدأ الجولات</button>
-      </div>
+     <div id="boxing-guide-view" class="boxing-view">
+      <div id="boxingGuideBody"></div>
      </div>
     </div>
     <div class="workout-screen" id="boxingWorkoutScreen">
@@ -4954,6 +4947,19 @@ body.floor-mode #floorHint.show { display:block; }
      <div id="boxingWorkoutContent"></div>
     </div>
    </div>
+   <div id="content-freetimer" class="main-content">
+     <div id="fr-view" class="fr-view">
+      <div class="fr-setup-card">
+       <h2 style="color:var(--accent-boxing);border-color:var(--accent-boxing);margin-top:0;"><svg class="ico"><use href="#ico-timer"/></svg> مؤقت الجولات الحر</h2>
+       <p style="color:var(--text-secondary);font-size:0.82rem;margin-bottom:1.1rem;">اضبط عدد الجولات ومدتها بالكامل — تماماً كمؤقتات الملاكمة الاحترافية</p>
+       <details class="hb-settings fr-fold" open>
+        <summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-sliders"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">ضبط الجولات</span><span class="hb-sum-now">الجولات · العمل · الراحة · التنبيهات</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary>
+        <div class="hb-set-body"><div id="frSetupBody"></div></div>
+       </details>
+       <button class="generate-btn" style="background:var(--gradient-boxing);width:100%;" onclick="startFreeRoundTimer()"><svg class="ico"><use href="#ico-play"/></svg> ابدأ الجولات</button>
+      </div>
+     </div>
+    </div>
    <div id="content-program" class="main-content">
     <div class="prog-subtabs" id="progSubtabs">
      <button class="prog-sub active" data-sub="cur" onclick="progSub('cur')">البرنامج الحالي</button>
@@ -8101,6 +8107,17 @@ function renderHeavybagProtocols() {
     `;
     grid.appendChild(card);
   });
+  const cu = document.createElement('div');
+  cu.className = 'hb-protocol-card';
+  cu.onclick = () => switchMainTab('freetimer');
+  cu.innerHTML = `
+      <div class="hb-protocol-icon">${emoIco('⏱️')}</div>
+      <div class="hb-protocol-info">
+        <div class="hb-protocol-title">مخصص</div>
+        <div class="hb-protocol-desc">اضبط عدد الجولات ومدتها وراحتها بنفسك، وقسّم الجولة إلى مراحل برنّة</div>
+        <div class="hb-protocol-meta"><span class="meta-tag red">1–50 جولة</span><span class="meta-tag">مراحل داخل الجولة</span></div>
+      </div>`;
+  grid.appendChild(cu);
 }
 
 function startHeavyBagWorkout(protocolId) { withReadiness(() => _startHeavyBagWorkoutCore(protocolId)); }
@@ -8707,7 +8724,7 @@ function toggleFavoriteExercise() { playClick(); haptic('light'); if(!currentDes
 function getExerciseNotes(){ try{return JSON.parse(localStorage.getItem('exerciseNotes')||'{}');}catch(e){return {};} }
 function saveExerciseNote(text){ if(!currentDescKey) return; const notes = getExerciseNotes(); notes[currentDescKey] = text; safeSet('exerciseNotes', notes); showInAppNotification('💾','تم حفظ ملاحظتك'); }
 function getWeightLogs(){ try{return JSON.parse(localStorage.getItem('exerciseWeightLogs')||'{}');}catch(e){return {};} }
-function addWeightLog(){ playClick(); const input = document.getElementById('weightLogInput'); const val = parseFloat(input.value); if(!val || !currentDescKey){ showInAppNotification('⚠️','أدخل وزناً صحيحاً'); return; } const logs = getWeightLogs(); if(!logs[currentDescKey]) logs[currentDescKey]=[]; logs[currentDescKey].push({w:val, d:new Date().toISOString()}); safeSet('exerciseWeightLogs', logs); input.value=''; updateWeightLogDisplay(); showInAppNotification('✅','تم حفظ الوزن'); haptic('light'); }
+function addWeightLog(){ playClick(); const input = document.getElementById('weightLogInput'); const val = parseFloat(input.value); if(!val || val < 0.5 || val > 500 || !currentDescKey){ showInAppNotification('⚠️','أدخل وزناً صحيحاً (بين 0.5 و 500 كجم)'); return; } const logs = getWeightLogs(); if(!logs[currentDescKey]) logs[currentDescKey]=[]; logs[currentDescKey].push({w:val, d:new Date().toISOString()}); safeSet('exerciseWeightLogs', logs); input.value=''; updateWeightLogDisplay(); showInAppNotification('✅','تم حفظ الوزن'); haptic('light'); }
 /* updateWeightLogDisplay: see exercise-modal v2 block */
 
 function getCustomYoutubeUrls() { return safeParse('customYoutubeUrls', {}); }
@@ -9263,6 +9280,7 @@ function switchMainTab(tab) {
   if (tabBtn) { tabBtn.classList.add('active'); tabBtn.setAttribute('aria-selected', 'true'); }
   if (tab === 'program') { renderProgramDays(); updateProgramStats(); progSub(safeGet('progSub', 'cur'), true); }
   if (tab === 'myprogram') loadSavedProgram();
+  if (tab === 'freetimer' && typeof renderFreeTimerSetup === 'function') renderFreeTimerSetup();
   if (tab === 'martial' && typeof initMartialWizard === 'function') initMartialWizard();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -9323,6 +9341,11 @@ function martialDurDefault() { return martialData.style === 'hybrid' ? 90 : 45; 
 function mChip(group, val, label, active) {
   return '<button class="wiz-chip' + (active ? ' active' : '') + '" data-val="' + val + '" onclick="martialPick(\'' + group + '\',\'' + val + '\')">' + label + '</button>';
 }
+function mRoundsStepper() {
+  const b = 'class="fr-seg-btn" style="flex:0 0 56px"';
+  return '<div class="fr-seg-actions" style="align-items:center;justify-content:center;gap:1rem"><button ' + b + ' onclick="martialRoundsStep(-1)" aria-label="أنقص">−</button><b style="font-size:1.15rem;min-width:5rem;text-align:center">' + martialData.rounds + ' جولة</b><button ' + b + ' onclick="martialRoundsStep(1)" aria-label="زِد">+</button></div>';
+}
+function martialRoundsStep(dlt) { martialData.rounds = Math.max(1, Math.min(30, (parseInt(martialData.rounds) || 4) + dlt)); renderMartialWizard(); }
 function mSection(icon, title) { return '<div class="wiz-section-title"><svg class="ico"><use href="#' + icon + '"/></svg> ' + title + '</div>'; }
 function martialPick(group, val) {
   const d = martialData;
@@ -9364,8 +9387,8 @@ function martialStepHtml(n) {
   if (n === 3) {
     const hint = d.style === 'hybrid' ? '<div class="wiz-hint" id="martialDurHint">الحصة الهجينة تحتاج 60-90 دقيقة للهيكل الكامل</div>' : '';
     return mSection('ico-timer', 'مدة الحصة (دقيقة)') + '<div class="wiz-chip-grid" id="mgDuration">' + martialDurOptions().map(x => mChip('duration', x, x, d.duration === x)).join('') + '</div>' + hint +
-      mSection('ico-repeat', 'عدد الجولات') + '<div class="wiz-chip-grid" id="mgRounds">' + [3, 4, 5, 6, 8, 12].map(x => mChip('rounds', x, x, d.rounds === x)).join('') + '</div>' +
-      mSection('ico-clock', 'مدة الجولة (دقيقة)') + '<div class="wiz-chip-grid" id="mgRoundDur">' + [1, 2, 3, 5].map(x => mChip('roundDuration', x, x, d.roundDuration === x)).join('') + '</div>' +
+      mSection('ico-repeat', 'عدد الجولات') + '<div class="wiz-chip-grid" id="mgRounds">' + [3, 4, 5, 6, 8, 10, 12, 15, 20].map(x => mChip('rounds', x, x, d.rounds === x)).join('') + '</div>' + mRoundsStepper() +
+      mSection('ico-clock', 'مدة الجولة (دقيقة)') + '<div class="wiz-chip-grid" id="mgRoundDur">' + [1, 1.5, 2, 3, 4, 5].map(x => mChip('roundDuration', x, x, d.roundDuration === x)).join('') + '</div>' +
       mSection('ico-timer', 'مدة الراحة (ثانية)') + '<div class="wiz-chip-grid" id="mgRest">' + [30, 45, 60, 90, 120].map(x => mChip('rest', x, x, d.rest === x)).join('') + '</div>';
   }
   if (n === 4) {
@@ -9566,7 +9589,7 @@ function martialAiNormalize(parsed, data, P) {
     }
     used.add(lx.en);
     const isM = lx.fmt === 'm';
-    let sets = isM ? Math.max(1, Math.min(12, data.rounds)) : P.setsI;
+    let sets = isM ? Math.max(1, Math.min(30, data.rounds)) : P.setsI;
     let reps = isM ? data.roundDuration + ' د' : mAiUnit(raw.reps, lx.fmt === 't' ? '40 ث' : '10-12', 'reps');
     let rest = isM ? data.rest + ' ثانية' : mAiUnit(raw.rest, lx.fmt === 'r' ? '60 ثانية' : '25 ثانية', 'reps');
     if (!isM && lx.pat === 'hiit' && lx.fmt === 't') { if (P.cardio === 'interval') { reps = '40 ث'; rest = '20 ث'; } else if (P.cardio === 'continuous') { sets = 1; reps = '3 د'; rest = '10 ث'; } else { reps = '45 ث'; rest = '30 ث'; } }
@@ -9841,7 +9864,7 @@ function deleteSavedMartial(i) { const a = martialSaved(); a.splice(i, 1); safeS
 function martialSavedHtml() {
   const a = martialSaved(); if (!a.length) return '';
   return '<div class="form-card" id="martialSavedList" style="margin-top:1rem;"><div class="wiz-section-title">💾 حصصي المحفوظة</div>' + a.map((s, i) =>
-    '<div class="workout-ex-line"><div><b>' + s.name + '</b><div class="workout-ex-note">' + s.duration + ' دقيقة · ' + s.exercises.length + ' تمارين</div></div><span><button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="openSavedMartial(' + i + ')">فتح</button> <button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="deleteSavedMartial(' + i + ')" aria-label="حذف">✕</button></span></div>').join('') + '</div>';
+    '<div class="workout-ex-line"><div><b>' + escapeHTML(s.name) + '</b><div class="workout-ex-note">' + escapeHTML(s.duration) + ' دقيقة · ' + s.exercises.length + ' تمارين</div></div><span><button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="openSavedMartial(' + i + ')">فتح</button> <button class="mrc-btn" style="padding:0.4rem 0.8rem;" onclick="deleteSavedMartial(' + i + ')" aria-label="حذف">✕</button></span></div>').join('') + '</div>';
 }
 
 /* ============================================================
@@ -10359,7 +10382,21 @@ function collectMeasurements() {
   formData.bodyFat = parseFloat(document.getElementById('aiBodyFat').value) || null;
 }
 function collectRestOfForm() { formData.water = parseFloat(document.getElementById('aiWater').value) || 2; formData.medications = document.getElementById('aiMedications').value.trim(); formData.restrictions = document.getElementById('aiRestrictions').value.trim(); }
-function validateStep2() { collectMeasurements(); if (!formData.currentWeight || formData.currentWeight < 30) { showInAppNotification('⚠️', 'أدخل وزنك الحالي'); return false; } if (!formData.targetWeight || formData.targetWeight < 30) { showInAppNotification('⚠️', 'أدخل وزنك المستهدف'); return false; } if (!formData.height || formData.height < 100) { showInAppNotification('⚠️', 'أدخل طولك'); return false; } if (!formData.age || formData.age < 10) { showInAppNotification('⚠️', 'أدخل عمرك'); return false; } return true; }
+function validateStep2() {
+  collectMeasurements();
+  const chk = (v, min, max, msg) => { if (!v || v < min || v > max) { showInAppNotification('⚠️', msg + ' (بين ' + min + ' و ' + max + ')'); return false; } return true; };
+  const opt = (v, min, max, msg) => { if (v != null && (v < min || v > max)) { showInAppNotification('⚠️', msg + ' (بين ' + min + ' و ' + max + ')'); return false; } return true; };
+  if (!chk(formData.currentWeight, 30, 250, 'أدخل وزنك الحالي بشكل صحيح')) return false;
+  if (!chk(formData.targetWeight, 30, 250, 'أدخل وزنك المستهدف بشكل صحيح')) return false;
+  if (!chk(formData.height, 100, 230, 'أدخل طولك بالسنتيمتر')) return false;
+  if (!chk(formData.age, 10, 90, 'أدخل عمرك')) return false;
+  if (!opt(formData.chest, 50, 200, 'محيط الصدر')) return false;
+  if (!opt(formData.waist, 40, 200, 'محيط الخصر')) return false;
+  if (!opt(formData.arm, 15, 80, 'محيط الذراع')) return false;
+  if (!opt(formData.thigh, 25, 120, 'محيط الفخذ')) return false;
+  if (!opt(formData.bodyFat, 3, 60, 'نسبة الدهون')) return false;
+  return true;
+}
 function collectForm() { collectMeasurements(); collectRestOfForm(); formData.days = sortDaysWeek(formData.days); if (!Array.isArray(formData.goals) || !formData.goals.length) formData.goals = [formData.goal || 'fatloss']; if (!validateStep2()) return false; if (!formData.days.length) { showInAppNotification('⚠️', 'اختر يوماً واحداً على الأقل'); return false; } if (!formData.consent) { showInAppNotification('⚠️', 'يجب الموافقة على تعهد الصحة أولاً'); return false; } return true; }
 function wizardNext() {
   if (wizStep === 2 && !validateStep2()) return;
@@ -12700,8 +12737,7 @@ function switchRunner(type) {
       if (typeof switchMainTab === 'function') switchMainTab('builder');
       break;
     case 'fr':
-      if (typeof switchMainTab === 'function') switchMainTab('boxing');
-      setTimeout(() => { if (typeof switchBoxingView === 'function') switchBoxingView('freetimer'); }, 150);
+      if (typeof switchMainTab === 'function') switchMainTab('freetimer');
       break;
     case 'hb':
       if (typeof switchMainTab === 'function') switchMainTab('boxing');
@@ -14116,7 +14152,7 @@ function handleBackButton() {
 let onboardingData = { name:'', goal:'', level:'', weight:'', freq:'' };
 function selectOnboardingOption(el, field) { playClick(); haptic('light'); const parent = el.parentElement; parent.querySelectorAll('.onboarding-option').forEach(o => o.classList.remove('selected', 'just-selected')); el.classList.add('selected'); const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; if (!reduceMotion) { el.classList.add('just-selected'); setTimeout(() => el.classList.remove('just-selected'), 400); } onboardingData[field] = el.dataset.value; }
 function skipOnboarding() { playClick(); haptic('light'); if (!onboardingData.name) onboardingData.name = 'صديقي'; if (!onboardingData.goal) onboardingData.goal = 'fitness'; if (!onboardingData.level) onboardingData.level = 'beginner'; if (!onboardingData.freq) onboardingData.freq = '3'; safeSet('userProfile', onboardingData); safeSet('onboardingComplete', 'true'); document.getElementById('onboarding').classList.remove('active'); document.getElementById('mainApp').style.display = 'block'; document.getElementById('mainApp').classList.add('app-enter'); setTimeout(() => document.getElementById('mainApp').classList.remove('app-enter'), 700); applyUserProfile(); }
-function nextOnboarding(currentStep, field) { playClick(); haptic('light'); if (field === 'name') { const name = document.getElementById('obName').value.trim(); if (!name) { showInAppNotification('⚠️', 'نحتاج معرفة اسمك'); return; } onboardingData.name = name; } if (field === 'goal' && !onboardingData.goal) { showInAppNotification('⚠️', 'اختر هدفك'); return; } if (field === 'level' && !onboardingData.level) { showInAppNotification('⚠️', 'أخبرنا بمستواك'); return; } if (field === 'weight') { onboardingData.weight = document.getElementById('obWeight').value || ''; } goToOnboardingStep(currentStep + 1); }
+function nextOnboarding(currentStep, field) { playClick(); haptic('light'); if (field === 'name') { const name = document.getElementById('obName').value.trim(); if (!name) { showInAppNotification('⚠️', 'نحتاج معرفة اسمك'); return; } onboardingData.name = name; } if (field === 'goal' && !onboardingData.goal) { showInAppNotification('⚠️', 'اختر هدفك'); return; } if (field === 'level' && !onboardingData.level) { showInAppNotification('⚠️', 'أخبرنا بمستواك'); return; } if (field === 'weight') { const _w = document.getElementById('obWeight').value || ''; if (_w !== '' && !(parseFloat(_w) >= 30 && parseFloat(_w) <= 250)) { showInAppNotification('⚠️', 'أدخل وزناً صحيحاً (بين 30 و 250 كجم)'); return; } onboardingData.weight = _w; } goToOnboardingStep(currentStep + 1); }
 function prevOnboarding(step) { playClick(); haptic('light'); goToOnboardingStep(step); }
 function goToOnboardingStep(step) {
   const current = document.querySelector('.onboarding-step.active');
@@ -14392,18 +14428,54 @@ const FR_PRESETS = {
   mma: { rounds: 3, work: 300, rest: 60 },
   muaythai: { rounds: 5, work: 180, rest: 120 }
 };
-let frSettings = Object.assign({ rounds: 3, work: 180, rest: 60, prepare: 10, warning: true, warnAt: null, noVocal: false, loud: false }, safeParse('freeTimerSettings', {}));
+let frSettings = Object.assign({ rounds: 3, work: 180, rest: 60, prepare: 10, warning: true, warnAt: null, noVocal: false, loud: false, segOn: false, segments: [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }] }, safeParse('freeTimerSettings', {}));
 if (frSettings.warnAt === null || frSettings.warnAt === undefined) frSettings.warnAt = frSettings.warning === false ? 0 : 10;
+frSanitizeSegs();
 let frState = { round: 1, phase: 'idle', remaining: 0, interval: null, paused: false };
+/* ===== تقسيم الجولة إلى مراحل (سرعة / دقة / قوة ...) برنّة عند كل مرحلة ===== */
+const FR_SEG_NAMES = ['سرعة', 'دقة', 'قوة', 'تحمل', 'دفاع', 'تركيز', 'حرية'];
+function frSanitizeSegs() {
+  let s = Array.isArray(frSettings.segments) ? frSettings.segments : [];
+  s = s.filter(x => x && typeof x === 'object').slice(0, 8).map(x => ({ n: String(x.n || 'مرحلة').slice(0, 14), s: clampFr(parseInt(x.s) || 30, 5, 300) }));
+  if (s.length < 2) s = [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }];
+  frSettings.segments = s; frSettings.segOn = !!frSettings.segOn;
+}
+function frSegActive() { return !!frSettings.segOn && Array.isArray(frSettings.segments) && frSettings.segments.length >= 2; }
+function frWorkSec() { return frSegActive() ? frSettings.segments.reduce((t, x) => t + x.s, 0) : frSettings.work; }
+function frSegChimeOnce() {
+  if (soundMuted) return; const ctx = getAudioCtx(); if (!ctx) return;
+  const now = ctx.currentTime;
+  [0, 0.16].forEach(d => [1568, 2349].forEach((freq, i) => {
+    const o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination);
+    o.type = 'triangle'; o.frequency.value = freq; const t = now + d;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime([0.5, 0.3][i] * sfxVolume, t + 0.01); g.gain.exponentialRampToValueAtTime(0.001, t + 0.7);
+    o.start(t); o.stop(t + 0.75);
+  }));
+}
+function frSegChime() { frSegChimeOnce(); if (frSettings.loud) setTimeout(frSegChimeOnce, 450); }
+function frSegOptions(cur) {
+  const names = FR_SEG_NAMES.includes(cur) ? FR_SEG_NAMES : FR_SEG_NAMES.concat(cur);
+  return names.map(n => '<option value="' + n + '"' + (n === cur ? ' selected' : '') + '>' + n + '</option>').join('');
+}
+function frSegCardHtml() {
+  const f = frSettings;
+  let body = '';
+  if (f.segOn) {
+    body = f.segments.map((sg, i) => '<div class="fr-seg"><div class="fr-seg-h"><select class="fr-seg-name" data-i="' + i + '" aria-label="اسم المرحلة">' + frSegOptions(sg.n) + '</select><button type="button" class="fr-seg-del" data-i="' + i + '" aria-label="حذف المرحلة"' + (f.segments.length <= 2 ? ' disabled' : '') + '>✕</button></div>' + bldRange('seg' + i, 'frwork', 'Stage ' + (i + 1), 'المرحلة ' + (i + 1), 5, 300, 5, sg.s) + '</div>').join('') +
+      '<div class="fr-seg-actions"><button type="button" class="fr-seg-btn" id="frSegAdd"' + (f.segments.length >= 8 ? ' disabled' : '') + '>+ إضافة مرحلة</button><button type="button" class="fr-seg-btn" id="frSegTpl">سرعة · دقة · قوة</button></div>' +
+      '<div class="bld-total"><span>Round length<small class="ar-sub">مجموع المراحل = مدة الجولة</small></span><b id="frSegTotal">' + mmss(frWorkSec()) + '</b></div>';
+  }
+  return '<div class="bld-sec-t">Round stages<small class="ar-sub">تقسيم الجولة إلى مراحل برنّة</small></div><div class="bld-card">' + bldSwitch('segOn', 'Split round into stages', 'تقسيم الجولة (رنّة عند كل مرحلة)', f.segOn) + body + '</div>';
+}
 function clampFr(v, min, max) { return Math.max(min, Math.min(max, v)); }
-function frTotalSec() { return frSettings.rounds * (frSettings.work + frSettings.prepare) + Math.max(0, frSettings.rounds - 1) * frSettings.rest; }
+function frTotalSec() { return frSettings.prepare + frSettings.rounds * frWorkSec() + Math.max(0, frSettings.rounds - 1) * frSettings.rest; }
 const frSpeak = t => { if (!frSettings.noVocal) speak(t); };
 function frBell(isRest) { const f = isRest ? playRoundEndBell : playBoxingBell; f(); if (frSettings.loud) setTimeout(f, 450); }
 function renderFreeTimerSetup() {
   const host = document.getElementById('frSetupBody'); if (!host) return;
   const f = frSettings;
-  f.rounds = clampFr(parseInt(f.rounds) || 3, 1, 30); f.work = clampFr(parseInt(f.work) || 180, 10, 300);
-  f.rest = clampFr(parseInt(f.rest) || 0, 0, 120); f.prepare = clampFr(parseInt(f.prepare) || 0, 0, 30); f.warnAt = clampFr(parseInt(f.warnAt) || 0, 0, 60);
+  f.rounds = clampFr(parseInt(f.rounds) || 3, 1, 30); frSanitizeSegs(); f.work = clampFr(parseInt(f.work) || 180, 10, 600);
+  f.rest = clampFr(parseInt(f.rest) || 0, 0, 300); f.prepare = clampFr(parseInt(f.prepare) || 0, 0, 180); f.warnAt = clampFr(parseInt(f.warnAt) || 0, 0, 60);
   host.innerHTML = `
     <div class="bld-preset"><label for="frPreset">Load preset<small class="ar-sub">تحميل إعداد جاهز</small></label>
       <select id="frPreset" onchange="applyFrPreset(this.value)"><option value="">—</option>
@@ -14411,19 +14483,27 @@ function renderFreeTimerSetup() {
         <option value="tabata">Tabata · 8 × 0:20 / 0:10</option><option value="hiit">HIIT · 10 × 0:45 / 0:15</option></select></div>
     <div class="bld-card">
       ${bldRange('rounds', 'rounds', 'Rounds', 'عدد الجولات', 1, 30, 1, f.rounds)}
-      ${bldRange('work', 'frwork', 'Work', 'مدة الجولة', 10, 300, 5, f.work)}
-      ${bldRange('rest', 'rest', 'Rest', 'مدة الراحة', 0, 120, 5, f.rest)}
-      ${bldRange('prepare', 'prep', 'Prepare', 'عد تنازلي لكل جولة', 0, 30, 1, f.prepare)}
+      ${f.segOn ? '' : bldRange('work', 'frwork', 'Work', 'مدة الجولة', 10, 600, 5, f.work)}
+      ${bldRange('rest', 'rest', 'Rest', 'مدة الراحة', 0, 300, 5, f.rest)}
+      ${bldRange('prepare', 'prep', 'Get ready', 'التهيئة (مرة واحدة في البداية)', 0, 180, 5, f.prepare)}
       <div class="bld-total"><span>Total workout time<small class="ar-sub">الزمن الكلي</small></span><b id="frTotal">0:00</b></div>
     </div>
+    ${frSegCardHtml()}
     <div class="bld-sec-t">Advanced<small class="ar-sub">خيارات متقدمة</small></div>
     <div class="bld-card">
       ${bldSwitch('noVocal', 'No vocal cues', 'بدون تعليمات صوتية', f.noVocal)}
       ${bldSwitch('loud', 'Louder round change', 'جرس أعلى عند تغيير الجولة', f.loud)}
       ${bldRange('warnAt', 'warn', 'End of round warning', 'تنبيه قبل نهاية الجولة', 0, 60, 5, f.warnAt)}
     </div>`;
-  bldBind(host, (k, v) => { frSettings[k] = v; if (k === 'rounds' || k === 'work' || k === 'rest') { const p = document.getElementById('frPreset'); if (p) p.value = ''; } syncFrSummary(); },
-    (k, on) => { frSettings[k] = on; safeSet('freeTimerSettings', frSettings); });
+  bldBind(host, (k, v) => {
+    if (/^seg\d+$/.test(k)) { const i = +k.slice(3); if (frSettings.segments[i]) frSettings.segments[i].s = v; const t = document.getElementById('frSegTotal'); if (t) t.textContent = mmss(frWorkSec()); syncFrSummary(); return; }
+    frSettings[k] = v; if (k === 'rounds' || k === 'work' || k === 'rest') { const p = document.getElementById('frPreset'); if (p) p.value = ''; } syncFrSummary();
+  },
+    (k, on) => { frSettings[k] = on; safeSet('freeTimerSettings', frSettings); if (k === 'segOn') { frSanitizeSegs(); renderFreeTimerSetup(); } });
+  host.querySelectorAll('.fr-seg-name').forEach(sel => sel.addEventListener('change', () => { const i = +sel.dataset.i; if (frSettings.segments[i]) { frSettings.segments[i].n = sel.value; safeSet('freeTimerSettings', frSettings); } }));
+  host.querySelectorAll('.fr-seg-del').forEach(b => b.addEventListener('click', () => { playClick(); if (frSettings.segments.length > 2) { frSettings.segments.splice(+b.dataset.i, 1); renderFreeTimerSetup(); } }));
+  const segAdd = host.querySelector('#frSegAdd'); if (segAdd) segAdd.addEventListener('click', () => { playClick(); if (frSettings.segments.length < 8) { frSettings.segments.push({ n: FR_SEG_NAMES[frSettings.segments.length % FR_SEG_NAMES.length], s: 30 }); renderFreeTimerSetup(); } });
+  const segTpl = host.querySelector('#frSegTpl'); if (segTpl) segTpl.addEventListener('click', () => { playClick(); haptic('light'); frSettings.segments = [{ n: 'سرعة', s: 30 }, { n: 'دقة', s: 30 }, { n: 'قوة', s: 30 }]; renderFreeTimerSetup(); });
   syncFrSummary();
 }
 function syncFrSummary() {
@@ -14433,7 +14513,7 @@ function syncFrSummary() {
 function applyFrPreset(name) {
   const p = FR_PRESETS[name]; if (!p) return;
   playClick(); haptic('medium');
-  frSettings.rounds = p.rounds; frSettings.work = p.work; frSettings.rest = p.rest;
+  frSettings.rounds = p.rounds; frSettings.work = p.work; frSettings.rest = p.rest; frSettings.segOn = false;
   renderFreeTimerSetup(); const sel = document.getElementById('frPreset'); if (sel) sel.value = name;
 }
 function startFreeRoundTimer() {
@@ -14455,9 +14535,9 @@ function frStartPrepare() {
   const phaseEl = document.getElementById('frRunnerPhase');
   const nextEl = document.getElementById('frRunnerNext');
   document.getElementById('frRunnerRound').textContent = `جولة ${frState.round} / ${frSettings.rounds}`;
-  phaseEl.textContent = 'استعد'; phaseEl.classList.remove('work', 'rest');
+  phaseEl.textContent = 'التهيئة'; phaseEl.classList.remove('work', 'rest');
   timerEl.classList.remove('rest', 'urgent');
-  nextEl.textContent = 'الجولة تبدأ قريباً';
+  nextEl.textContent = 'ألبس القفازات · الجولة 1 تبدأ قريباً';
   if (frSettings.prepare <= 0) { frStartWork(); return; }
   const count = Math.max(frSettings.prepare, 1);
   frState.phase = 'prepare';
@@ -14475,16 +14555,31 @@ function frStartWork() {
   const phaseEl = document.getElementById('frRunnerPhase');
   const nextEl = document.getElementById('frRunnerNext');
   frState.phase = 'work';
-  ctOnPhaseStart('fr', 'work', frSettings.work, frSettings.rounds, frState.round);
+  document.getElementById('frRunnerRound').textContent = `جولة ${frState.round} / ${frSettings.rounds}`;
+  timerEl.classList.remove('urgent');
+  const wk = frWorkSec(), segs = frSegActive() ? frSettings.segments : null; let segIdx = -1;
+  const segEnd = i => segs.slice(0, i + 1).reduce((t, x) => t + x.s, 0);
+  const segAt = el => { for (let i = 0; i < segs.length; i++) if (el < segEnd(i)) return i; return segs.length - 1; };
+  const segNext = i => segs[i + 1] ? 'التالي: ' + segs[i + 1].n + ' · ' + segs[i + 1].s + 'ث' : (frState.round + 1 <= frSettings.rounds ? 'التالي: جولة ' + (frState.round + 1) : '🏁 الجولة الأخيرة');
+  const segEnter = (i, first) => { segIdx = i; phaseEl.textContent = segs[i].n; nextEl.textContent = segNext(i); if (!first) { frSegChime(); haptic('bell'); frSpeak(segs[i].n); } };
+  ctOnPhaseStart('fr', 'work', wk, frSettings.rounds, frState.round);
   phaseEl.textContent = 'العمل'; phaseEl.classList.add('work'); phaseEl.classList.remove('rest');
   timerEl.classList.remove('rest');
   frBell(false); haptic('bell'); frSpeak('Round ' + frState.round); if (!frSettings.noVocal) startCallEngine(() => frState.phase !== 'work' ? 'stop' : (!frState.paused && frState.remaining > 3));
   const nextRound = frState.round + 1;
   nextEl.textContent = nextRound <= frSettings.rounds ? `التالي: جولة ${nextRound}` : '🏁 الجولة الأخيرة';
-  timerEl.textContent = formatTime(frSettings.work);
-  ctDriftSafeCountdown(frState, frSettings.work, (remaining) => {
+  timerEl.textContent = formatTime(wk);
+  if (segs) segEnter(0, true);
+  ctDriftSafeCountdown(frState, wk, (remaining) => {
     timerEl.textContent = formatTime(Math.max(0, remaining));
-    ctUpdateRing('fr', remaining, frSettings.work);
+    if (segs && remaining > 0) {
+      const el = wk - remaining, idx = segAt(el);
+      if (idx !== segIdx) segEnter(idx, false);
+      const left = segEnd(idx) - el;
+      nextEl.textContent = 'باقي ' + formatTime(left) + ' · ' + segNext(idx);
+      if (idx < segs.length - 1 && left <= 3 && left > 0) playTick();
+    }
+    ctUpdateRing('fr', remaining, wk);
     ctSetUrgentEffects('frRunnerTimer', 'frRunnerRingWrap', remaining);
     if (frSettings.warnAt > 0 && remaining === frSettings.warnAt) { playHalfwayTone(); haptic('medium'); }
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); frSpeak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
@@ -14497,7 +14592,7 @@ function frEndRound() {
   const phaseEl = document.getElementById('frRunnerPhase');
   const nextEl = document.getElementById('frRunnerNext');
   if (frState.round >= frSettings.rounds) { frFinishTimer(); return; }
-  if (frSettings.rest <= 0) { frState.round++; frStartPrepare(); return; }
+  if (frSettings.rest <= 0) { frState.round++; frStartWork(); return; }
   frState.phase = 'rest';
   ctOnPhaseStart('fr', 'rest', frSettings.rest, frSettings.rounds, frState.round);
   phaseEl.textContent = 'راحة'; phaseEl.classList.add('rest'); phaseEl.classList.remove('work');
@@ -14510,7 +14605,7 @@ function frEndRound() {
     timerEl.textContent = formatTime(Math.max(0, remaining));
     ctUpdateRing('fr', remaining, frSettings.rest);
     if (remaining <= 3 && remaining > 0) { playFinalCountdown(remaining); frSpeak(String(remaining)); haptic('tick'); timerEl.classList.add('urgent'); }
-  }, () => { timerEl.classList.remove('urgent'); frState.round++; frStartPrepare(); }, 'frRunnerRing');
+  }, () => { timerEl.classList.remove('urgent'); frState.round++; frStartWork(); }, 'frRunnerRing');
 }
 function frFinishTimer() {
   clearInterval(frState.interval);
@@ -14546,7 +14641,7 @@ function skipFrPhase() {
   playClick(); haptic('medium');
   clearInterval(frState.interval);
   if (frState.phase === 'work') frEndRound();
-  else if (frState.phase === 'rest') { frState.round++; frStartPrepare(); }
+  else if (frState.phase === 'rest') { frState.round++; frStartWork(); }
   else if (frState.phase === 'prepare') frStartWork();
 }
 function toggleFrPause() {
@@ -14587,6 +14682,7 @@ function cleanupFreeRoundTimer() {
 // ============ BOXING VIEW SWITCHER (4 خانات) ============
 let currentBoxingView = safeGet('boxingView', 'workouts');
 function switchBoxingView(view) {
+  if (view === 'freetimer') { switchMainTab('freetimer'); return; } /* انتقل المؤقت الحر إلى تبويب مستقل */
   playClick(); haptic('light');
   currentBoxingView = view;
   safeSet('boxingView', view);
@@ -14598,7 +14694,7 @@ function switchBoxingView(view) {
   if (viewEl) viewEl.classList.add('active');
   if (view === 'combos') { const lastCat = safeGet('lastComboCategory', 'boxing'); switchCombosLibrary(lastCat); }
   if (view === 'heavybag') { renderHeavybagProtocols(); renderHbCallStyle(); }
-  if (view === 'freetimer') { renderFreeTimerSetup(); }
+  if (view === 'guide' && typeof renderBoxingGuide === 'function') renderBoxingGuide();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -15066,10 +15162,11 @@ loadBackground();
     const savedBoxingView = safeGet('boxingView', 'workouts');
     if (savedBoxingView === 'combos') { setTimeout(() => switchBoxingView('combos'), 100); }
     else if (savedBoxingView === 'heavybag') { setTimeout(() => switchBoxingView('heavybag'), 100); }
-    else if (savedBoxingView === 'freetimer') { setTimeout(() => switchBoxingView('freetimer'), 100); }
+    else if (savedBoxingView === 'guide') { setTimeout(() => switchBoxingView('guide'), 100); }
   }
   else if (currentMainTab === 'program') switchMainTab('program');
   else if (currentMainTab === 'myprogram') switchMainTab('myprogram');
+  else if (currentMainTab === 'freetimer') switchMainTab('freetimer');
   loadSavedProgram();
   startAutoSave();
   const onboardingDone = safeGet('onboardingComplete', 'false') === 'true';
@@ -17983,5 +18080,210 @@ input, textarea, select { touch-action: manipulation; }
 .in-app-notification { top: calc(env(safe-area-inset-top, 0px) + 14px); z-index: 2147483000; max-width: min(92vw, 520px); box-shadow: 0 10px 30px rgba(0,0,0,.55); background: var(--bg-card); }
 body.focus-mode .in-app-notification { top: calc(5.6rem + env(safe-area-inset-top, 0px)); }
 </style>
+<style id="ux-polish-v17">
+/* [iOS] أي حقل بخط أصغر من 16px يجعل سفاري يكبّر الصفحة عند التركيز ولا تعود (خصوصاً مع منع التكبير) */
+@supports (-webkit-touch-callout: none) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea, [contenteditable="true"] { font-size: 16px !important; }
+}
+/* [iOS<18] نسخ -webkit- المفقودة للتمويه الخلفي */
+.rdy-overlay { -webkit-backdrop-filter: blur(4px); }
+#floorBtn { -webkit-backdrop-filter: blur(6px); }
+</style>
+<style id="ux-polish-v18">
+/* شريط التنقل السفلي: لا يظهر المحتوى تحته في منطقة أمان آيفون (تحت الشريط وفوق مؤشر الصفحة الرئيسية) */
+html body .bottom-nav::after {
+  content: ""; position: absolute; inset-inline: -0.6rem; top: 100%;
+  height: calc(0.5rem + env(safe-area-inset-bottom, 0px) + 2px);
+  background: linear-gradient(to bottom, var(--bg-primary), var(--bg-primary));
+  pointer-events: none;
+}
+</style>
+<style id="ux-polish-v19">
+/* ===== تبويب «مؤقت حر» المستقل ===== */
+.fr-view { display: block; animation: fadeIn 0.35s ease; }
+html body .main-tabs .main-tab#tab-freetimer.active { background: var(--gradient-info); }
+/* خمسة تبويبات في الشريط العلوي: تتوزع بالتساوي وتتقلص نصوصها بدل أن تتجاوز العرض */
+.main-tabs { display: flex; }
+html body .main-tabs .main-tab { flex: 1 1 0; min-width: 0; padding-inline: .25rem; gap: .3rem; font-size: clamp(.62rem, 2.9vw, .76rem); }
+html body .main-tabs .main-tab span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html body .main-tabs .main-tab .ico { flex: none; }
+@media (max-width: 345px) { html body .main-tabs .main-tab { gap: .15rem; font-size: .56rem; padding-inline: .1rem; } html body .main-tabs .main-tab .ico { width: .95rem; height: .95rem; } }
+/* ===== صفحة دليل الضربات ===== */
+.bg-wrap { display: flex; flex-direction: column; gap: 1rem; }
+.bg-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem; }
+.bg-title { font-size: .95rem; font-weight: 900; color: var(--text-primary); margin: 0 0 .25rem; display: flex; align-items: center; gap: .45rem; }
+.bg-sub { font-size: .78rem; color: var(--text-secondary); margin: 0 0 .8rem; line-height: 1.6; }
+.bg-list { display: flex; flex-direction: column; gap: .55rem; }
+.bg-row { display: flex; align-items: center; gap: .75rem; padding: .55rem .6rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.bg-chip { width: 42px; height: 42px; flex: none; }
+.bg-chip svg { width: 100%; height: 100%; display: block; }
+.bg-txt { display: flex; flex-direction: column; min-width: 0; }
+.bg-name { font-size: .9rem; font-weight: 800; color: var(--text-primary); }
+.bg-desc { font-size: .76rem; color: var(--text-secondary); line-height: 1.5; }
+.bg-combo { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .55rem .7rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); flex-wrap: wrap; }
+.bg-combo .cn-chips { gap: .3rem; }
+.bg-combo .cn-chip { width: 34px; height: 34px; }
+.bg-combo .cn-chip svg { width: 100%; height: 100%; }
+.bg-combo-say { font-size: .78rem; color: var(--text-secondary); font-weight: 700; }
+.bg-tips { margin: 0; padding-inline-start: 1.1rem; display: flex; flex-direction: column; gap: .4rem; font-size: .8rem; color: var(--text-secondary); line-height: 1.6; }
+.bg-en { font-size: .72rem; font-weight: 600; color: var(--text-secondary); margin-inline-start: .35rem; }
+.bg-det { max-width: none; margin: 0 0 .55rem; }
+.bg-det .bg-row { background: var(--bg-card); }
+.bg-det .hb-set-body { padding-top: .6rem; }
+
+</style>
+<script>
+/* دليل الضربات: يبني الصفحة من نفس تعريفات الأرقام والألوان التي يستخدمها نداء الكيس الثقيل (CN_LEGEND / comboChipSVG) */
+window.renderBoxingGuide = function () {
+  var el = document.getElementById('boxingGuideBody');
+  if (!el || typeof comboChipSVG !== 'function' || typeof comboTokens !== 'function' || typeof MOVE_TRANSLATIONS === 'undefined') return;
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var tok = function (ar) { return comboTokens(ar)[0]; };           /* نفس الرموز التي تظهر في الكومبوهات والكيس الثقيل */
+  var chip = function (ar) { return '<span class="bg-chip">' + comboChipSVG(tok(ar)) + '</span>'; };
+  var P = function (n) { return { n: n, kind: 'punch', glyph: String(n), body: false, raw: String(n) }; };
+
+  /* شرح مختصر لأهم الحركات (المفتاح = الاسم الإنجليزي كما في قاموس التطبيق) */
+  var D = {
+    'Jab': 'لكمة مستقيمة سريعة باليد الأمامية: لقياس المسافة وفتح الدفاع.',
+    'Cross': 'لكمة مستقيمة قوية باليد الخلفية مع لفّ الورك والكتف.',
+    'Double Jab': 'جابان متتاليان بسرعة.', 'Body Jab': 'جاب إلى منطقة الجسم.', 'Head Jab': 'جاب إلى الرأس.',
+    'Double Cross': 'كروسان متتاليان.', 'Body Cross': 'كروس إلى الجسم.', 'Liver Cross': 'كروس إلى منطقة الكبد تحت الضلوع.',
+    'Hook': 'لكمة جانبية منحنية والكوع بزاوية قائمة.', 'Lead Hook': 'هوك باليد الأمامية.', 'Rear Hook': 'هوك باليد الخلفية مع دوران كامل للجسم.',
+    'Body Hook': 'هوك إلى الجسم.', 'Head Hook': 'هوك إلى الرأس.', 'Liver Hook': 'هوك إلى الكبد.', 'Check Hook': 'هوك مع ارتداد للخلف لمواجهة تقدّم الخصم.', 'Double Hook': 'هوكان متتاليان.',
+    'Uppercut': 'لكمة صاعدة من تحت نحو الذقن أو البطن.', 'Lead Uppercut': 'أبركت باليد الأمامية.', 'Rear Uppercut': 'أبركت باليد الخلفية بقوة الساقين والورك.',
+    'Body Uppercut': 'أبركت إلى الجسم.', 'Short Uppercut': 'أبركت قصير في المسافة القريبة.',
+    'Overhand': 'لكمة قوسية عالية من فوق الكتف باليد الخلفية.', 'Superman Punch': 'لكمة مع قفزة خفيفة وتبديل الساق الخلفية للأمام.',
+    'Backfist': 'ضربة بظهر القبضة بحركة سوط.', 'Spinning Backfist': 'باك فيست بعد دوران كامل.',
+    'Liver Shot': 'ضربة إلى الكبد.', 'Kidney Shot': 'ضربة إلى الكلية من الجانب أو الخلف.',
+    'Kick': 'ركلة عامة.', 'Low Kick': 'ركلة دائرية إلى فخذ الخصم.', 'Front Kick': 'ركلة أمامية مستقيمة بالقدم.', 'Rear Kick': 'ركلة بالساق الخلفية.',
+    'High Kick': 'ركلة عالية نحو الرأس.', 'Body Kick': 'ركلة إلى الأضلاع.', 'Roundhouse Kick': 'الركلة الدائرية الأشهر بالساق.', 'Side Kick': 'ركلة جانبية بالكعب.',
+    'Spinning Back Kick': 'ركلة خلفية بعد دوران كامل.', 'Question Mark Kick': 'ركلة ترتفع مستقيمة ثم تنحني كعلامة استفهام.', 'Crescent Kick': 'ركلة بقوس هلالي من الخارج للداخل.',
+    'Axe Kick': 'رفع الساق عالياً ثم إنزالها بقوة من الأعلى.', 'Jump Kick': 'ركلة بقفزة.', 'Double Kick': 'ركلتان متتاليتان.',
+    'Knee': 'ضربة بالركبة إلى الجسم.', 'Flying Knee': 'ركبة بقفزة للأمام.', 'Clinch Knee': 'ركبة أثناء الإمساك بالخصم.',
+    'Elbow': 'ضربة بالكوع في المسافة القريبة.', 'Horizontal Elbow': 'كوع أفقي على مستوى الوجه.', 'Uppercut Elbow': 'كوع صاعد نحو الذقن.',
+    'Spinning Elbow': 'كوع بعد دوران كامل.', 'Flying Elbow': 'كوع بقفزة.', 'Back Elbow': 'كوع إلى الخلف.',
+    'Teep': 'دفع بالقدم نحو بطن الخصم لإبعاده (مواي تاي).', 'Teep Kick': 'دفع بالقدم نحو بطن الخصم لإبعاده.', 'Side Teep': 'تيب جانبي.',
+    'Sweep': 'إسقاط الخصم بضرب ساق ارتكازه.', 'Inside Sweep': 'كنس من الداخل.', 'Outside Sweep': 'كنس من الخارج.',
+    'Clinch': 'الإمساك بالخصم في المسافة القريبة.', 'Throw': 'رمية بعد الاشتباك.', 'Clinch Duck': 'انخفاض أثناء الاشتباك للتخلص من الإمساك.',
+    'Slip': 'إمالة الرأس جانباً لتفادي اللكمة.', 'Roll': 'انحناء ودوران تحت الهوك.', 'Duck': 'خفض الرأس والجسم لتفادي اللكمة.',
+    'Feint': 'حركة وهمية لخداع الخصم وإرباكه.', 'Pivot': 'دوران على القدم الأمامية لتغيير الزاوية.', 'Step Back': 'خطوة للخلف لكسر المسافة.'
+  };
+  /* تصنيف كل حركات القاموس حسب بداية اسمها العربي */
+  var groups = [
+    { id: 'straight', title: 'لكمات مستقيمة (جاب / كروس)', ico: 'boxing-glove', test: function (k) { return /^(جاب|كروس|بودي)/.test(k); } },
+    { id: 'hooks', title: 'هوك', ico: 'boxing-glove', test: function (k) { return /^(هوك|دبل هوك)/.test(k); } },
+    { id: 'uppers', title: 'أبركت', ico: 'boxing-glove', test: function (k) { return /^(أبركوت|شورت أبركوت)/.test(k); } },
+    { id: 'adv', title: 'لكمات متقدمة', ico: 'zap', test: function (k) { return /^(أوفرهاند|سوبرمان|باك فيست|سبيننج|ليفر|كيدني)/.test(k); } },
+    { id: 'kicks', title: 'ركلات', ico: 'footprints', test: function (k) { return /^ركلة/.test(k); } },
+    { id: 'knees', title: 'ركب', ico: 'zap', test: function (k) { return /^ركبة/.test(k); } },
+    { id: 'elbows', title: 'أكواع', ico: 'zap', test: function (k) { return /^كوع/.test(k); } },
+    { id: 'teep', title: 'تيب وكنس واشتباك', ico: 'swords', test: function (k) { return /^(تيب|كنس|اشتباك|رمية|دك الاشتباك)/.test(k); } },
+    { id: 'def', title: 'دفاع وحركة قدمين', ico: 'shield', test: function (k) { return /^(مراوغة|رول|دك|خداع|دوران|ستيب)/.test(k); } }
+  ];
+  var keys = Object.keys(MOVE_TRANSLATIONS), used = {};
+  var groupHtml = groups.map(function (g) {
+    var items = keys.filter(function (k) { if (used[k]) return false; if (g.test(k)) { used[k] = 1; return true; } return false; });
+    if (!items.length) return '';
+    var rows = items.map(function (k) {
+      var en = MOVE_TRANSLATIONS[k].en, d = D[en] || '';
+      return '<div class="bg-row">' + chip(k) + '<span class="bg-txt"><span class="bg-name">' + esc(k) + ' <span class="bg-en" dir="ltr">' + esc(en) + '</span></span>' + (d ? '<span class="bg-desc">' + esc(d) + '</span>' : '') + '</span></div>';
+    }).join('');
+    return '<details class="hb-settings bg-det"><summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-' + g.ico + '"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">' + g.title + '</span><span class="hb-sum-now">' + items.length + ' حركة</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary><div class="hb-set-body"><div class="bg-list">' + rows + '</div></div></details>';
+  }).join('');
+  var rest = keys.filter(function (k) { return !used[k]; });   /* أي حركة جديدة تُضاف للقاموس لاحقاً تظهر هنا تلقائياً */
+  if (rest.length) {
+    groupHtml += '<details class="hb-settings bg-det"><summary class="hb-settings-sum"><span class="hb-sum-ico"><svg class="ico"><use href="#ico-star"/></svg></span><span class="hb-sum-main"><span class="hb-sum-title">حركات أخرى</span><span class="hb-sum-now">' + rest.length + ' حركة</span></span><span class="hb-sum-chev" aria-hidden="true">▾</span></summary><div class="hb-set-body"><div class="bg-list">' +
+      rest.map(function (k) { var en = MOVE_TRANSLATIONS[k].en; return '<div class="bg-row">' + chip(k) + '<span class="bg-txt"><span class="bg-name">' + esc(k) + ' <span class="bg-en" dir="ltr">' + esc(en) + '</span></span></span></div>'; }).join('') + '</div></div></details>';
+  }
+
+  var numbers = [['جاب', 1], ['كروس', 2], ['هوك أمامية', 3], ['هوك خلفية', 4], ['أبركوت أمامية', 5], ['أبركوت خلفية', 6]].map(function (o) {
+    var en = MOVE_TRANSLATIONS[o[0]] ? MOVE_TRANSLATIONS[o[0]].en : '';
+    return '<div class="bg-row"><span class="bg-chip">' + comboChipSVG(P(o[1])) + '</span><span class="bg-txt"><span class="bg-name">' + o[1] + ' — ' + o[0] + ' <span class="bg-en" dir="ltr">' + esc(en) + '</span></span><span class="bg-desc">' + esc(D[en] || '') + '</span></span></div>';
+  }).join('');
+
+  var legend = [
+    ['ركلة', 'ركلة بأنواعها', 'قدم'], ['ركبة', 'ركبة بأنواعها', 'ركبة'], ['كوع', 'كوع بأنواعه', 'كوع'],
+    ['مراوغة', 'دفاع أو مراوغة أو حركة قدمين', 'درع'], ['تيب', 'حركة أخرى: تيب، كنس، اشتباك، لكمات متقدمة…', 'نقطة']
+  ].map(function (o) {
+    return '<div class="bg-row">' + chip(o[0]) + '<span class="bg-txt"><span class="bg-name">' + o[2] + '</span><span class="bg-desc">' + o[1] + '</span></span></div>';
+  }).join('') + '<div class="bg-row"><span class="bg-chip">' + comboChipSVG({ n: 2, kind: 'punch', glyph: '2', body: true, raw: '2b' }) + '</span><span class="bg-txt"><span class="bg-name">خط تحت الرقم</span><span class="bg-desc">الضربة موجّهة إلى الجسم بدل الرأس (مثل «كروس للجسم»).</span></span></div>';
+
+  var ex = [
+    { n: [1, 2], say: 'جاب – كروس' }, { n: [1, 2, 3], say: 'جاب – كروس – هوك' }, { n: [2, 1, 2], say: 'كروس – جاب – كروس' },
+    { n: [1, 1, 2], say: 'جاب – جاب – كروس' }, { n: [1, 2, 3, 2], say: 'جاب – كروس – هوك – كروس' }, { n: [1, 2, 5, 2], say: 'جاب – كروس – أبركت – كروس' }
+  ].map(function (o) {
+    return '<div class="bg-combo">' + comboChipsHTML(o.n.map(P), 'sm') + '<span class="bg-combo-say">' + o.say + '</span></div>';
+  }).join('');
+
+  el.innerHTML =
+    '<div class="bg-wrap">' +
+    '<div class="bg-card"><h3 class="bg-title">الأرقام الستة</h3><p class="bg-sub">في «النداء المرقّم» يُنادى الرقم بدل اسم الضربة. للأيمن: اليد الأمامية هي اليسرى والخلفية هي اليمنى (والعكس للأعسر).</p><div class="bg-list">' + numbers + '</div></div>' +
+    '<div class="bg-card"><h3 class="bg-title">الرموز في الكومبوهات</h3><p class="bg-sub">هذه هي الرموز التي تراها على الأيقونات أثناء الكيس الثقيل والكومبوهات.</p><div class="bg-list">' + legend + '</div></div>' +
+    '<div class="bg-card"><h3 class="bg-title">قاموس كل الحركات (' + keys.length + ')</h3><p class="bg-sub">كل الحركات التي يعرفها التطبيق ويستخدمها في الكومبوهات والنداء الصوتي، بالعربية والإنجليزية.</p>' + groupHtml + '</div>' +
+    '<div class="bg-card"><h3 class="bg-title">أمثلة كومبو</h3><p class="bg-sub">الأرقام بالترتيب هي ترتيب الضربات.</p><div class="bg-list">' + ex + '</div></div>' +
+    '<div class="bg-card"><h3 class="bg-title">كيف تتدرّب بالأرقام؟</h3><ul class="bg-tips"><li>من «كيس ثقيل» افتح «إعدادات الجلسة» واختر «نداء مرقّم».</li><li>ابدأ بالمستوى المبتدئ ثم ارفع المستوى حين تتقن الأرقام.</li><li>ركّز على الحركة الصحيحة قبل القوة والسرعة.</li></ul></div>' +
+    '</div>';
+};
+</script>
+<style>
+.fr-seg{padding:.5rem 0;border-top:1px solid var(--border-color)}
+.fr-seg-h{display:flex;gap:.5rem;align-items:center;margin-bottom:.3rem}
+.fr-seg-name{flex:1;min-height:42px;background:var(--bg-primary);color:var(--text-primary);border:1.5px solid var(--border-color);border-radius:var(--radius-sm);padding:.4rem .6rem;font-family:inherit;font-size:.9rem;font-weight:700}
+.fr-seg-del{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);font-size:1rem;cursor:pointer}
+.fr-seg-del:disabled,.fr-seg-btn:disabled{opacity:.35}
+.fr-seg-actions{display:flex;gap:.5rem;margin:.6rem 0}
+.fr-seg-btn{flex:1;min-height:44px;border-radius:var(--radius-full);border:1.5px solid var(--accent-boxing);background:var(--bg-card);color:var(--accent-boxing);font-family:inherit;font-weight:800;font-size:.82rem;cursor:pointer}
+</style>
+<script>
+/* ===== حارس الأرقام: يمنع القيم غير المنطقية في كل حقول الأرقام ===== */
+(function () {
+  var R = window.IG_RULES = {
+    obWeight: { min: 30, max: 250, dec: 1, n: 'الوزن (كجم)' },
+    aiCurrentWeight: { min: 30, max: 250, dec: 1, n: 'الوزن الحالي (كجم)' },
+    aiTargetWeight: { min: 30, max: 250, dec: 1, n: 'الوزن المستهدف (كجم)' },
+    aiHeight: { min: 100, max: 230, dec: 0, n: 'الطول (سم)' },
+    aiAge: { min: 10, max: 90, dec: 0, n: 'العمر' },
+    aiChest: { min: 50, max: 200, dec: 1, n: 'محيط الصدر (سم)' },
+    aiWaist: { min: 40, max: 200, dec: 1, n: 'محيط الخصر (سم)' },
+    aiArm: { min: 15, max: 80, dec: 1, n: 'محيط الذراع (سم)' },
+    aiThigh: { min: 25, max: 120, dec: 1, n: 'محيط الفخذ (سم)' },
+    aiBodyFat: { min: 3, max: 60, dec: 1, n: 'نسبة الدهون %' },
+    aiWater: { min: 0.5, max: 8, dec: 1, n: 'الماء (لتر)' },
+    weightLogInput: { min: 0.5, max: 500, dec: 1, n: 'الوزن (كجم)' }
+  };
+  function rule(el) {
+    if (!el || el.tagName !== 'INPUT' || el.type !== 'number') return null;
+    if (R[el.id]) return R[el.id];
+    var mn = parseFloat(el.min), mx = parseFloat(el.max);
+    if (isNaN(mn) && isNaN(mx)) return null;
+    return { min: isNaN(mn) ? -Infinity : mn, max: isNaN(mx) ? Infinity : mx, dec: /\./.test(el.step || '') ? 1 : 0, n: el.getAttribute('aria-label') || 'القيمة' };
+  }
+  var last = 0;
+  function warn(msg) { var t = Date.now(); if (t - last < 1500) return; last = t; try { showInAppNotification('⚠️', msg); } catch (e) {} }
+  function sync(el) { var r = R[el.id]; if (r && !el.dataset.igSet) { el.min = r.min; el.max = r.max; el.dataset.igSet = '1'; if (r.dec && !el.step) el.step = 'any'; } }
+  document.addEventListener('focusin', function (e) { sync(e.target); }, true);
+  document.addEventListener('keydown', function (e) {
+    var r = rule(e.target); if (!r) return;
+    if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') e.preventDefault();
+    if (!r.dec && (e.key === '.' || e.key === ',')) e.preventDefault();
+  }, true);
+  document.addEventListener('input', function (e) {
+    var el = e.target, r = rule(el); if (!r) return;
+    var v = el.value; if (v === '') return;
+    var m = v.match(/^(\d*)\.(\d*)$/);
+    if (m && m[2].length > r.dec) { v = r.dec ? m[1] + '.' + m[2].slice(0, r.dec) : m[1]; el.value = v; }
+    var n = parseFloat(v); if (isNaN(n)) return;
+    if (n > r.max) { el.value = r.max; warn(r.n + ': الحد الأقصى ' + r.max); }
+  }, true);
+  document.addEventListener('change', function (e) {
+    var el = e.target, r = rule(el); if (!r) return;
+    var v = el.value; if (v === '') return;
+    var n = parseFloat(v);
+    if (isNaN(n) || n < r.min) { el.value = r.min; warn(r.n + ': الحد الأدنى ' + r.min); }
+    else if (n > r.max) { el.value = r.max; warn(r.n + ': الحد الأقصى ' + r.max); }
+  }, true);
+  window.IGClamp = function (id, v) { var r = R[id]; return r ? Math.min(r.max, Math.max(r.min, v)) : v; };
+})();
+</script>
 </body>
 </html>
