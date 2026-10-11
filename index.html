@@ -5908,7 +5908,7 @@ body.floor-mode #floorHint.show { display:block; }
   </div>
 <button id="floorBtn" type="button" aria-label="وضع الهاتف على الأرض" title="وضع الهاتف على الأرض — اسحبه لتحريكه"><svg class="ico"><use href="#ico-vibrate"/></svg></button>
 <div id="floorHint">المس الشاشة لإظهار التحكم</div>
-<div id="floorCtl"><button onclick="floorTogglePause()">⏯ إيقاف / استئناف</button><button onclick="exitFloorMode()">⤴ خروج</button></div>
+<div id="floorCtl"><button type="button" onclick="floorTogglePause()"><svg class="ico"><use href="#ico-pause"/></svg><span>إيقاف / استئناف</span></button><button type="button" onclick="exitFloorMode()"><svg class="ico"><use href="#ico-x"/></svg><span>خروج</span></button></div>
   <div class="hb-runner" id="hbRunner">
    <div class="ct-round-dashes" id="hbRunnerDashes"></div>
    <div class="hb-runner-top">
@@ -7181,12 +7181,15 @@ function floorRunnerKind() {
 function enterFloorMode() {
   if (!floorRunnerKind()) return;
   playClick(); haptic('medium');
+  floorNoAnim();
   document.body.classList.add('floor-mode');
   const h = document.getElementById('floorHint'); if (h) { h.classList.add('show'); setTimeout(() => h.classList.remove('show'), 3500); }
   clearInterval(floorWatch);
   floorWatch = setInterval(() => { if (!floorRunnerKind()) exitFloorMode(true); }, 700);
 }
+function floorNoAnim() { const b = document.body; b.classList.add('floor-switching'); clearTimeout(floorNoAnim._t); floorNoAnim._t = setTimeout(() => b.classList.remove('floor-switching'), 200); }
 function exitFloorMode(silent) {
+  floorNoAnim();
   document.body.classList.remove('floor-mode');
   clearInterval(floorWatch); floorWatch = null; clearTimeout(floorCtlTimer);
   const c = document.getElementById('floorCtl'); if (c) c.classList.remove('show');
@@ -18396,7 +18399,7 @@ window.renderBoxingGuide = function () {
       var host = document.getElementById(hostId); if (!host) return;
       function render() {
         host.innerHTML =
-          '<div class="seg-card"><label class="seg-head"><span><b>تقسيم الجولة إلى مراحل</b><small>تقسيم الجولة إلى مراحل برنّة واهتزاز عند كل انتقال (مثال: ٣٠ث سرعة ← ٣٠ث دقة ← ٣٠ث قوة)</small></span><input type="checkbox" class="seg-sw" data-a="toggle" aria-label="تقسيم الجولة إلى مراحل"' + (cfg.on ? ' checked' : '') + '></label>' +
+          '<div class="seg-card"><label class="seg-head"><span><b>تقسيم الجولة إلى مراحل</b><small>برنّة واهتزاز عند كل انتقال بين المراحل، مثل: ٣٠ث سرعة، ٣٠ث دقة، ٣٠ث قوة</small></span><input type="checkbox" class="seg-sw" data-a="toggle" aria-label="تقسيم الجولة إلى مراحل"' + (cfg.on ? ' checked' : '') + '></label>' +
           '<div class="seg-body"' + (cfg.on ? '' : ' hidden') + '>' +
           '<div class="seg-presets">' + PRESETS.map(function (p, i) { return '<button type="button" class="seg-preset" data-a="preset" data-i="' + i + '">' + p.t + '</button>'; }).join('') + '</div>' +
           '<div class="seg-list">' + cfg.parts.map(function (x, i) {
@@ -18560,17 +18563,34 @@ body:has(#content-freetimer.active) #coachFab { display: none; }
 .fr-set .bld-slider .bld-range::-moz-range-thumb { box-sizing: border-box; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid var(--accent-boxing); box-shadow: 0 1px 4px rgba(0,0,0,.45); }
 .fr-set .bld-slider .bld-range:active::-webkit-slider-thumb { transform: scale(1.15); }
 /* 3) زر البدء لا يغطي المحتوى: مساحة أكبر أسفل الصفحة + تدرّج خلف الزر */
-#content-freetimer { padding-bottom: 13rem; }
+#content-freetimer { padding-bottom: 11.5rem; }
 .fr-start-fade { position: fixed; left: 0; right: 0; bottom: 0; height: 12.5rem; z-index: 840; pointer-events: none; background: linear-gradient(to top, var(--bg-primary) 45%, transparent); }
 .fr-start { bottom: calc(env(safe-area-inset-bottom, 0px) + 6.9rem); }
 /* 4) القائمة المنسدلة: شكل واضح وتركيز أنظف وبطاقة بلا فراغ زائد */
-.fr-preset-row { min-height: 0; padding: .7rem 0; }
+.fr-preset-row { min-height: 0; padding: .7rem 0; margin: 0 !important; }
 .fr-preset-row select { flex: 0 1 60%; max-width: none; min-height: 46px; margin: 0; padding: 0 .9rem; background: var(--bg-elevated); border: 1.5px solid var(--border-color); border-radius: 14px; color: var(--text-primary); text-align: start; text-align-last: start; direction: rtl; }
 .fr-preset-row select:focus, .fr-preset-row select:focus-visible { outline: none; border-color: var(--accent-boxing); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-boxing) 25%, transparent); }
 /* 5) بطاقة مراحل الجولة */
 .fr-card .seg-head { direction: rtl; }
 .fr-card .seg-head small { text-align: start; }
-.fr-card .seg-sw::after { inset-inline-start: 2px; }
+.fr-card .seg-sw::after { inset-inline-start: auto; left: 2px; }
+.fr-card .seg-sw:checked::after { inset-inline-start: auto; left: 22px; }
+.fr-set .bld-slider .bld-range { direction: rtl; }
+</style>
+<style id="floor-fix-v1">
+/* ===== إصلاحات وضع «الهاتف على الأرض» ===== */
+/* لا انتقالات أثناء الدخول/الخروج: كانت الخلفية تتلاشى وتظهر الصفحة خلفها والعناصر تتحرك بشكل غريب */
+body.floor-switching .hb-runner, body.floor-switching .hb-runner *,
+body.floor-switching .cw-runner, body.floor-switching .cw-runner * { transition: none !important; }
+/* أخفِ كل الأزرار العائمة (🔄 وغيرها) فوق المؤقت */
+body.floor-mode .ts-fab, body.floor-mode .coach-fab { display: none !important; }
+/* رقم المؤقت يتسع للشاشة بدل أن يُقصّ من اليمين */
+body.floor-mode .hb-runner-timer, body.floor-mode .cw-runner-timer { font-size: min(38vw, 36vh) !important; width: 100%; max-width: 100vw; text-align: center; white-space: nowrap; direction: ltr; letter-spacing: -.02em; }
+/* تلميح اللمس فوق الأزرار لا فوق عنوان الجولة */
+#floorHint { top: auto; bottom: calc(7.8rem + env(safe-area-inset-bottom, 0px)); }
+/* أزرار التحكم: حجم موحّد وأيقونات SVG بدل الرموز */
+#floorCtl button { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 58px; padding: 0 1.5rem; font-size: 1.05rem; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+#floorCtl button .ico { width: 1.3rem; height: 1.3rem; flex: none; }
 </style>
 </body>
 </html>
