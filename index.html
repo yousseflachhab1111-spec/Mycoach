@@ -4954,6 +4954,7 @@ body.floor-mode #floorHint.show { display:block; }
       <div class="fr-setup-card">
        <h1 class="fr-title">المؤقت</h1>
        <div id="frSetupBody"></div>
+       <div class="fr-start-fade" aria-hidden="true"></div>
        <button class="generate-btn fr-start" onclick="startFreeRoundTimer()"><svg class="ico"><use href="#ico-play"/></svg> ابدأ المؤقت</button>
       </div>
      </div>
@@ -14417,7 +14418,7 @@ function renderFreeTimerSetup() {
     <div class="fr-sec-t">الجولات<small>ROUNDS</small></div>
     <div class="fr-card">
       ${row('rounds', 'rounds', 'جولة', 1, 30, 1, f.rounds)}
-      ${segOn ? SEG.workRowHTML() : row('work', 'frwork', '/ الجولة', 10, 300, 5, f.work)}
+      ${segOn ? SEG.workRowHTML() : row('work', 'frwork', 'لكل جولة', 10, 300, 5, f.work)}
       ${row('rest', 'rest', 'راحة', 0, 120, 5, f.rest)}
       ${row('prepare', 'prep', 'تهيئة في البداية', 0, 30, 1, f.prepare)}
       <div class="fr-total"><span>إجمالي وقت التمرين</span><b id="frTotal">0:00</b></div>
@@ -14427,7 +14428,7 @@ function renderFreeTimerSetup() {
     <div class="fr-sec-t">تحميل مؤقت<small>LOAD A TIMER</small></div>
     <div class="fr-card">
       <label class="fr-preset-row"><span>استخدم قواعد من</span>
-        <select id="frPreset" onchange="applyFrPreset(this.value)"><option value="">—</option>
+        <select id="frPreset" onchange="applyFrPreset(this.value)"><option value="">اختر مؤقتاً جاهزاً</option>
           <option value="boxing">Boxing · 12 × 3:00 / 1:00</option><option value="mma">MMA · 3 × 5:00 / 1:00</option><option value="muaythai">Muay Thai · 5 × 3:00 / 2:00</option>
           <option value="tabata">Tabata · 8 × 0:20 / 0:10</option><option value="hiit">HIIT · 10 × 0:45 / 0:15</option></select></label>
     </div>
@@ -18388,14 +18389,14 @@ window.renderBoxingGuide = function () {
       return x;
     },
     workRowHTML: function () {
-      return '<div class="fr-set fr-work-seg"><div class="fr-lab"><b id="segWorkTotal">' + fmt(total()) + '</b><span class="fr-unit">/ الجولة (مجموع المراحل)</span></div></div>';
+      return '<div class="fr-set fr-work-seg"><div class="fr-lab"><b id="segWorkTotal">' + fmt(total()) + '</b><span class="fr-unit">لكل جولة (مجموع المراحل)</span></div></div>';
     },
     /* واجهة التحرير */
     mount: function (hostId, kind) {
       var host = document.getElementById(hostId); if (!host) return;
       function render() {
         host.innerHTML =
-          '<div class="seg-card"><label class="seg-head"><span><b>Round stages</b><small>تقسيم الجولة إلى مراحل برنّة واهتزاز عند كل انتقال (مثال: ٣٠ث سرعة ← ٣٠ث دقة ← ٣٠ث قوة)</small></span><input type="checkbox" class="seg-sw" data-a="toggle" aria-label="تقسيم الجولة إلى مراحل"' + (cfg.on ? ' checked' : '') + '></label>' +
+          '<div class="seg-card"><label class="seg-head"><span><b>تقسيم الجولة إلى مراحل</b><small>تقسيم الجولة إلى مراحل برنّة واهتزاز عند كل انتقال (مثال: ٣٠ث سرعة ← ٣٠ث دقة ← ٣٠ث قوة)</small></span><input type="checkbox" class="seg-sw" data-a="toggle" aria-label="تقسيم الجولة إلى مراحل"' + (cfg.on ? ' checked' : '') + '></label>' +
           '<div class="seg-body"' + (cfg.on ? '' : ' hidden') + '>' +
           '<div class="seg-presets">' + PRESETS.map(function (p, i) { return '<button type="button" class="seg-preset" data-a="preset" data-i="' + i + '">' + p.t + '</button>'; }).join('') + '</div>' +
           '<div class="seg-list">' + cfg.parts.map(function (x, i) {
@@ -18543,6 +18544,33 @@ body:has(#content-freetimer.active) #coachFab { display: none; }
 /* زر البدء ثابت أسفل الشاشة فوق شريط التنقل */
 .fr-start { position: fixed; left: 0; right: 0; margin-inline: auto; width: min(560px, calc(100% - 2rem)); bottom: calc(env(safe-area-inset-bottom, 0px) + 6.6rem); height: 58px; border-radius: 999px; font-size: 1.05rem; font-weight: 900; background: var(--gradient-boxing); z-index: 850; box-shadow: 0 10px 26px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; gap: .5rem; border: 0; color: #fff; cursor: pointer; }
 .fr-start .ico { width: 1.3rem; height: 1.3rem; }
+</style>
+<style id="fr-fix-v1">
+/* ===== إصلاحات صفحة المؤقت الحر (v1) ===== */
+/* 1) اتجاه RTL حقيقي للنصوص والصفوف (كانت LTR فتنقلب الأقواس والأسهم) */
+#frSetupBody { direction: rtl; text-align: right; }
+#frSetupBody .ar-sub { direction: rtl; text-align: right; }
+.fr-set .bld-slider { direction: rtl; height: 44px; }
+.fr-set .bld-tr { height: 10px; margin-top: -5px; }
+.fr-set .bld-fill { width: calc(10px + (100% - 20px) * var(--f, .5)); }
+/* 2) مقبض دائري بحجم متناسق مع الشريط بدل العمود الطويل */
+.fr-set .bld-slider .bld-range::-webkit-slider-runnable-track { height: 44px; }
+.fr-set .bld-slider .bld-range::-webkit-slider-thumb { box-sizing: border-box; width: 22px; height: 22px; margin-top: 11px; border-radius: 50%; background: #fff; border: 4px solid var(--accent-boxing); box-shadow: 0 1px 4px rgba(0,0,0,.45); }
+.fr-set .bld-slider .bld-range::-moz-range-track { height: 44px; }
+.fr-set .bld-slider .bld-range::-moz-range-thumb { box-sizing: border-box; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid var(--accent-boxing); box-shadow: 0 1px 4px rgba(0,0,0,.45); }
+.fr-set .bld-slider .bld-range:active::-webkit-slider-thumb { transform: scale(1.15); }
+/* 3) زر البدء لا يغطي المحتوى: مساحة أكبر أسفل الصفحة + تدرّج خلف الزر */
+#content-freetimer { padding-bottom: 13rem; }
+.fr-start-fade { position: fixed; left: 0; right: 0; bottom: 0; height: 12.5rem; z-index: 840; pointer-events: none; background: linear-gradient(to top, var(--bg-primary) 45%, transparent); }
+.fr-start { bottom: calc(env(safe-area-inset-bottom, 0px) + 6.9rem); }
+/* 4) القائمة المنسدلة: شكل واضح وتركيز أنظف وبطاقة بلا فراغ زائد */
+.fr-preset-row { min-height: 0; padding: .7rem 0; }
+.fr-preset-row select { flex: 0 1 60%; max-width: none; min-height: 46px; margin: 0; padding: 0 .9rem; background: var(--bg-elevated); border: 1.5px solid var(--border-color); border-radius: 14px; color: var(--text-primary); text-align: start; text-align-last: start; direction: rtl; }
+.fr-preset-row select:focus, .fr-preset-row select:focus-visible { outline: none; border-color: var(--accent-boxing); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-boxing) 25%, transparent); }
+/* 5) بطاقة مراحل الجولة */
+.fr-card .seg-head { direction: rtl; }
+.fr-card .seg-head small { text-align: start; }
+.fr-card .seg-sw::after { inset-inline-start: 2px; }
 </style>
 </body>
 </html>
