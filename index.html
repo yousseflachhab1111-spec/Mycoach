@@ -5216,6 +5216,12 @@ body.floor-mode #floorHint.show { display:block; }
      <p id="profileGoal">هدفك: لياقة عامة</p>
     </div>
    </div>
+   <div class="progress-welcome" id="progressWelcome">
+    <span class="pw-icon"><svg class="ico"><use href="#ico-dumbbell"/></svg></span>
+    <h3>ابدأ حصتك الأولى</h3>
+    <p>بعد أول حصة ستظهر هنا سلسلة أيامك وعدد الحصص والدقائق والسعرات.</p>
+    <button type="button" class="pw-btn" onclick="switchBottomNav('home')">ابدأ الآن</button>
+   </div>
    <div class="streak-card">
     <h3><svg class="ico"><use href="#ico-flame"/></svg> السلسلة الحالية</h3>
     <div class="streak-number" id="streakNumber">0</div>
@@ -5367,9 +5373,9 @@ body.floor-mode #floorHint.show { display:block; }
       </div>
      </div>
      <div class="settings-section">
-      <div class="settings-section-title">💾 النسخ الاحتياطي <span style="opacity:.6;font-weight:400;font-size:.75em">· إصدار 2026.10.06-r10</span></div>
-      <div class="settings-item" onclick="exportBackup()"><div class="item-info"><span class="item-icon">⬇️</span><div class="item-text"><span class="item-title">تصدير بياناتي</span> <span class="item-desc">حفظ التقدم والإعدادات في ملف</span></div></div><span class="settings-chevron">‹</span></div>
-      <div class="settings-item" onclick="document.getElementById('backupFile').click()"><div class="item-info"><span class="item-icon">⬆️</span><div class="item-text"><span class="item-title">استيراد بياناتي</span> <span class="item-desc">استرجاع من ملف نسخة احتياطية</span></div></div><span class="settings-chevron">‹</span></div>
+      <div class="settings-section-title"><svg class="ico"><use href="#ico-save"/></svg> النسخ الاحتياطي <span style="opacity:.6;font-weight:400;font-size:.75em">· إصدار 2026.10.06-r10</span></div>
+      <div class="settings-item" onclick="exportBackup()"><div class="item-info"><span class="item-icon"><svg class="ico"><use href="#ico-download"/></svg></span><div class="item-text"><span class="item-title">تصدير بياناتي</span> <span class="item-desc">حفظ التقدم والإعدادات في ملف</span></div></div><span class="settings-chevron">‹</span></div>
+      <div class="settings-item" onclick="document.getElementById('backupFile').click()"><div class="item-info"><span class="item-icon"><svg class="ico"><use href="#ico-upload"/></svg></span><div class="item-text"><span class="item-title">استيراد بياناتي</span> <span class="item-desc">استرجاع من ملف نسخة احتياطية</span></div></div><span class="settings-chevron">‹</span></div>
       <input type="file" id="backupFile" accept="application/json,.json" style="display:none" onchange="importBackup(this)">
      </div>
      <div class="settings-section">
@@ -5410,7 +5416,7 @@ body.floor-mode #floorHint.show { display:block; }
       <input type="file" id="mediaImportInput" aria-label="استيراد وسائط التمارين" accept="video/mp4,video/webm,image/gif,image/webp,.mp4,.webm,.gif,.webp" multiple style="display:none" onchange="mediaImportFiles(this.files); this.value=''">
       <div class="settings-item" onclick="document.getElementById('mediaImportInput').click()">
        <div class="item-info">
-        <span class="item-icon">📥</span>
+        <span class="item-icon"><svg class="ico"><use href="#ico-download"/></svg></span>
         <div class="item-text">
          <span class="item-title">استيراد صور متحركة (فيديو / GIF)</span> <span class="item-desc">اختر عدة ملفات دفعة واحدة، اسم الملف = مفتاح التمرين</span>
         </div>
@@ -5419,7 +5425,7 @@ body.floor-mode #floorHint.show { display:block; }
       </div>
       <div class="settings-item" onclick="mediaAutoFill()">
        <div class="item-info">
-        <span class="item-icon">⬇️</span>
+        <span class="item-icon"><svg class="ico"><use href="#ico-download"/></svg></span>
         <div class="item-text">
          <span class="item-title">جلب الصور المتحركة تلقائياً</span> <span class="item-desc">يطابق تمارينك مع مكتبة GIF ويحفظها في جهازك</span>
         </div>
@@ -5428,7 +5434,7 @@ body.floor-mode #floorHint.show { display:block; }
       </div>
       <div class="settings-item" onclick="mediaCoverageUI()">
        <div class="item-info">
-        <span class="item-icon">🎬</span>
+        <span class="item-icon"><svg class="ico"><use href="#ico-play-circle"/></svg></span>
         <div class="item-text">
          <span class="item-title">تقرير الصور المتحركة</span> <span class="item-desc">الحركات الناقصة في مجلد media/ وأسماء ملفاتها</span>
         </div>
@@ -5479,7 +5485,7 @@ body.floor-mode #floorHint.show { display:block; }
       <div id="openRouterKeyWarn" style="font-size:0.68rem;color:var(--accent-warning);line-height:1.5;margin:0.3rem 0;"><svg class="ico"><use href="#ico-alert-triangle"/></svg> افتراضياً يُحفظ المفتاح لهذه الجلسة فقط ويُحذف عند إغلاق التطبيق. عند تفعيل «تذكّر» يُخزَّن داخل المتصفح بنص غير مشفّر ويمكن لأي سكربت في هذه الصفحة قراءته — استخدم مفتاحاً بحدّ إنفاق منخفض.</div>
       <button class="local-btn" style="margin:0;font-size:0.8rem;padding:0.6rem;min-height:auto;" onclick="saveOpenRouterKey()"><svg class="ico"><use href="#ico-save"/></svg> حفظ المفتاح</button>
        <div style="margin-top:0.8rem;padding-top:0.6rem;border-top:1px solid rgba(128,128,128,0.25);">
-        <div style="font-size:0.8rem;font-weight:700;margin-bottom:0.3rem;">⚡ مفتاح Groq (موصى به — مجاني وسريع، 1000 طلب/يوم)</div>
+        <div style="font-size:0.8rem;font-weight:700;margin-bottom:0.3rem;"><svg class="ico"><use href="#ico-zap"/></svg> مفتاح Groq (موصى به — مجاني وسريع، 1000 طلب/يوم)</div>
         <input type="password" class="form-input" id="groqKeyInput" dir="ltr" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="gsk_..." style="margin-top:0.2rem;">
         <button class="local-btn" style="margin:0.3rem 0 0;font-size:0.8rem;padding:0.6rem;min-height:auto;" onclick="saveGroqKey()"><svg class="ico"><use href="#ico-save"/></svg> حفظ مفتاح Groq</button>
         <div style="font-size:0.7rem;color:var(--text-muted);margin:0.3rem 0 0.5rem;line-height:1.5;">يُجرَّب Groq أولاً، وعند فشله أو نفاد حصته يُستخدم OpenRouter تلقائياً ثم الحساب المحلي. احصل على المفتاح من <a href="https://console.groq.com/keys" target="_blank" style="color:var(--accent-ai);">console.groq.com/keys</a></div>
@@ -5670,7 +5676,7 @@ body.floor-mode #floorHint.show { display:block; }
         <span class="item-title">وقت التحضير (ثواني)</span>
        </div>
       </div>
-      <input type="number" class="form-input" id="prepareTimeInput" aria-label="وقت التحضير بالثواني" min="3" max="15" style="margin-top:0.3rem;">
+      <input type="number" class="form-input" id="prepareTimeInput" aria-label="وقت التحضير بالثواني" min="3" max="120" style="margin-top:0.3rem;">
      </div>
      <div class="settings-item" style="flex-direction:column;align-items:stretch;gap:0.5rem;">
       <div class="item-info">
@@ -6468,6 +6474,16 @@ const CALL_PHRASES = {
 const BOXING_EXERCISE_IDS = new Set(['punch', 'kick', 'finalpunch', 'finalkick', 'finalcombo', 'b_jumprope', 'b_shoulderrolls', 'b_shadow_slow', 'b_hip_rotation', 'b_hook_mirror', 'b_touch_go', 'b_target_hit', 'b_speed_burst', 'b_ladder', 'b_in_out', 'b_pivot', 'b_slip', 'b_roll', 'b_duck', 'b_bob_weave', 'b_shadow_tech', 'b_bag_tech', 'b_bag_power', 'b_slip_counter', 'b_stretch_neck', 'b_stretch_hips', 'prog_shadow_boxing_3x3', 'prog_heavy_bag_3x3', 'prog2_shadow_boxing_4x3', 'prog2_heavy_bag_4x3', 'prog3_shadow_boxing_3x3']);
 function isBoxingExercise(timerId) { if (!timerId) return false; const cleanId = String(timerId).replace(/^prog-/, ''); if (BOXING_EXERCISE_IDS.has(cleanId)) return true; if (cleanId.startsWith('b_')) return true; if (cleanId === 'punch' || cleanId === 'kick') return true; if (cleanId.startsWith('finalpunch') || cleanId.startsWith('finalkick') || cleanId.startsWith('finalcombo')) return true; return false; }
 // [FIXED BUG #2] — dynamic call engine (replaces speakBoxingCall)
+/* تنسيق بين نداء الكومبو والعبارات التشجيعية: العبارة تنتظر الفاصل بين كومبو وآخر */
+var cnCombo = { until: 0, pending: null };
+function cnComboMark(ms) { cnCombo.until = Date.now() + ms + 2500; }
+/* يُستدعى عند انتهاء آخر حركة في الكومبو؛ يُرجع الزمن الإضافي (ms) الذي يجب إضافته للفاصل ليتسع للعبارة */
+function cnHypeGap(afterMs, alive) {
+  const h = cnCombo.pending; cnCombo.pending = null;
+  if (!h || Date.now() - h.t > 7000 || !ttsEnabled || soundMuted || !boxingCallsEnabled) return 0;
+  setTimeout(() => { try { if (alive()) { speak(h.phrase, undefined, { rate: h.rate, pitch: h.pitch }); haptic('light'); } } catch (e) {} }, afterMs + 150);
+  return 1300;
+}
 var callEngine = { timer: null, guard: null, noOffense: false, lastPhrases: [], id: 0 };
 function pickCallCategory(noOffense) {
   const pool = noOffense ? CALL_WEIGHTS.filter(c => c[0] !== 'offense') : CALL_WEIGHTS;
@@ -6497,8 +6513,14 @@ function fireCall(myId) {
   if (g === 'stop') { stopCallEngine(); return; }
   if (g && boxingCallsEnabled && ttsEnabled && !soundMuted) {
     const _cat = pickCallCategory(callEngine.noOffense); const phrase = (window.Adaptive && Adaptive.pick(_cat)) || pickCallPhrase(_cat);
-    speak(phrase, undefined, { dropIfBusy: true, rate: 1.1 + Math.random() * 0.15, pitch: 0.95 + Math.random() * 0.2 });
-    haptic('light');
+    const _rate = 1.1 + Math.random() * 0.15, _pitch = 0.95 + Math.random() * 0.2;
+    if (Date.now() < cnCombo.until) {
+      /* كومبو قيد النداء: لا نقاطعه بعبارة تشجيعية؛ تُحفظ وتُقال في الفاصل بين كومبو وآخر */
+      cnCombo.pending = { phrase: phrase, rate: _rate, pitch: _pitch, t: Date.now() };
+    } else {
+      speak(phrase, undefined, { dropIfBusy: true, rate: _rate, pitch: _pitch });
+      haptic('light');
+    }
   }
   scheduleNextCall(false);
 }
@@ -7390,20 +7412,35 @@ function cnVoice() {
   } catch (e) {}
   return null;
 }
-function cnSay(text, vi, rate) {
+/* نطق النداءات: لا نستدعي cancel() قبل كل كلمة — كان يقطع الكلمة السابقة (أو يُسقط التالية على أندرويد)
+   فيظهر "1 1" وتُنطق واحدة فقط. نترك الكلمات تُنطق تباعاً، ولا نقطع إلا عند تراكم أكثر من كلمتين أو عند الطلب. */
+let cnQueued = 0, cnGen = 0;
+function cnSpeakNow(text, vi, rate) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.voice = vi.voice; u.lang = vi.lang; u.volume = voiceVolume; u.rate = rate || 1.1;
+  const g = cnGen, done = () => { if (g === cnGen) cnQueued = Math.max(0, cnQueued - 1); };
+  u.onend = done; u.onerror = done;
+  cnQueued++;
+  window.speechSynthesis.speak(u);
+}
+function cnSay(text, vi, rate, preempt) {
   if (!vi || !ttsEnabled || soundMuted || !('speechSynthesis' in window)) return;
   try {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.voice = vi.voice; u.lang = vi.lang; u.volume = voiceVolume; u.rate = rate || 1.1;
-    window.speechSynthesis.speak(u);
+    const ss = window.speechSynthesis;
+    if (!ss.speaking && !ss.pending) cnQueued = 0;
+    if (preempt || cnQueued >= 2) {
+      cnGen++; cnQueued = 0; ss.cancel();
+      setTimeout(() => { try { if (ttsEnabled && !soundMuted) cnSpeakNow(text, vi, rate); } catch (e) {} }, 60); // أندرويد يُسقط speak() الذي يلي cancel() مباشرة
+      return;
+    }
+    cnSpeakNow(text, vi, rate);
   } catch (e) {}
 }
 function hbWarn10(kind) {
   const vi = cnVoice();
   if (!vi || !ttsEnabled || soundMuted) return;
   const txt = vi.arabic ? (kind === 'rest' ? 'الجولة تبدأ بعد عشر ثوان' : 'عشر ثوان') : (kind === 'rest' ? 'Ten seconds to the next round' : 'Ten seconds');
-  cnSay(txt, vi, 1.0);
+  cnSay(txt, vi, 1.0, true);
 }
 /* معاينة كومبو من المكتبة: نداء مرقّم مع إضاءة البطاقات */
 let cnPreviewTimers = [], cnPreviewId = 0;
@@ -7448,6 +7485,13 @@ function hbPoolForRound() {
   const f = pool.filter(c => c.split('+').length <= cap);
   return f.length ? f : pool;
 }
+/* إيقاع المدرب: ثابت داخل الجولة، ويتسارع تدريجياً من الجولة الأولى إلى الأخيرة (نبض أسرع ونطق أسرع قليلاً) */
+function hbPace() {
+  const r = (hbRunnerState && hbRunnerState.round) || 1;
+  const n = (hbRunnerState && hbRunnerState.protocol && hbRunnerState.protocol.rounds) || 1;
+  const f = n > 1 ? Math.max(0, Math.min(1, (r - 1) / (n - 1))) : 0;
+  return { interval: Math.round(760 - 200 * f), rate: 1.1 + 0.12 * f };
+}
 function hbNumberedLoop(myLoopId) {
   if (!hbRoundCombosQueue || hbRoundCombosQueue.length === 0) {
     hbRoundCombosQueue = hbPoolForRound().slice();
@@ -7458,7 +7502,7 @@ function hbNumberedLoop(myLoopId) {
   const tokens = comboTokens(combo);
   if (!tokens.length) return;
   const vi = cnVoice();
-  const INTERVAL = 700, BREAK = 900, START = 250;
+  const PACE = hbPace(), INTERVAL = PACE.interval, BREAK = Math.round(PACE.interval * 1.15), START = 250;
   const comboEl = document.getElementById('hbRunnerCombo');
   const alive = () => myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work';
   function render() {
@@ -7476,11 +7520,14 @@ function hbNumberedLoop(myLoopId) {
         if (!alive()) return;
         cnSetActive(comboEl, i);
         try { playMoveTone(getMoveTone(t.raw)); } catch (e) {}
-        cnSay(vi && vi.arabic ? t.say : t.sayEn, vi, 1.15);
+        cnSay(vi && vi.arabic ? t.say : t.sayEn, vi, PACE.rate);
       }, START + i * INTERVAL);
       hbRunnerState.comboTimers.push(id);
     });
-    const nid = setTimeout(() => { if (alive()) cycle(); }, START + tokens.length * INTERVAL + BREAK);
+    const endAt = START + tokens.length * INTERVAL;
+    cnComboMark(endAt + BREAK);
+    const extra = cnHypeGap(endAt, alive);
+    const nid = setTimeout(() => { if (alive()) cycle(); }, endAt + BREAK + extra);
     hbRunnerState.comboTimers.push(nid);
   }
   hbRunnerState.comboTimers.push(setTimeout(cycle, 100));
@@ -7878,6 +7925,13 @@ function ctSetUrgentEffects(timerElId, ringWrapId, remaining) {
   const ringWrap = document.getElementById(ringWrapId);
   if (timerEl) timerEl.classList.toggle('ct-blink', remaining > 0 && remaining <= 3);
   if (ringWrap) ringWrap.classList.toggle('ct-pulse', remaining > 0 && remaining <= 10);
+  /* وضع الأرض: تنبيه بصري في آخر ثواني (الوقت المختار في «تنبيه قبل النهاية»، أو 10 ثوانٍ) */
+  const anchor = timerEl || ringWrap, rn = anchor && anchor.closest ? anchor.closest('.hb-runner, .cw-runner') : null;
+  if (rn) {
+    let thr = 10;
+    if (timerElId === 'frRunnerTimer' && typeof frSettings !== 'undefined' && frSettings.warnAt > 0) thr = frSettings.warnAt;
+    rn.classList.toggle('ct-warn', remaining > 0 && remaining <= thr);
+  }
 }
 
 /* 🐞 إصلاح: تحديث أيقونة زر الإيقاف/الاستئناف دون الكتابة فوق كامل
@@ -8271,8 +8325,9 @@ function startHbComboLoop() {
   if (moves.length === 0) return;
   const voiceInfo = getBestVoice('en-US');
   const hasVoice = ttsEnabled && voiceInfo && voiceInfo.voice && !soundMuted;
-  const MOVE_INTERVAL = 900;
-  const COMBO_BREAK = 700;
+  const _pace = hbPace();
+  const MOVE_INTERVAL = _pace.interval + 140;
+  const COMBO_BREAK = _pace.interval;
   const START_DELAY = 250;
   const comboEl = document.getElementById('hbRunnerCombo');
   if (comboEl) {
@@ -8301,7 +8356,7 @@ function startHbComboLoop() {
           try {
             const u = new SpeechSynthesisUtterance(englishName);
             u.volume = voiceVolume;
-            u.rate = 1.15;
+            u.rate = _pace.rate + 0.05;
             u.voice = voiceInfo.voice;
             u.lang = 'en-US';
             window.speechSynthesis.speak(u);
@@ -8311,9 +8366,12 @@ function startHbComboLoop() {
       hbRunnerState.comboTimers.push(t);
       acc += MOVE_INTERVAL;
     });
+    const _alive = () => myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work';
+    cnComboMark(START_DELAY + acc + COMBO_BREAK);
+    const _extra = cnHypeGap(START_DELAY + acc, _alive);
     const nt = setTimeout(() => {
-      if (myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work') playOneCycle();
-    }, START_DELAY + acc + COMBO_BREAK);
+      if (_alive()) playOneCycle();
+    }, START_DELAY + acc + COMBO_BREAK + _extra);
     hbRunnerState.comboTimers.push(nt);
   }
   const st = setTimeout(() => playOneCycle(), 100);
@@ -9364,7 +9422,7 @@ function martialPick(group, val) {
 function martialStepHtml(n) {
   const d = martialData;
   if (n === 1) {
-    return '<div class="goal-grid">' + MARTIAL_STYLES.map(s => '<div class="goal-card' + (d.style === s[0] ? ' active' : '') + '" data-style="' + s[0] + '" onclick="martialPick(\'style\',\'' + s[0] + '\')"><span class="goal-icon"><svg class="ico"><use href="#' + s[3] + '"/></svg></span><span class="goal-title">' + s[1] + '</span><span class="goal-sub">' + s[2] + '</span></div>').join('') + '</div>';
+    return '<div class="goal-grid mstyle-grid">' + MARTIAL_STYLES.map(s => '<div class="goal-card' + (d.style === s[0] ? ' active' : '') + '" data-style="' + s[0] + '" onclick="martialPick(\'style\',\'' + s[0] + '\')"><span class="goal-icon"><svg class="ico"><use href="#' + s[3] + '"/></svg></span><span class="goal-title">' + s[1] + '</span><span class="goal-sub">' + s[2] + '</span></div>').join('') + '</div>';
   }
   if (n === 2) {
     const lv = [['beginner', 'مبتدئ'], ['intermediate', 'متوسط'], ['advanced', 'متقدم'], ['athlete', 'محترف']];
@@ -10093,6 +10151,7 @@ function updateWelcomeHero() {
 function updateDashboard() {
   const history = getWorkoutHistory();
   const el = (id) => document.getElementById(id);
+  if (el('dashboardScreen')) el('dashboardScreen').classList.toggle('is-new', history.length === 0);
   if (el('statTotalWorkouts')) el('statTotalWorkouts').textContent = history.length;
   if (el('statTotalMinutes')) el('statTotalMinutes').textContent = history.reduce((s, w) => s + (w.duration || 0), 0);
   if (el('statCalories')) el('statCalories').textContent = history.reduce((s, w) => s + (w.calories || 0), 0);
@@ -12185,7 +12244,7 @@ function bldRange(k, fmt, en, ar, min, max, step, val) {
   return `<div class="bld-set"><div class="bld-rh"><span class="bld-ic" aria-hidden="true">${ICO(BLD_ICON[fmt] || 'settings')}</span><div class="bld-lab"><b>${en}</b><small class="ar-sub">${ar}</small></div><div class="bld-step"><button type="button" data-d="-1" aria-label="-">−</button><span class="bld-val" data-k="${k}">${BLD_FMT[fmt](val)}</span><button type="button" data-d="1" aria-label="+">+</button></div></div><div class="bld-slider"><div class="bld-tr"><i class="bld-fill"></i></div><input class="bld-range" type="range" data-k="${k}" data-fmt="${fmt}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${en}"></div></div>`;
 }
 function bldSwitch(k, en, ar, on) {
-  return `<button type="button" class="bld-row bld-sw-row" role="switch" aria-checked="${!!on}" data-k="${k}"><span class="bld-lab"><b>${en}</b><small class="ar-sub">${ar}</small></span><span class="bld-sw"><span class="bld-knob"></span></span></button>`;
+  return `<button type="button" class="bld-row bld-sw-row" role="switch" aria-checked="${!!on}" data-k="${k}"><span class="bld-lab"><b>${en}</b>${ar ? `<small class="ar-sub">${ar}</small>` : ''}</span><span class="bld-sw"><span class="bld-knob"></span></span></button>`;
 }
 function bldPaint(el) { const f = (el.value - el.min) / (el.max - el.min || 1); el.style.setProperty('--p', (f * 100) + '%'); if (el.parentElement) el.parentElement.style.setProperty('--f', f); }
 function bldBind(root, onRange, onSwitch) {
@@ -14182,7 +14241,7 @@ function openSettings() {
 
 function closeSettings() {
   playClick();
-  const prepInput = document.getElementById('prepareTimeInput'); if (prepInput) { const v = parseInt(prepInput.value); if (v >= 3 && v <= 15) timerSettings.prepare = v; }
+  const prepInput = document.getElementById('prepareTimeInput'); if (prepInput) { const v = parseInt(prepInput.value); if (v >= 3 && v <= 120) timerSettings.prepare = v; }
   const restInput = document.getElementById('restTimeInput'); if (restInput) { const v = parseInt(restInput.value); if (v >= 5 && v <= 60) timerSettings.rest = v; }
   safeSet('timerSettings', timerSettings);
   document.getElementById('settingsModal').classList.remove('active');
@@ -14225,8 +14284,9 @@ function showSettingsPage(page, isBack) {
 function updateSettingsHeader() {
   const titleEl = document.getElementById('settingsTitle');
   const backBtn = document.getElementById('settingsBackBtn');
-  const titles = { main: '⚙️ الإعدادات', ai: '🤖 الذكاء الاصطناعي', theme: '🎨 المظهر والألوان', background: '🌊 الخلفيات المتحركة', sound: '🔊 الصوت والتنبيهات', timer: '⏱️ إعدادات المؤقت', data: '💾 البيانات', about: 'ℹ️ حول التطبيق' };
-  if (titleEl) titleEl.textContent = titles[settingsCurrentPage] || '⚙️ الإعدادات';
+  const titles = { main: ['settings', 'الإعدادات'], ai: ['bot', 'الذكاء الاصطناعي'], theme: ['palette', 'المظهر والألوان'], background: ['waves', 'الخلفيات المتحركة'], sound: ['volume-2', 'الصوت والتنبيهات'], timer: ['timer', 'إعدادات المؤقت'], data: ['save', 'البيانات'], about: ['info', 'حول التطبيق'] };
+  const ttl = titles[settingsCurrentPage] || titles.main;
+  if (titleEl) titleEl.innerHTML = ICO(ttl[0]) + ' ' + ttl[1];
   if (backBtn) backBtn.style.display = settingsCurrentPage === 'main' ? 'none' : 'flex';
 }
 
@@ -14413,7 +14473,7 @@ function renderFreeTimerSetup() {
   const host = document.getElementById('frSetupBody'); if (!host) return;
   const f = frSettings;
   f.rounds = clampFr(parseInt(f.rounds) || 3, 1, 30); f.work = clampFr(parseInt(f.work) || 180, 10, 300);
-  f.rest = clampFr(parseInt(f.rest) || 0, 0, 120); f.prepare = clampFr(parseInt(f.prepare) || 0, 0, 30); f.warnAt = clampFr(parseInt(f.warnAt) || 0, 0, 60);
+  f.rest = clampFr(parseInt(f.rest) || 0, 0, 120); f.prepare = clampFr(parseInt(f.prepare) || 0, 0, 120); f.warnAt = clampFr(parseInt(f.warnAt) || 0, 0, 60);
   /* صف مضغوط: القيمة + الوحدة بجانب شريط التمرير (تصميم صفحة كاملة) */
   const row = (k, fmt, unit, min, max, step, val) => `<div class="fr-set"><div class="fr-lab"><b class="bld-val" data-k="${k}">${BLD_FMT[fmt](val)}</b><span class="fr-unit">${unit}</span></div><div class="bld-slider"><div class="bld-tr"><i class="bld-fill"></i></div><input class="bld-range" type="range" data-k="${k}" data-fmt="${fmt}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${unit}"></div></div>`;
   const segOn = !!(window.SEG && SEG.active());
@@ -14423,7 +14483,7 @@ function renderFreeTimerSetup() {
       ${row('rounds', 'rounds', 'جولة', 1, 30, 1, f.rounds)}
       ${segOn ? SEG.workRowHTML() : row('work', 'frwork', 'لكل جولة', 10, 300, 5, f.work)}
       ${row('rest', 'rest', 'راحة', 0, 120, 5, f.rest)}
-      ${row('prepare', 'prep', 'تهيئة في البداية', 0, 30, 1, f.prepare)}
+      ${row('prepare', 'prep', 'تهيئة في البداية', 0, 120, 1, f.prepare)}
       <div class="fr-total"><span>إجمالي وقت التمرين</span><b id="frTotal">0:00</b></div>
     </div>
     <div class="fr-sec-t">مراحل الجولة<small>ROUND STAGES</small></div>
@@ -14437,8 +14497,8 @@ function renderFreeTimerSetup() {
     </div>
     <div class="fr-sec-t">متقدم<small>ADVANCED</small></div>
     <div class="fr-card">
-      ${bldSwitch('noVocal', 'No vocal cues', 'بدون إرشادات صوتية', f.noVocal)}
-      ${bldSwitch('loud', 'Louder round change', 'صوت أعلى عند تغيّر الجولة', f.loud)}
+      ${bldSwitch('noVocal', 'بدون إرشادات صوتية', 'إيقاف النطق ونداءات المدرب أثناء الجولات', f.noVocal)}
+      ${bldSwitch('loud', 'تنبيه أقوى عند تغيّر الجولة', 'يرنّ الجرس مرتين عند بداية الجولة ونهايتها', f.loud)}
       ${row('warnAt', 'warn', 'تنبيه قبل النهاية', 0, 60, 5, f.warnAt)}
     </div>`;
   bldBind(host, (k, v) => { frSettings[k] = v; if (k === 'rounds' || k === 'work' || k === 'rest') { const p = document.getElementById('frPreset'); if (p) p.value = ''; } syncFrSummary(); },
@@ -15031,7 +15091,9 @@ function startComboLoop(comboText) {
       cwRunnerState.comboTimers.push(timer);
       accumulatedDelay += MOVE_INTERVAL;
     });
-    const cycleTotal = START_DELAY + accumulatedDelay + COMBO_BREAK;
+    const _cwAlive = () => myLoopId === cwRunnerState.comboLoopId && !cwRunnerState.paused && cwRunnerState.phase === 'work';
+    cnComboMark(START_DELAY + accumulatedDelay + COMBO_BREAK);
+    const cycleTotal = START_DELAY + accumulatedDelay + COMBO_BREAK + cnHypeGap(START_DELAY + accumulatedDelay, _cwAlive);
     const nextCycleTimer = setTimeout(() => {
       if (myLoopId !== cwRunnerState.comboLoopId) return;
       if (cwRunnerState.paused) return;
@@ -17362,7 +17424,10 @@ function setBtnLoading(btn, on) { if (!btn) return; btn.classList.toggle('is-loa
 (function () {
   var bar = document.querySelector('.main-tabs'); if (!bar) return;
   function place() {
-    var t = bar.querySelector('.main-tab.active,.main-tab[aria-selected="true"]'); if (!t) return;
+    var t = bar.querySelector('.main-tab.active,.main-tab[aria-selected="true"]');
+    /* صفحات مثل «قتالي» ليس لها تبويب في هذا الشريط: نُخفي المؤشر بدل تركه على HIIT */
+    bar.style.setProperty('--ind-o', t ? '1' : '0');
+    if (!t) return;
     var br = bar.getBoundingClientRect(), tr = t.getBoundingClientRect();
     var rtl = getComputedStyle(bar).direction === 'rtl';
     var x = rtl ? br.right - tr.right : tr.left - br.left;
@@ -17962,19 +18027,23 @@ button[data-d] { min-width: 40px; min-height: 40px; }
 /* شارة الصعوبة على بطاقات الأيام: أصغر وأوضح وداخل البطاقة */
 .day-card .diff-badge { width: 12px; height: 12px; inset-block-start: 10px; inset-inline-start: 12px; box-shadow: 0 0 0 2px rgba(255,255,255,.18), 0 0 8px var(--diff-c, #facc15); }
 /* زر المحادثة يتلاشى أثناء التمرير فلا يغطي المحتوى */
-#coachFab { transition: opacity .25s ease, transform .25s ease; }
-#coachFab.fab-away { opacity: .12 !important; transform: scale(.85); pointer-events: none; }
+html body #coachFab { opacity: .8; transition: opacity .3s ease; }
+html body #coachFab:active { opacity: 1; }
+html body #coachFab.fab-away { opacity: .05; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { #coachFab { transition: none; } }
 </style>
 <script>
 (function () {
-  var t = null;
-  window.addEventListener('scroll', function () {
-    var f = document.getElementById('coachFab'); if (!f) return;
+  var t = null, f = null;
+  /* capture: يلتقط تمرير الصفحة وأي حاوية داخلية؛ ويعود الزر بعد توقف التمرير بقليل */
+  function onScroll() {
+    f = f || document.getElementById('coachFab'); if (!f) return;
     f.classList.add('fab-away');
     clearTimeout(t);
-    t = setTimeout(function () { f.classList.remove('fab-away'); }, 650);
-  }, { passive: true });
+    t = setTimeout(function () { f.classList.remove('fab-away'); }, 350);
+  }
+  document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+  document.addEventListener('touchmove', onScroll, { passive: true });
 })();
 </script>
 <style id="ux-polish-v12">
@@ -18335,18 +18404,26 @@ window.renderBoxingGuide = function () {
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function idxAt(elapsed) { var acc = 0; for (var i = 0; i < cfg.parts.length; i++) { acc += cfg.parts[i].s; if (elapsed < acc) return i; } return cfg.parts.length - 1; }
 
-  /* رنّة مميزة (جرس مزدوج صاعد) تختلف عن جرس بداية الجولة ونغمة المنتصف */
+  /* انتقال المراحل: تزمير مرتفع «طوط طوط طوط طوووط» مثل بوق السيارة/الحَكَم */
   function chime() {
     try {
       if (typeof soundMuted !== 'undefined' && soundMuted) return;
       var ctx = typeof getAudioCtx === 'function' ? getAudioCtx() : null; if (!ctx) return;
-      var vol = typeof sfxVolume === 'number' ? sfxVolume : 1, now = ctx.currentTime;
-      [[1175, 0], [1568, 0.15], [2093, 0.3]].forEach(function (f) {
-        var o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination);
-        o.type = 'triangle'; o.frequency.value = f[0]; var t = now + f[1];
-        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.34 * vol, t + 0.015); g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
-        o.start(t); o.stop(t + 0.6);
-      });
+      var vol = typeof sfxVolume === 'number' ? sfxVolume : 1, t0 = ctx.currentTime + 0.02;
+      var comp = ctx.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 6;
+      var master = ctx.createGain(); master.gain.value = Math.min(1, 0.95 * Math.max(vol, 0.35));
+      comp.connect(master); master.connect(ctx.destination);
+      function honk(t, dur) {
+        [[440, 'sawtooth', 0.5], [554, 'sawtooth', 0.45], [880, 'square', 0.16]].forEach(function (n) {
+          var o = ctx.createOscillator(), g = ctx.createGain(), bp = ctx.createBiquadFilter();
+          bp.type = 'lowpass'; bp.frequency.value = 3200;
+          o.type = n[1]; o.frequency.setValueAtTime(n[0] * 1.03, t); o.frequency.exponentialRampToValueAtTime(n[0], t + 0.03);
+          g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(n[2], t + 0.012);
+          g.gain.setValueAtTime(n[2], t + dur - 0.025); g.gain.linearRampToValueAtTime(0.0001, t + dur);
+          o.connect(bp); bp.connect(g); g.connect(comp); o.start(t); o.stop(t + dur + 0.05);
+        });
+      }
+      honk(t0, 0.15); honk(t0 + 0.22, 0.15); honk(t0 + 0.44, 0.15); honk(t0 + 0.66, 0.5);
     } catch (e) {}
   }
   function hasArVoice() { try { return window.speechSynthesis.getVoices().some(function (v) { return /^ar/i.test(v.lang); }); } catch (e) { return false; } }
@@ -18468,7 +18545,7 @@ window.renderBoxingGuide = function () {
   var LIM = {
     obWeight: [30, 250], aiCurrentWeight: [30, 250], aiTargetWeight: [30, 250], aiHeight: [100, 230], aiAge: [10, 90],
     aiChest: [50, 200], aiWaist: [40, 200], aiArm: [15, 80], aiThigh: [30, 120], aiBodyFat: [3, 60], aiWater: [0, 8],
-    weightLogInput: [20, 400], prepareTimeInput: [3, 15], restTimeInput: [5, 60]
+    weightLogInput: [20, 400], prepareTimeInput: [3, 120], restTimeInput: [5, 60]
   };
   var UNIT = { aiAge: 'سنة', aiHeight: 'سم', aiChest: 'سم', aiWaist: 'سم', aiArm: 'سم', aiThigh: 'سم', aiBodyFat: '%', aiWater: 'لتر' };
   function lim(el) {
@@ -18591,6 +18668,44 @@ body.floor-mode .hb-runner-timer, body.floor-mode .cw-runner-timer { font-size: 
 /* أزرار التحكم: حجم موحّد وأيقونات SVG بدل الرموز */
 #floorCtl button { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 58px; padding: 0 1.5rem; font-size: 1.05rem; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 #floorCtl button .ico { width: 1.3rem; height: 1.3rem; flex: none; }
+</style>
+<style id="floor-fix-v2">
+/* وضع الأرض: في آخر ثواني (ct-warn) يتغير المؤقت مثل العداد النقي: توهج أحمر نابض + رقم أصفر نابض، ثم وميض في آخر 3 ثواني */
+@keyframes floorWarnGlow { from { box-shadow: inset 0 0 70px 8px rgba(255,40,70,.30); } to { box-shadow: inset 0 0 190px 40px rgba(255,40,70,.80); } }
+@keyframes floorWarnNum { from { transform: scale(1); } to { transform: scale(1.07); } }
+@keyframes floorWarnBlink { 0% { opacity: 1; } 50% { opacity: .15; } 100% { opacity: 1; } }
+body.floor-mode .hb-runner.ct-warn, body.floor-mode .cw-runner.ct-warn { animation: floorWarnGlow .7s ease-in-out infinite alternate; }
+body.floor-mode .hb-runner.ct-warn .hb-runner-timer, body.floor-mode .cw-runner.ct-warn .cw-runner-timer { color: #ffe14d !important; animation: floorWarnNum .7s ease-in-out infinite alternate !important; }
+body.floor-mode .hb-runner.ct-warn .hb-runner-timer.ct-blink, body.floor-mode .cw-runner.ct-warn .cw-runner-timer.ct-blink { color: #fff !important; animation: floorWarnBlink .5s steps(2, start) infinite !important; }
+</style>
+<style id="ux-polish-v16">
+/* مؤشر التبويب: يختفي عندما تكون الصفحة الحالية بلا تبويب (قتالي / المنشئ) */
+html body .main-tabs::before { opacity: var(--ind-o, 1); transition: inset-inline-start .35s var(--wow-ease), width .35s var(--wow-ease), opacity .2s ease; }
+/* قتالي: خمسة عناصر بثلاثة أعمدة، والصف الأخير في المنتصف */
+html body .goal-grid.mstyle-grid { grid-template-columns: repeat(6, 1fr); }
+html body .goal-grid.mstyle-grid .goal-card { grid-column: span 2; }
+html body .goal-grid.mstyle-grid .goal-card:nth-child(4) { grid-column: 2 / span 2; }
+html body .goal-grid.mstyle-grid .goal-card:nth-child(5) { grid-column: 4 / span 2; }
+@media (max-width: 340px) {
+  html body .goal-grid.mstyle-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  html body .goal-grid.mstyle-grid .goal-card, html body .goal-grid.mstyle-grid .goal-card:nth-child(4) { grid-column: auto; }
+  html body .goal-grid.mstyle-grid .goal-card:nth-child(5) { grid-column: 1 / -1; justify-self: center; width: calc(50% - .25rem); }
+}
+/* تقدمي: البطاقات الأربع في صف واحد وبحجم أصغر */
+html body #dashboardScreen .stats-grid { grid-template-columns: repeat(4, 1fr); gap: .4rem; margin-bottom: 1rem; }
+html body #dashboardScreen .stat-card { padding: .55rem .2rem !important; min-width: 0; }
+html body #dashboardScreen .stat-card .stat-icon { height: 22px; margin: 0 0 .15rem !important; }
+html body #dashboardScreen .stat-card .stat-icon .ico { width: 1.1rem; height: 1.1rem; }
+html body #dashboardScreen .stat-card .stat-value { font-size: 1.05rem !important; line-height: 1.2; }
+html body #dashboardScreen .stat-card .stat-label { font-size: .6rem; line-height: 1.25; }
+/* تقدمي للمستخدم الجديد: رسالة ترحيبية بدل الأصفار */
+#dashboardScreen .progress-welcome { display: none; text-align: center; padding: 1.2rem 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-secondary); }
+#dashboardScreen.is-new .progress-welcome { display: block; }
+#dashboardScreen.is-new .streak-card, #dashboardScreen.is-new .stats-grid, #dashboardScreen.is-new .share-progress-btn { display: none; }
+.progress-welcome .pw-icon .ico { width: 2rem; height: 2rem; color: var(--accent-hiit); }
+.progress-welcome h3 { margin: .4rem 0 .25rem; font-size: 1.05rem; }
+.progress-welcome p { margin: 0 0 .8rem; font-size: .8rem; color: var(--text-secondary); line-height: 1.6; }
+.progress-welcome .pw-btn { min-height: 44px; padding: 0 1.4rem; border: 0; border-radius: 999px; font-family: inherit; font-weight: 800; color: #fff; background: var(--gradient-primary); cursor: pointer; }
 </style>
 </body>
 </html>
