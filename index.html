@@ -6399,14 +6399,21 @@ function ttsPump() {
   }
   if (ttsBusy) return;
   let item = ttsQueue.shift();
-  while (item && !item.critical && Date.now() - item.time > 5000) item = ttsQueue.shift();
+  while (item && !item.critical && Date.now() - item.time > (item.maxAge || 5000)) item = ttsQueue.shift();
   if (!item) return;
   const myId = ++ttsUtterId;
   ttsBusy = true; ttsStartTime = Date.now();
   try {
     const u = new SpeechSynthesisUtterance(item.text);
-    u.lang = item.lang; u.volume = voiceVolume; u.rate = item.rate; u.pitch = item.pitch;
-    const info = getBestVoice(u.lang);
+    /* اللغة حسب نص الجملة نفسه: نص عربي ← صوت عربي، ونص لاتيني ← صوت إنجليزي (على الآيفون يختلط الصوتان إن تُرك الأمر للإعداد العام) */
+    let lang = item.lang;
+    if (!item.voiceInfo) {
+      const hasAr = /[\u0600-\u06FF]/.test(item.text), hasLat = /[A-Za-z]/.test(item.text);
+      if (hasAr && !hasLat && !/^ar/i.test(lang)) lang = 'ar-SA';
+      else if (hasLat && !hasAr && /^ar/i.test(lang)) lang = 'en-US';
+    }
+    u.lang = lang; u.volume = voiceVolume; u.rate = item.rate; u.pitch = item.pitch;
+    const info = item.voiceInfo ? { voice: item.voiceInfo.voice, actualLang: item.voiceInfo.lang } : getBestVoice(lang);
     if (info && info.voice) { u.voice = info.voice; u.lang = info.actualLang; }
     u.onend = () => ttsFinish(myId);
     u.onerror = () => ttsFinish(myId);
@@ -6422,12 +6429,13 @@ function speak(text, lang, opts) {
   text = String(text);
   opts = opts || {};
   const now = Date.now();
-  if (text === ttsLastText && now - ttsLastTime < 700) return;
+  if (!opts.noDedupe && text === ttsLastText && now - ttsLastTime < 700) return;
   if (opts.dropIfBusy && (ttsBusy || ttsQueue.length)) return;
-  const critical = opts.critical === true || /^\d+$/.test(text.trim());
+  const critical = opts.critical === true || (opts.critical !== false && /^\d+$/.test(text.trim()));
+  const preempt = critical || opts.preempt === true;
   ttsLastText = text; ttsLastTime = now;
-  const item = { text: text, lang: lang || voiceLang, rate: opts.rate || 1.05, pitch: opts.pitch || 1.0, critical: critical, time: now };
-  if (critical) {
+  const item = { text: text, lang: lang || voiceLang, rate: opts.rate || 1.05, pitch: opts.pitch || 1.0, critical: critical, time: now, voiceInfo: opts.voiceInfo || null, maxAge: opts.maxAge || 0 };
+  if (preempt) {
     ttsQueue = [item];
     ttsUtterId++; clearTimeout(ttsWatchdog); ttsBusy = false;
     try { window.speechSynthesis.cancel(); } catch (e) {}
@@ -6751,13 +6759,7 @@ function speakCombo(arabicText) {
       playMoveTone(tone);
       highlightComboMove(index);
       if (hasVoice) {
-        try {
-          const englishName = getMoveEnglishName(move);
-          const u = new SpeechSynthesisUtterance(englishName);
-          u.volume = voiceVolume; u.rate = 1.0; u.pitch = 1.1;
-          u.voice = voiceInfo.voice; u.lang = 'en-US';
-          window.speechSynthesis.speak(u);
-        } catch (e) {}
+        speak(getMoveEnglishName(move), 'en-US', { rate: 1.0, pitch: 1.1, noDedupe: true, critical: false, maxAge: 1200 });
       }
     }, delay);
     comboSpeakTimers.push(timerId);
@@ -7420,29 +7422,10 @@ function cnVoice() {
   } catch (e) {}
   return null;
 }
-/* نطق النداءات: لا نستدعي cancel() قبل كل كلمة — كان يقطع الكلمة السابقة (أو يُسقط التالية على أندرويد)
-   فيظهر "1 1" وتُنطق واحدة فقط. نترك الكلمات تُنطق تباعاً، ولا نقطع إلا عند تراكم أكثر من كلمتين أو عند الطلب. */
-let cnQueued = 0, cnGen = 0;
-function cnSpeakNow(text, vi, rate) {
-  const u = new SpeechSynthesisUtterance(text);
-  u.voice = vi.voice; u.lang = vi.lang; u.volume = voiceVolume; u.rate = rate || 1.1;
-  const g = cnGen, done = () => { if (g === cnGen) cnQueued = Math.max(0, cnQueued - 1); };
-  u.onend = done; u.onerror = done;
-  cnQueued++;
-  window.speechSynthesis.speak(u);
-}
-function cnSay(text, vi, rate, preempt) {
-  if (!vi || !ttsEnabled || soundMuted || !('speechSynthesis' in window)) return;
-  try {
-    const ss = window.speechSynthesis;
-    if (!ss.speaking && !ss.pending) cnQueued = 0;
-    if (preempt || cnQueued >= 2) {
-      cnGen++; cnQueued = 0; ss.cancel();
-      setTimeout(() => { try { if (ttsEnabled && !soundMuted) cnSpeakNow(text, vi, rate); } catch (e) {} }, 60); // أندرويد يُسقط speak() الذي يلي cancel() مباشرة
-      return;
-    }
-    cnSpeakNow(text, vi, rate);
-  } catch (e) {}
+/* كل النطق يمر الآن عبر طابور واحد (speak): كلمة بعد كلمة دون تداخل، وما تأخر أكثر من ~1 ثانية يُسقط بدل أن يتأخر عن الصورة */
+function cnSay(text, vi, rate, preempt, maxAge) {
+  if (!vi || !ttsEnabled || soundMuted) return;
+  speak(text, vi.lang, { voiceInfo: vi, rate: rate || 1.1, critical: false, noDedupe: true, preempt: !!preempt, maxAge: maxAge || 1000 });
 }
 function hbWarn10(kind) {
   const vi = cnVoice();
@@ -7527,7 +7510,7 @@ function hbNumberedLoop(myLoopId) {
     /* أول تكرار: المدرب يقرأ أسماء الضربات قبل أن تبدأ الأرقام */
     let lead = START;
     if (isFirst) {
-      cnSay(tokens.map(k => (vi && vi.arabic) ? k.raw : getMoveEnglishName(k.raw)).join(vi && vi.arabic ? '، ' : ', '), vi, PACE.rate, true);
+      cnSay(tokens.map(k => (vi && vi.arabic) ? k.raw : getMoveEnglishName(k.raw)).join(vi && vi.arabic ? '، ' : ', '), vi, PACE.rate, false, 4000);
       lead = START + 500 + tokens.length * 480;
     }
     tokens.forEach((t, i) => {
@@ -8361,11 +8344,7 @@ function startHbComboLoop() {
     /* أول تكرار: المدرب يقرأ الكومبو كاملاً قبل التنفيذ */
     let acc = 0;
     if (isFirst && hasVoice) {
-      try {
-        const pu = new SpeechSynthesisUtterance(moves.map(m => getMoveEnglishName(m)).join(', '));
-        pu.volume = voiceVolume; pu.rate = _pace.rate + 0.1; pu.voice = voiceInfo.voice; pu.lang = 'en-US';
-        window.speechSynthesis.speak(pu);
-      } catch (e) {}
+      speak(moves.map(m => getMoveEnglishName(m)).join(', '), 'en-US', { rate: _pace.rate + 0.1, noDedupe: true, critical: false, maxAge: 4000 });
       acc = 500 + moves.length * 480;
     }
     moves.forEach((move, idx) => {
@@ -8377,14 +8356,7 @@ function startHbComboLoop() {
         mvSetActive(comboEl2, idx);
         playMoveTone(tone);
         if (hasVoice) {
-          try {
-            const u = new SpeechSynthesisUtterance(englishName);
-            u.volume = voiceVolume;
-            u.rate = _pace.rate + 0.05;
-            u.voice = voiceInfo.voice;
-            u.lang = 'en-US';
-            window.speechSynthesis.speak(u);
-          } catch (e) {}
+          speak(englishName, 'en-US', { rate: _pace.rate + 0.05, noDedupe: true, critical: false, maxAge: 1000 });
         }
       }, START_DELAY + acc);
       hbRunnerState.comboTimers.push(t);
@@ -15104,13 +15076,7 @@ function startComboLoop(comboText) {
         highlightCwRunnerMove(idx, moves);
         playMoveTone(tone);
         if (hasVoice) {
-          try {
-            const englishName = getMoveEnglishName(move);
-            const u = new SpeechSynthesisUtterance(englishName);
-            u.volume = voiceVolume; u.rate = 1.15; u.pitch = 1.1;
-            u.voice = voiceInfo.voice; u.lang = 'en-US';
-            window.speechSynthesis.speak(u);
-          } catch (e) {}
+          speak(getMoveEnglishName(move), 'en-US', { rate: 1.15, pitch: 1.1, noDedupe: true, critical: false, maxAge: 1000 });
         }
       }, delay);
       cwRunnerState.comboTimers.push(timer);
