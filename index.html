@@ -6398,6 +6398,7 @@ function ttsPump() {
     try { if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) { ttsUtterId++; clearTimeout(ttsWatchdog); ttsBusy = false; } } catch (e) {}
   }
   if (ttsBusy) return;
+  if (cvBusy) { setTimeout(ttsPump, 80); return; }
   let item = ttsQueue.shift();
   while (item && !item.critical && Date.now() - item.time > (item.maxAge || 5000)) item = ttsQueue.shift();
   if (!item) return;
@@ -6446,6 +6447,72 @@ function speak(text, lang, opts) {
   while (ttsQueue.length > 3) { const k = ttsQueue.findIndex(q => !q.critical); if (k < 0) break; ttsQueue.splice(k, 1); }
   ttsPump();
 }
+
+/* ============================================================
+   CoachVoice — محرك النداء: كل كلمة تُنطق وتُعرض في اللحظة نفسها،
+   ولا تبدأ التالية إلا بعد انتهاء السابقة (لا تداخل ولا إسقاط).
+   الإيقاع = max(الفاصل، مدة النطق الفعلية) فيتكيّف مع سرعة صوت كل جهاز.
+   ============================================================ */
+var cvGen = 0, cvBusy = false, cvLane = Promise.resolve();
+const cvSleep = ms => new Promise(r => setTimeout(r, ms));
+function cvCancel() { cvGen++; cvBusy = false; try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {} }
+function cvResetHype() { cnCombo.until = 0; cnCombo.pending = null; }
+async function cvRun(text, o, g) {
+  if (g !== cvGen || !text || !ttsEnabled || soundMuted || !('speechSynthesis' in window)) return;
+  const w0 = Date.now(); // ننتظر انتهاء الطابور القديم (عبارات/عدّ) حتى لا يتداخل معه
+  while ((ttsBusy || ttsQueue.length) && Date.now() - w0 < 1500) await cvSleep(40);
+  if (g !== cvGen) return;
+  await new Promise(res => {
+    let done = false, wd = 0;
+    const fin = () => { if (done) return; done = true; clearTimeout(wd); cvBusy = false; res(); };
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      let lang = o.lang || voiceLang, info = o.voiceInfo || null;
+      if (!info) {
+        const hasAr = /[\u0600-\u06FF]/.test(text), hasLat = /[A-Za-z]/.test(text);
+        if (hasAr && !hasLat && !/^ar/i.test(lang)) lang = 'ar-SA'; else if (hasLat && !hasAr && /^ar/i.test(lang)) lang = 'en-US';
+        const b = getBestVoice(lang); if (b && b.voice) info = { voice: b.voice, lang: b.actualLang };
+      }
+      if (info) { u.voice = info.voice; u.lang = info.lang; } else u.lang = lang;
+      u.volume = voiceVolume; u.rate = o.rate || 1.1; u.pitch = o.pitch || 1;
+      u.onend = fin; u.onerror = fin;
+      wd = setTimeout(fin, 900 + text.length * 140);
+      cvBusy = true;
+      window.speechSynthesis.speak(u);
+    } catch (e) { fin(); }
+  });
+}
+/* ينطق النص ويُرجع Promise ينتهي بانتهاء النطق؛ الاستدعاءات تُنفَّذ بالتتابع */
+function cvSpeakWait(text, o) {
+  const g = cvGen, job = cvLane.then(() => cvRun(text, o || {}, g));
+  cvLane = job.catch(() => {});
+  return job;
+}
+/* يشغّل قائمة حركات: لكل حركة {text, show(i), tone()} — العرض والنغمة والنطق معاً، ثم انتظار بقية الفاصل */
+async function cvPlayItems(items, o) {
+  for (let i = 0; i < items.length; i++) {
+    if (!o.alive()) return false;
+    cnCombo.until = Date.now() + 4000; // العبارات التشجيعية تنتظر الفاصل بين الكومبوهات
+    const it = items[i], t0 = Date.now();
+    try { it.show && it.show(i); } catch (e) {}
+    try { it.tone && it.tone(); } catch (e) {}
+    if (it.text) await cvSpeakWait(it.text, o.speech);
+    if (!o.alive()) return false;
+    if (i < items.length - 1) await cvSleep(Math.max(120, o.interval - (Date.now() - t0)));
+  }
+  return true;
+}
+/* الفاصل بين كومبوهين: تُقال العبارة التشجيعية المؤجلة إن وُجدت ثم نكمل */
+async function cvGap(alive, ms) {
+  const h = cnCombo.pending; cnCombo.pending = null;
+  await cvSleep(Math.round(ms * 0.35));
+  if (h && alive() && Date.now() - h.t < 7000 && ttsEnabled && !soundMuted && boxingCallsEnabled) {
+    haptic('light');
+    await cvSpeakWait(h.phrase, { rate: h.rate, pitch: h.pitch });
+  }
+  await cvSleep(Math.round(ms * 0.65));
+}
+
 function ttsRecover() {
   if (!('speechSynthesis' in window)) return;
   try { if (window.speechSynthesis.paused) window.speechSynthesis.resume(); } catch (e) {}
@@ -6759,7 +6826,7 @@ function speakCombo(arabicText) {
       playMoveTone(tone);
       highlightComboMove(index);
       if (hasVoice) {
-        speak(getMoveEnglishName(move), 'en-US', { rate: 1.0, pitch: 1.1, noDedupe: true, critical: false, maxAge: 1200 });
+        cvSpeakWait(getMoveEnglishName(move), { lang: 'en-US', rate: 1.0, pitch: 1.1 });
       }
     }, delay);
     comboSpeakTimers.push(timerId);
@@ -7422,10 +7489,11 @@ function cnVoice() {
   } catch (e) {}
   return null;
 }
-/* كل النطق يمر الآن عبر طابور واحد (speak): كلمة بعد كلمة دون تداخل، وما تأخر أكثر من ~1 ثانية يُسقط بدل أن يتأخر عن الصورة */
-function cnSay(text, vi, rate, preempt, maxAge) {
+/* نداء لمرة واحدة (مثل تنبيه العشر ثوانٍ): preempt يقطع ما قبله */
+function cnSay(text, vi, rate, preempt) {
   if (!vi || !ttsEnabled || soundMuted) return;
-  speak(text, vi.lang, { voiceInfo: vi, rate: rate || 1.1, critical: false, noDedupe: true, preempt: !!preempt, maxAge: maxAge || 1000 });
+  if (preempt) { try { window.speechSynthesis.cancel(); } catch (e) {} cvGen++; }
+  cvSpeakWait(text, { voiceInfo: vi, rate: rate || 1.1 });
 }
 function hbWarn10(kind) {
   const vi = cnVoice();
@@ -7501,34 +7569,29 @@ function hbNumberedLoop(myLoopId) {
     comboEl.innerHTML = comboChipsHTML(tokens, 'live') + `<span class="cn-sub">${escapeHTML(comboCode(tokens))}</span>`;
     comboEl.classList.remove('muted');
   }
-  function cycle() {
+  const items = tokens.map((tk, i) => ({
+    text: vi && vi.arabic ? tk.say : tk.sayEn,
+    show: () => cnSetActive(comboEl, i),
+    tone: () => playMoveTone(getMoveTone(tk.raw))
+  }));
+  const speech = { voiceInfo: vi, rate: PACE.rate };
+  async function cycle() {
     if (!alive()) return;
     if (hbRoundRepsLeft <= 0) { hbRoundCombosQueue.push(combo); startHbComboLoop(); return; }
     const isFirst = hbRoundRepsLeft === HB_REPS_PER_COMBO;
     hbRoundRepsLeft--;
     render();
-    /* أول تكرار: المدرب يقرأ أسماء الضربات قبل أن تبدأ الأرقام */
-    let lead = START;
-    if (isFirst) {
-      cnSay(tokens.map(k => (vi && vi.arabic) ? k.raw : getMoveEnglishName(k.raw)).join(vi && vi.arabic ? '، ' : ', '), vi, PACE.rate, false, 4000);
-      lead = START + 500 + tokens.length * 480;
+    cnCombo.until = Date.now() + 6000;
+    if (isFirst && vi) { // المدرب يقرأ أسماء الضربات أولاً ثم تبدأ الأرقام
+      await cvSpeakWait(tokens.map(k => vi.arabic ? k.raw : getMoveEnglishName(k.raw)).join(vi.arabic ? '، ' : ', '), speech);
+      if (!alive()) return;
     }
-    tokens.forEach((t, i) => {
-      const id = setTimeout(() => {
-        if (!alive()) return;
-        cnSetActive(comboEl, i);
-        try { playMoveTone(getMoveTone(t.raw)); } catch (e) {}
-        cnSay(vi && vi.arabic ? t.say : t.sayEn, vi, PACE.rate);
-      }, lead + i * INTERVAL);
-      hbRunnerState.comboTimers.push(id);
-    });
-    const endAt = lead + tokens.length * INTERVAL;
-    cnComboMark(endAt + BREAK);
-    const extra = cnHypeGap(endAt, alive);
-    const nid = setTimeout(() => { if (alive()) cycle(); }, endAt + BREAK + extra);
-    hbRunnerState.comboTimers.push(nid);
+    await cvSleep(START);
+    if (!(await cvPlayItems(items, { alive, interval: INTERVAL, speech }))) return;
+    await cvGap(alive, BREAK);
+    cycle();
   }
-  hbRunnerState.comboTimers.push(setTimeout(cycle, 100));
+  setTimeout(cycle, 100);
 }
 
 let hbRoundCombosQueue = [];
@@ -8329,56 +8392,38 @@ function startHbComboLoop() {
   const START_DELAY = 250;
   const comboEl = document.getElementById('hbRunnerCombo');
   if (comboEl) comboEl.innerHTML = mvPillsHTML(moves);
-  function playOneCycle() {
-    if (myLoopId !== hbRunnerState.comboLoopId) return;
-    if (hbRunnerState.paused || hbRunnerState.phase !== 'work') return;
-    if (hbRoundRepsLeft <= 0) {
-      hbRoundCombosQueue.push(currentCombo);
-      startHbComboLoop();
-      return;
-    }
+  const _alive = () => myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work';
+  const _speech = { voiceInfo: hasVoice ? { voice: voiceInfo.voice, lang: 'en-US' } : null, rate: _pace.rate + 0.05 };
+  const _items = moves.map((move, idx) => ({
+    text: hasVoice ? getMoveEnglishName(move) : '',
+    show: () => mvSetActive(document.getElementById('hbRunnerCombo'), idx),
+    tone: () => playMoveTone(getMoveTone(move))
+  }));
+  async function playOneCycle() {
+    if (!_alive()) return;
+    if (hbRoundRepsLeft <= 0) { hbRoundCombosQueue.push(currentCombo); startHbComboLoop(); return; }
     const isFirst = hbRoundRepsLeft === HB_REPS_PER_COMBO;
     hbRoundRepsLeft--;
     const _cEl = document.getElementById('hbRunnerCombo');
     if (_cEl) _cEl.innerHTML = mvPillsHTML(moves);
-    /* أول تكرار: المدرب يقرأ الكومبو كاملاً قبل التنفيذ */
-    let acc = 0;
-    if (isFirst && hasVoice) {
-      speak(moves.map(m => getMoveEnglishName(m)).join(', '), 'en-US', { rate: _pace.rate + 0.1, noDedupe: true, critical: false, maxAge: 4000 });
-      acc = 500 + moves.length * 480;
+    cnCombo.until = Date.now() + 6000;
+    if (isFirst && hasVoice) { // قراءة الكومبو كاملاً قبل التنفيذ
+      await cvSpeakWait(moves.map(m => getMoveEnglishName(m)).join(', '), { voiceInfo: _speech.voiceInfo, rate: _pace.rate + 0.1 });
+      if (!_alive()) return;
     }
-    moves.forEach((move, idx) => {
-      const tone = getMoveTone(move);
-      const t = setTimeout(() => {
-        if (myLoopId !== hbRunnerState.comboLoopId || hbRunnerState.paused || hbRunnerState.phase !== 'work') return;
-        const comboEl2 = document.getElementById('hbRunnerCombo');
-        const englishName = getMoveEnglishName(move);
-        mvSetActive(comboEl2, idx);
-        playMoveTone(tone);
-        if (hasVoice) {
-          speak(englishName, 'en-US', { rate: _pace.rate + 0.05, noDedupe: true, critical: false, maxAge: 1000 });
-        }
-      }, START_DELAY + acc);
-      hbRunnerState.comboTimers.push(t);
-      acc += MOVE_INTERVAL;
-    });
-    const _alive = () => myLoopId === hbRunnerState.comboLoopId && !hbRunnerState.paused && hbRunnerState.phase === 'work';
-    cnComboMark(START_DELAY + acc + COMBO_BREAK);
-    const _extra = cnHypeGap(START_DELAY + acc, _alive);
-    const nt = setTimeout(() => {
-      if (_alive()) playOneCycle();
-    }, START_DELAY + acc + COMBO_BREAK + _extra);
-    hbRunnerState.comboTimers.push(nt);
+    await cvSleep(START_DELAY);
+    if (!(await cvPlayItems(_items, { alive: _alive, interval: MOVE_INTERVAL, speech: _speech }))) return;
+    await cvGap(_alive, COMBO_BREAK);
+    playOneCycle();
   }
-  const st = setTimeout(() => playOneCycle(), 100);
-  hbRunnerState.comboTimers.push(st);
+  setTimeout(playOneCycle, 100);
 }
 
 function stopHbComboLoop() {
   hbRunnerState.comboLoopId++;
   hbRunnerState.comboTimers.forEach(t => clearTimeout(t));
   hbRunnerState.comboTimers = [];
-  if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+  cvCancel(); cvResetHype();
 }
 
 function hbSpeakRound() {
@@ -15060,43 +15105,25 @@ function startComboLoop(comboText) {
   const MOVE_INTERVAL = 900;
   const COMBO_BREAK = 350;
   const START_DELAY = 250;
-  function playOneCycle() {
-    if (myLoopId !== cwRunnerState.comboLoopId) return;
-    if (cwRunnerState.paused) return;
-    if (cwRunnerState.phase !== 'work') return;
-    let accumulatedDelay = 0;
-    { const _ce = document.getElementById('cwRunnerCombo'); if (_ce) _ce.innerHTML = mvPillsHTML(moves); }
-    moves.forEach((move, idx) => {
-      const tone = getMoveTone(move);
-      const delay = START_DELAY + accumulatedDelay;
-      const timer = setTimeout(() => {
-        if (myLoopId !== cwRunnerState.comboLoopId) return;
-        if (cwRunnerState.paused) return;
-        if (cwRunnerState.phase !== 'work') return;
-        highlightCwRunnerMove(idx, moves);
-        playMoveTone(tone);
-        if (hasVoice) {
-          speak(getMoveEnglishName(move), 'en-US', { rate: 1.15, pitch: 1.1, noDedupe: true, critical: false, maxAge: 1000 });
-        }
-      }, delay);
-      cwRunnerState.comboTimers.push(timer);
-      accumulatedDelay += MOVE_INTERVAL;
-    });
-    const _cwAlive = () => myLoopId === cwRunnerState.comboLoopId && !cwRunnerState.paused && cwRunnerState.phase === 'work';
-    cnComboMark(START_DELAY + accumulatedDelay + COMBO_BREAK);
-    const cycleTotal = START_DELAY + accumulatedDelay + COMBO_BREAK + cnHypeGap(START_DELAY + accumulatedDelay, _cwAlive);
-    const nextCycleTimer = setTimeout(() => {
-      if (myLoopId !== cwRunnerState.comboLoopId) return;
-      if (cwRunnerState.paused) return;
-      if (cwRunnerState.phase !== 'work') return;
-      playOneCycle();
-    }, cycleTotal);
-    cwRunnerState.comboTimers.push(nextCycleTimer);
+  const _alive = () => myLoopId === cwRunnerState.comboLoopId && !cwRunnerState.paused && cwRunnerState.phase === 'work';
+  const _speech = { voiceInfo: hasVoice ? { voice: voiceInfo.voice, lang: 'en-US' } : null, rate: 1.15, pitch: 1.1 };
+  const _items = moves.map((move, idx) => ({
+    text: hasVoice ? getMoveEnglishName(move) : '',
+    show: () => highlightCwRunnerMove(idx, moves),
+    tone: () => playMoveTone(getMoveTone(move))
+  }));
+  async function playOneCycle() {
+    if (!_alive()) return;
+    const _ce = document.getElementById('cwRunnerCombo'); if (_ce) _ce.innerHTML = mvPillsHTML(moves);
+    cnCombo.until = Date.now() + 6000;
+    await cvSleep(START_DELAY);
+    if (!(await cvPlayItems(_items, { alive: _alive, interval: MOVE_INTERVAL, speech: _speech }))) return;
+    await cvGap(_alive, COMBO_BREAK);
+    playOneCycle();
   }
-  const startTimer = setTimeout(() => playOneCycle(), 100);
-  cwRunnerState.comboTimers.push(startTimer);
+  setTimeout(playOneCycle, 100);
 }
-function stopComboLoop() { cwRunnerState.comboLoopId++; cwRunnerState.comboTimers.forEach(t => clearTimeout(t)); cwRunnerState.comboTimers = []; if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch(e) {} } }
+function stopComboLoop() { cwRunnerState.comboLoopId++; cwRunnerState.comboTimers.forEach(t => clearTimeout(t)); cwRunnerState.comboTimers = []; cvCancel(); cvResetHype(); }
 function highlightCwRunnerMove(idx, moves) { const comboEl = document.getElementById('cwRunnerCombo'); if (!comboEl) return; if (!comboEl.querySelector('.mv-pill')) comboEl.innerHTML = mvPillsHTML(moves); mvSetActive(comboEl, idx); }
 function showConfetti() {
   const container = document.getElementById('cwConfetti'); if (!container) return;
