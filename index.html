@@ -7391,6 +7391,14 @@ function cnSetActive(container, idx) {
   const chips = container.querySelectorAll('.cn-chip');
   chips.forEach((c, i) => { c.classList.toggle('on', i === idx); c.classList.toggle('done', i < idx); });
 }
+/* أسماء الضربات كبطاقات: الكومبو كاملاً ظاهر، والضربة الحالية مضاءة */
+function mvPillsHTML(moves) {
+  return '<span class="mv-pills live">' + moves.map((m, i) => `<span class="mv-pill" data-i="${i}">${escapeHTML(getMoveEnglishName(m).toUpperCase())}</span>`).join('') + '</span>';
+}
+function mvSetActive(container, idx) {
+  if (!container) return;
+  container.querySelectorAll('.mv-pill').forEach((c, i) => { c.classList.toggle('on', i === idx); c.classList.toggle('done', i < idx); });
+}
 function hbCallStyle() { return safeGet('hbCallStyle', 'numbered') === 'names' ? 'names' : 'numbered'; }
 function setHbCallStyle(v) {
   playClick(); haptic('light');
@@ -7513,18 +7521,25 @@ function hbNumberedLoop(myLoopId) {
   function cycle() {
     if (!alive()) return;
     if (hbRoundRepsLeft <= 0) { hbRoundCombosQueue.push(combo); startHbComboLoop(); return; }
+    const isFirst = hbRoundRepsLeft === HB_REPS_PER_COMBO;
     hbRoundRepsLeft--;
     render();
+    /* أول تكرار: المدرب يقرأ أسماء الضربات قبل أن تبدأ الأرقام */
+    let lead = START;
+    if (isFirst) {
+      cnSay(tokens.map(k => (vi && vi.arabic) ? k.raw : getMoveEnglishName(k.raw)).join(vi && vi.arabic ? '، ' : ', '), vi, PACE.rate, true);
+      lead = START + 500 + tokens.length * 480;
+    }
     tokens.forEach((t, i) => {
       const id = setTimeout(() => {
         if (!alive()) return;
         cnSetActive(comboEl, i);
         try { playMoveTone(getMoveTone(t.raw)); } catch (e) {}
         cnSay(vi && vi.arabic ? t.say : t.sayEn, vi, PACE.rate);
-      }, START + i * INTERVAL);
+      }, lead + i * INTERVAL);
       hbRunnerState.comboTimers.push(id);
     });
-    const endAt = START + tokens.length * INTERVAL;
+    const endAt = lead + tokens.length * INTERVAL;
     cnComboMark(endAt + BREAK);
     const extra = cnHypeGap(endAt, alive);
     const nid = setTimeout(() => { if (alive()) cycle(); }, endAt + BREAK + extra);
@@ -8330,10 +8345,7 @@ function startHbComboLoop() {
   const COMBO_BREAK = _pace.interval;
   const START_DELAY = 250;
   const comboEl = document.getElementById('hbRunnerCombo');
-  if (comboEl) {
-    const englishName = moves.map(m => getMoveEnglishName(m)).join(' + ');
-    comboEl.textContent = englishName.toUpperCase();
-  }
+  if (comboEl) comboEl.innerHTML = mvPillsHTML(moves);
   function playOneCycle() {
     if (myLoopId !== hbRunnerState.comboLoopId) return;
     if (hbRunnerState.paused || hbRunnerState.phase !== 'work') return;
@@ -8342,15 +8354,27 @@ function startHbComboLoop() {
       startHbComboLoop();
       return;
     }
+    const isFirst = hbRoundRepsLeft === HB_REPS_PER_COMBO;
     hbRoundRepsLeft--;
+    const _cEl = document.getElementById('hbRunnerCombo');
+    if (_cEl) _cEl.innerHTML = mvPillsHTML(moves);
+    /* أول تكرار: المدرب يقرأ الكومبو كاملاً قبل التنفيذ */
     let acc = 0;
+    if (isFirst && hasVoice) {
+      try {
+        const pu = new SpeechSynthesisUtterance(moves.map(m => getMoveEnglishName(m)).join(', '));
+        pu.volume = voiceVolume; pu.rate = _pace.rate + 0.1; pu.voice = voiceInfo.voice; pu.lang = 'en-US';
+        window.speechSynthesis.speak(pu);
+      } catch (e) {}
+      acc = 500 + moves.length * 480;
+    }
     moves.forEach((move, idx) => {
       const tone = getMoveTone(move);
       const t = setTimeout(() => {
         if (myLoopId !== hbRunnerState.comboLoopId || hbRunnerState.paused || hbRunnerState.phase !== 'work') return;
         const comboEl2 = document.getElementById('hbRunnerCombo');
         const englishName = getMoveEnglishName(move);
-        if (comboEl2) comboEl2.textContent = englishName.toUpperCase();
+        mvSetActive(comboEl2, idx);
         playMoveTone(tone);
         if (hasVoice) {
           try {
@@ -15069,6 +15093,7 @@ function startComboLoop(comboText) {
     if (cwRunnerState.paused) return;
     if (cwRunnerState.phase !== 'work') return;
     let accumulatedDelay = 0;
+    { const _ce = document.getElementById('cwRunnerCombo'); if (_ce) _ce.innerHTML = mvPillsHTML(moves); }
     moves.forEach((move, idx) => {
       const tone = getMoveTone(move);
       const delay = START_DELAY + accumulatedDelay;
@@ -15106,7 +15131,7 @@ function startComboLoop(comboText) {
   cwRunnerState.comboTimers.push(startTimer);
 }
 function stopComboLoop() { cwRunnerState.comboLoopId++; cwRunnerState.comboTimers.forEach(t => clearTimeout(t)); cwRunnerState.comboTimers = []; if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch(e) {} } }
-function highlightCwRunnerMove(idx, moves) { const comboEl = document.getElementById('cwRunnerCombo'); if (!comboEl) return; const move = moves[idx]; const englishName = getMoveEnglishName(move); comboEl.textContent = englishName.toUpperCase(); }
+function highlightCwRunnerMove(idx, moves) { const comboEl = document.getElementById('cwRunnerCombo'); if (!comboEl) return; if (!comboEl.querySelector('.mv-pill')) comboEl.innerHTML = mvPillsHTML(moves); mvSetActive(comboEl, idx); }
 function showConfetti() {
   const container = document.getElementById('cwConfetti'); if (!container) return;
   container.innerHTML = ''; container.classList.add('show');
@@ -16229,11 +16254,19 @@ const GymBeat = (function () {
   }
   function kick(t, v) { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.12); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22); o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.25); }
   function nz(t, v, freq, type, dur) { const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); s.buffer = noise; f.type = type; f.frequency.value = freq; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur); s.connect(f); f.connect(g); g.connect(out); s.start(t); s.stop(t + dur + 0.02); }
+  function bass(t, f, v, len) { const o = ctx.createOscillator(), fl = ctx.createBiquadFilter(), g = ctx.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(f, t); fl.type = 'lowpass'; fl.frequency.value = 240; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(v, t + 0.012); g.gain.exponentialRampToValueAtTime(0.001, t + len); o.connect(fl); fl.connect(g); g.connect(out); o.start(t); o.stop(t + len + 0.05); }
+  const BASS = [55, 55, 65.41, 49]; // A A C G: جملة بيز تتكرر كل 4 موازير
   function play(st, t) { // 8th-note grid, 8 steps per 4/4 bar
-    const hi = cur > 135;
-    if (st % 4 === 0 || (hi && st === 7)) kick(t, 0.9);
+    const hi = cur > 135, work = mul > 0.5, bar = Math.floor(step / 8) % 4, fill = work && bar === 3 && st >= 5;
+    if (st % 4 === 0) kick(t, 0.9); else if ((hi && st === 7) || (work && bar % 2 === 1 && st === 5)) kick(t, 0.55); // ضربة كيك مُزاحة تعطي حركة
     if (st === 2 || st === 6) nz(t, 0.45, 1800, 'bandpass', 0.11);
+    if (fill && (st === 5 || st === 7)) nz(t, 0.32, 2400, 'bandpass', 0.07); // فيل في آخر مازورة
     if (mul > 0.5 || st % 2) nz(t, hi ? 0.22 : 0.14, 7000, 'highpass', 0.04);
+    if (work && !fill && (st === 3 || st === 7)) nz(t, 0.09, 5200, 'highpass', 0.14); // هات مفتوح على الأوف بيت
+    if (work) { // بيز: يقوّي الإحساس بالدفع أثناء الجولة فقط
+      const f = BASS[bar];
+      if (st === 0) bass(t, f, 0.5, 0.3); else if (st === 3 || (hi && st === 5)) bass(t, f * 1.5, 0.28, 0.14);
+    }
   }
   function tick() {
     if (!ctx || !mul) return;
@@ -18698,6 +18731,13 @@ html body #dashboardScreen .stat-card .stat-icon { height: 22px; margin: 0 0 .15
 html body #dashboardScreen .stat-card .stat-icon .ico { width: 1.1rem; height: 1.1rem; }
 html body #dashboardScreen .stat-card .stat-value { font-size: 1.05rem !important; line-height: 1.2; }
 html body #dashboardScreen .stat-card .stat-label { font-size: .6rem; line-height: 1.25; }
+
+/* أسماء الضربات كبطاقات مضاءة (وضع الأسماء) */
+.mv-pills { display:inline-flex; flex-wrap:wrap; gap:.3em; justify-content:center; align-items:center; direction:ltr; font-size:.58em; font-weight:900; letter-spacing:1px; }
+.mv-pill { padding:.14em .6em; border-radius:999px; background:rgba(255,255,255,.10); opacity:.35; transform:scale(.92); transition:transform .12s ease, opacity .12s ease, background .12s ease, box-shadow .12s ease; }
+.mv-pills.live .mv-pill.done { opacity:.6; }
+.mv-pills.live .mv-pill.on { opacity:1; transform:scale(1.12); background:rgba(255,255,255,.24); box-shadow:0 0 .7em rgba(255,255,255,.45); }
+body.floor-mode .mv-pills { font-size:.7em; }
 /* تقدمي للمستخدم الجديد: رسالة ترحيبية بدل الأصفار */
 #dashboardScreen .progress-welcome { display: none; text-align: center; padding: 1.2rem 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-secondary); }
 #dashboardScreen.is-new .progress-welcome { display: block; }
