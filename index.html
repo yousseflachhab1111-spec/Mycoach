@@ -4792,9 +4792,10 @@ body.floor-mode #floorHint.show { display:block; }
    <div class="main-tabs" role="tablist">
     <button class="main-tab active" id="tab-hiit" role="tab" aria-selected="true" onclick="switchMainTab('hiit')"><svg class="ico"><use href="#ico-home"/></svg> <span>HIIT</span></button>
     <button class="main-tab" id="tab-boxing" role="tab" aria-selected="false" onclick="switchMainTab('boxing')"><svg class="ico"><use href="#ico-boxing-glove"/></svg> <span>ملاكمة</span></button>
-    <button class="main-tab" id="tab-program" role="tab" aria-selected="false" onclick="switchMainTab('program')"><svg class="ico"><use href="#ico-dumbbell"/></svg> <span>3 أيام</span></button>
+    <button class="main-tab" id="tab-program" role="tab" aria-selected="false" onclick="switchMainTab('program')"><svg class="ico"><use href="#ico-dumbbell"/></svg> <span>برامج</span></button>
     <button class="main-tab" id="tab-freetimer" role="tab" aria-selected="false" onclick="switchMainTab('freetimer')"><svg class="ico"><use href="#ico-timer"/></svg> <span>مؤقت حر</span></button>
-    <button class="main-tab" id="tab-myprogram" role="tab" aria-selected="false" onclick="switchMainTab('myprogram')"><svg class="ico"><use href="#ico-target"/></svg> <span>برنامجي</span></button>
+    <button class="main-tab" id="tab-stretch" role="tab" aria-selected="false" onclick="switchMainTab('stretch')"><svg class="ico"><use href="#ico-flower"/></svg> <span>إطالة</span></button>
+    <button class="main-tab" id="tab-explosive" role="tab" aria-selected="false" onclick="switchMainTab('explosive')"><svg class="ico"><use href="#ico-zap"/></svg> <span>انفجاري</span></button>
    </div>
    <div id="content-hiit" class="main-content active">
     <div class="home-screen" id="homeScreen">
@@ -4960,6 +4961,7 @@ body.floor-mode #floorHint.show { display:block; }
      </div>
     </div>
     <div id="content-program" class="main-content">
+    <div class="prog-seg"><button type="button" class="on" onclick="switchMainTab('program')">3 أيام</button><button type="button" class="" onclick="switchMainTab('myprogram')">برنامجي</button></div>
     <div class="prog-subtabs" id="progSubtabs">
      <button class="prog-sub active" data-sub="cur" onclick="progSub('cur')">البرنامج الحالي</button>
      <button class="prog-sub" data-sub="bbfb" onclick="progSub('bbfb')">Full Body</button>
@@ -5052,7 +5054,16 @@ body.floor-mode #floorHint.show { display:block; }
      <div id="martialResults" style="display:none"></div>
     </div>
    </div>
+   <div id="content-stretch" class="main-content">
+    <div class="xr-hero xr-s"><h2><svg class="ico"><use href="#ico-flower"/></svg> إطالة</h2><p>جلسات هادئة بإرشاد صوتي، ورسم متحرك يريك الوضعية الصحيحة لكل تمرين.</p></div>
+    <div id="stretchList"></div>
+   </div>
+   <div id="content-explosive" class="main-content">
+    <div class="xr-hero xr-e"><h2><svg class="ico"><use href="#ico-zap"/></svg> تمارين انفجارية</h2><p>قوة وسرعة بفترات عمل وراحة قصيرة، بثلاثة مستويات وبدائل بلا قفز.</p></div>
+    <div id="explosiveList"></div>
+   </div>
    <div id="content-myprogram" class="main-content">
+    <div class="prog-seg"><button type="button" class="" onclick="switchMainTab('program')">3 أيام</button><button type="button" class="on" onclick="switchMainTab('myprogram')">برنامجي</button></div>
     <div class="myprogram-screen">
      <div class="app-header section-myprogram">
   <h1>برنامجي المخصص</h1>
@@ -9356,6 +9367,7 @@ function toggleFocusMode() {
 }
 function switchMainTab(tab) {
   playClick();
+  if (window.xrClose) xrClose();
   if (currentMainTab !== tab) NavigationStack.push(tab);
   cleanupAllTimers();
   if (typeof hbRunnerState !== 'undefined' && hbRunnerState && hbRunnerState.phase !== 'idle') cleanupHeavyBagRunner();
@@ -9367,11 +9379,13 @@ function switchMainTab(tab) {
   document.querySelectorAll('.main-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.main-tab').forEach(el => { el.classList.remove('active'); el.setAttribute('aria-selected', 'false'); });
   const content = document.getElementById('content-' + tab);
-  const tabBtn = document.getElementById('tab-' + tab);
+  const tabBtn = document.getElementById('tab-' + (tab === 'myprogram' ? 'program' : tab));
   if (content) content.classList.add('active');
   if (tabBtn) { tabBtn.classList.add('active'); tabBtn.setAttribute('aria-selected', 'true'); }
   if (tab === 'program') { renderProgramDays(); updateProgramStats(); progSub(safeGet('progSub', 'cur'), true); }
   if (tab === 'myprogram') loadSavedProgram();
+  if (tab === 'stretch' && typeof renderStretch === 'function') renderStretch();
+  if (tab === 'explosive' && typeof renderExplosive === 'function') renderExplosive();
   if (tab === 'freetimer' && typeof renderFreeTimerSetup === 'function') renderFreeTimerSetup();
   if (tab === 'martial' && typeof initMartialWizard === 'function') initMartialWizard();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -10146,7 +10160,7 @@ function goProgramHome() { playClick(); cleanupAllTimers(); document.getElementB
 function getWorkoutHistory() { return safeParse('workoutHistory', []); }
 function addWorkoutToHistory(type, dayId, durationMinutes) {
   // [T5] نبني السجل ونعيده مباشرة — الملخص لا يعتمد على آخر عنصر في التخزين
-  const entry = { type: type, dayId: dayId, date: new Date().toISOString(), duration: durationMinutes || 30, calories: Math.floor((durationMinutes || 30) * 8.5) };
+  const entry = { type: type, dayId: dayId, date: new Date().toISOString(), duration: durationMinutes || 30, calories: Math.floor((durationMinutes || 30) * (type === 'stretch' ? 3 : type === 'explosive' ? 12 : 8.5)) };
   const history = getWorkoutHistory();
   history.push(entry);
   if (!safeSet('workoutHistory', history)) { entry._unsaved = true; console.warn('[history] لم يُحفظ السجل (التخزين ممتلئ) — سيُعرض الملخص من القيم المحسوبة'); try { showInAppNotification('⚠️', 'تعذر حفظ التمرين في السجل (التخزين ممتلئ). صدّر نسخة احتياطية ثم امسح بعض البيانات'); } catch (e) {} }
@@ -10245,10 +10259,12 @@ function renderHistoryList() {
     if (w.type === 'boxing') { icon = '🥊'; typeLabel = 'ملاكمة'; itemClass = 'boxing'; }
     if (w.type === 'program') { icon = '🏋️'; typeLabel = 'برنامج'; }
     if (w.type === 'bb') { icon = '🏋️'; typeLabel = 'كمال أجسام'; }
+    if (w.type === 'stretch') { icon = '🧘'; typeLabel = 'إطالة'; }
+    if (w.type === 'explosive') { icon = '⚡'; typeLabel = 'انفجاري'; }
     const item = document.createElement('div');
     item.className = 'history-item ' + itemClass;
     // FIX #7: workoutHistory comes from localStorage (and imports) — escape before innerHTML.
-    item.innerHTML = `<div class="hist-icon">${icon}</div><div><div class="hist-title">${typeLabel} — ${w.type === 'bb' ? '' : 'اليوم '}${escapeHTML(w.dayId)}</div><div class="hist-meta"><span>📅 ${escapeHTML(dateStr)}</span><span>⏱️ ${escapeHTML(w.duration || 0)} د</span><span>🔥 ${escapeHTML(w.calories || 0)} سعرة</span></div></div>`;
+    item.innerHTML = `<div class="hist-icon">${icon}</div><div><div class="hist-title">${typeLabel} — ${(w.type === 'bb' || w.type === 'stretch' || w.type === 'explosive') ? '' : 'اليوم '}${escapeHTML(w.dayId)}</div><div class="hist-meta"><span>📅 ${escapeHTML(dateStr)}</span><span>⏱️ ${escapeHTML(w.duration || 0)} د</span><span>🔥 ${escapeHTML(w.calories || 0)} سعرة</span></div></div>`;
     list.appendChild(item);
   });
 }
@@ -17458,6 +17474,7 @@ function setBtnLoading(btn, on) { if (!btn) return; btn.classList.toggle('is-loa
     var rtl = getComputedStyle(bar).direction === 'rtl';
     var x = rtl ? br.right - tr.right : tr.left - br.left;
     bar.style.setProperty('--ind-x', x + 'px'); bar.style.setProperty('--ind-w', tr.width + 'px');
+    bar.style.setProperty('--ind-y', (tr.top - br.top - 1) + 'px'); bar.style.setProperty('--ind-h', tr.height + 'px');
   }
   new MutationObserver(function () { requestAnimationFrame(place); }).observe(bar, { subtree: true, attributes: true, attributeFilter: ['class'] });
   window.addEventListener('resize', place); setTimeout(place, 300); setTimeout(place, 1200);
@@ -18706,7 +18723,9 @@ body.floor-mode .hb-runner.ct-warn .hb-runner-timer.ct-blink, body.floor-mode .c
 </style>
 <style id="ux-polish-v16">
 /* مؤشر التبويب: يختفي عندما تكون الصفحة الحالية بلا تبويب (قتالي / المنشئ) */
-html body .main-tabs::before { opacity: var(--ind-o, 1); transition: inset-inline-start .35s var(--wow-ease), width .35s var(--wow-ease), opacity .2s ease; }
+html body .main-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; overflow: visible; }
+html body .main-tabs .main-tab { min-height: 42px; }
+html body .main-tabs::before { top: var(--ind-y, 5px); bottom: auto; height: var(--ind-h, 42px); opacity: var(--ind-o, 1); transition: inset-inline-start .35s var(--wow-ease), width .35s var(--wow-ease), top .35s var(--wow-ease), height .35s var(--wow-ease), opacity .2s ease; }
 /* قتالي: خمسة عناصر بثلاثة أعمدة، والصف الأخير في المنتصف */
 html body .goal-grid.mstyle-grid { grid-template-columns: repeat(6, 1fr); }
 html body .goal-grid.mstyle-grid .goal-card { grid-column: span 2; }
@@ -18731,6 +18750,51 @@ html body #dashboardScreen .stat-card .stat-label { font-size: .6rem; line-heigh
 .mv-pills.live .mv-pill.done { opacity:.6; }
 .mv-pills.live .mv-pill.on { opacity:1; transform:scale(1.12); background:rgba(255,255,255,.24); box-shadow:0 0 .7em rgba(255,255,255,.45); }
 body.floor-mode .mv-pills { font-size:.7em; }
+
+/* برامج: مبدّل بين 3 أيام وبرنامجي */
+.prog-seg { display:flex; gap:4px; padding:4px; margin-bottom:1rem; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:14px; }
+.prog-seg button { flex:1; min-height:40px; border:0; border-radius:10px; background:transparent; color:var(--text-secondary); font:inherit; font-weight:800; cursor:pointer; }
+.prog-seg button.on { background:var(--gradient-primary); color:#fff; }
+/* إطالة + انفجاري */
+.xr-hero { padding:1.1rem 1rem; margin-bottom:1rem; border-radius:var(--radius-lg); color:#fff; }
+.xr-hero.xr-s { background:linear-gradient(135deg,#0f766e,#14b8a6); } .xr-hero.xr-e { background:linear-gradient(135deg,#991b1b,#f97316); }
+.xr-hero h2 { margin:0 0 .3rem; font-size:1.25rem; display:flex; align-items:center; gap:.4rem; } .xr-hero p { margin:0; font-size:.82rem; opacity:.92; line-height:1.6; }
+.xr-h { display:flex; align-items:center; gap:.5rem; margin:1.2rem .2rem .6rem; font-size:.85rem; color:var(--text-secondary); font-weight:800; }
+.xr-h::before { content:""; width:4px; height:16px; border-radius:2px; background:#22c55e; }
+.xr-card { margin-bottom:.8rem; border-radius:var(--radius-lg); overflow:hidden; background:var(--g); color:#fff; box-shadow:0 8px 22px -12px rgba(0,0,0,.6); }
+.xr-cm { display:flex; align-items:center; gap:.7rem; padding:.8rem; }
+.xr-cf { flex:0 0 92px; height:68px; border-radius:12px; background:rgba(255,255,255,.16); display:grid; place-items:center; }
+.xr-th { width:100%; height:100%; color:#fff; } .xr-th line, .xr-th circle { stroke:#fff; fill:#fff; stroke-linecap:round; } .xr-th line.g { stroke:rgba(255,255,255,.35); stroke-width:2; }
+.xr-ci { flex:1; min-width:0; } .xr-ci h3 { margin:0 0 .25rem; font-size:1rem; }
+.xr-meta { display:flex; gap:.8rem; font-size:.74rem; opacity:.95; } .xr-meta span { display:inline-flex; align-items:center; gap:.25rem; } .xr-meta .ico { width:.95rem; height:.95rem; }
+.xr-ci p { margin:.3rem 0 0; font-size:.72rem; opacity:.88; }
+.xr-go { min-height:44px; padding:0 1.1rem; border:0; border-radius:999px; background:#fff; color:#111827; font:inherit; font-weight:900; cursor:pointer; }
+.xr-card details { background:rgba(0,0,0,.22); } .xr-card summary { padding:.55rem .9rem; font-size:.78rem; font-weight:800; cursor:pointer; }
+.xr-card ul { list-style:none; margin:0; padding:0 .7rem .7rem; } .xr-card li { display:flex; gap:.6rem; align-items:center; padding:.4rem 0; border-top:1px solid rgba(255,255,255,.12); }
+.xr-card li .xr-th { flex:0 0 64px; height:48px; background:rgba(255,255,255,.12); border-radius:10px; } .xr-card li b { display:block; font-size:.82rem; } .xr-card li span { font-size:.7rem; opacity:.85; line-height:1.5; }
+.xr-level { display:flex; gap:4px; padding:4px; margin-bottom:.8rem; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:14px; }
+.xr-level button { flex:1; min-height:40px; border:0; border-radius:10px; background:transparent; color:var(--text-secondary); font:inherit; font-weight:800; cursor:pointer; } .xr-level button.on { background:linear-gradient(135deg,#dc2626,#f97316); color:#fff; }
+.xr-note { display:flex; gap:.5rem; align-items:flex-start; padding:.7rem .8rem; border-radius:12px; background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.35); font-size:.76rem; line-height:1.6; color:var(--text-secondary); } .xr-note .ico { flex:0 0 1.1rem; width:1.1rem; height:1.1rem; color:#f59e0b; margin-top:.15rem; }
+/* المشغّل */
+.xr { position:fixed; inset:0; z-index:10000; display:flex; flex-direction:column; align-items:center; gap:.55rem; padding:calc(env(safe-area-inset-top,0px) + .6rem) 1rem calc(env(safe-area-inset-bottom,0px) + .8rem); overflow-y:auto; background:var(--bg-primary,#0f1424); color:var(--text-primary,#fff); --xr-acc:#14b8a6; text-align:center; }
+.xr[hidden] { display:none; } .xr.t-e { --xr-acc:#ef4444; } .xr.k-rest, .xr.k-prep { --xr-acc:#3b82f6; }
+body.xr-open #coachFab { display:none !important; } body.xr-open { overflow:hidden; }
+.xr-top { width:100%; display:flex; align-items:center; gap:.6rem; } .xr-ttl { flex:1; font-weight:900; font-size:.95rem; } .xr-cnt { font-size:.8rem; color:var(--text-secondary); min-width:3rem; }
+.xr-x { width:44px; height:44px; border-radius:50%; border:1px solid var(--border-color); background:var(--bg-secondary); color:inherit; display:grid; place-items:center; cursor:pointer; }
+.xr-stage { position:relative; width:100%; max-width:380px; aspect-ratio:100/82; border-radius:20px; background:color-mix(in srgb,var(--xr-acc) 14%,var(--bg-secondary)); border:1px solid color-mix(in srgb,var(--xr-acc) 40%,transparent); }
+.xr-stage svg { width:100%; height:100%; color:var(--text-primary,#fff); } .xr-stage line { stroke:currentColor; } .xr-stage circle { fill:currentColor; } .xr-stage line.g { stroke:var(--border-color); stroke-width:2; }
+.xr.k-rest .xr-stage svg, .xr.k-prep .xr-stage svg { opacity:.6; } .xr.paused .xr-stage svg { opacity:.4; }
+.xr-media, .xr-vid { position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:contain; background:#fff; border-radius:20px; }
+.xr-media[hidden], .xr-vid[hidden] { display:none; } .xr-stage.has-media svg { visibility:hidden; } .xr.k-rest .xr-media, .xr.k-prep .xr-media, .xr.k-rest .xr-vid, .xr.k-prep .xr-vid { opacity:.75; }
+.xr-li-img { flex:0 0 64px; width:64px; height:48px; object-fit:cover; background:#fff; border-radius:10px; }
+.xr-badge { z-index:2; position:absolute; top:.6rem; inset-inline-start:.6rem; padding:.25rem .8rem; border-radius:999px; background:var(--xr-acc); color:#fff; font-weight:900; font-size:.82rem; }
+.xr-name { font-size:1.25rem; font-weight:900; } .xr-desc { max-width:360px; font-size:.82rem; line-height:1.7; color:var(--text-secondary); } .xr-alt { max-width:360px; font-size:.76rem; color:#f59e0b; } .xr-alt:empty { display:none; }
+.xr-ring { position:relative; width:128px; height:128px; flex:0 0 auto; } .xr-ring svg { width:100%; height:100%; transform:rotate(-90deg); } .xr-ring circle { fill:none; stroke-width:7; }
+.xr-ring .bg { stroke:var(--border-color); } .xr-ring .fg { stroke:var(--xr-acc); stroke-linecap:round; stroke-dasharray:276.46; stroke-dashoffset:0; transition:stroke-dashoffset .1s linear; }
+.xr-sec { position:absolute; inset:0; display:grid; place-items:center; font-size:2.5rem; font-weight:900; font-variant-numeric:tabular-nums; }
+.xr-bar { width:100%; max-width:380px; height:6px; border-radius:3px; background:var(--border-color); overflow:hidden; } .xr-bar i { display:block; height:100%; width:0; background:var(--xr-acc); }
+.xr-ctl { display:flex; gap:1rem; align-items:center; } .xr-ctl button { width:56px; height:56px; border-radius:50%; border:1px solid var(--border-color); background:var(--bg-secondary); color:inherit; display:grid; place-items:center; cursor:pointer; } .xr-ctl .xr-pp { width:68px; height:68px; background:var(--xr-acc); color:#fff; border:0; }
+.xr-done { display:none; width:100%; } .xr.done > :not(.xr-top):not(.xr-done) { display:none; } .xr.done .xr-done { display:flex; flex-direction:column; align-items:center; gap:.8rem; padding-top:2rem; } .xr-trophy .ico { width:4rem; height:4rem; color:#f59e0b; } .xr-done h2 { margin:0; } .xr-done p { margin:0; max-width:300px; line-height:1.7; color:var(--text-secondary); }
 /* تقدمي للمستخدم الجديد: رسالة ترحيبية بدل الأصفار */
 #dashboardScreen .progress-welcome { display: none; text-align: center; padding: 1.2rem 1rem; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-secondary); }
 #dashboardScreen.is-new .progress-welcome { display: block; }
@@ -18740,5 +18804,268 @@ body.floor-mode .mv-pills { font-size:.7em; }
 .progress-welcome p { margin: 0 0 .8rem; font-size: .8rem; color: var(--text-secondary); line-height: 1.6; }
 .progress-welcome .pw-btn { min-height: 44px; padding: 0 1.4rem; border: 0; border-radius: 999px; font-family: inherit; font-weight: 800; color: #fff; background: var(--gradient-primary); cursor: pointer; }
 </style>
+<script>
+/* ===== إطالة + انفجاري: رسوم متحركة (هيكل عظمي بالزوايا) + مشغّل صوتي ===== */
+(function () {
+'use strict';
+var R = Math.PI / 180, LEN = { t: 34, ua: 21, la: 19, th: 28, sh: 27 }, Z = [0, 0, 0, 0];
+function P(t, h, a, l, air) { return { t: t, h: h || 0, a: a, l: l, air: air || 0 }; }
+var S0 = P(0, 0, Z, Z);
+var X = {
+ neck:{n:'إطالة الرقبة',d:'قف باستقامة وضع يدك خلف رأسك، واسحب رأسك برفق نحو صدرك مع إبقاء الكتفين مرتخيين.',t:'تنفّس ببطء ولا تشدّ بقوة.',sd:1,k:[S0,P(4,40,[150,-50,0,0],Z)]},
+ tri:{n:'إطالة الترايسبس والكتف',d:'ارفع ذراعاً فوق رأسك وثنِ المرفق خلف رأسك، وأمسك المرفق بيدك الأخرى واسحبه برفق.',t:'لا تقوّس أسفل ظهرك.',sd:1,k:[S0,P(0,0,[175,-20,150,-113],Z)]},
+ chest:{n:'فتح الصدر',d:'اشبك يديك خلف ظهرك وافرد ذراعيك وارفعهما قليلاً مع إخراج الصدر للأمام.',t:'ممتازة بعد الملاكمة لتعديل وضعية الكتفين.',k:[S0,P(-6,-8,[-35,-30,-40,-35],Z)]},
+ fold:{n:'الانحناء للأمام (أوتار الركبة)',d:'من وقوف انحنِ من الوركين وأرخِ رأسك وذراعيك نحو الأرض، مع ثني خفيف للركبتين.',t:'دع وزن رأسك يسحبك للأسفل.',k:[S0,P(125,10,[0,5,0,5],Z)]},
+ quad:{n:'إطالة الفخذ الأمامي',d:'قف على رجل وأمسك كاحل الأخرى واسحب الكعب نحو المقعدة مع إبقاء الركبتين متقاربتين.',t:'استند إلى جدار إن اختل توازنك.',sd:1,k:[S0,P(0,0,[-15,-35,0,0],[-10,-160,0,0])]},
+ hip:{n:'إطالة الوركين (الطعنة)',d:'اخطُ خطوة واسعة للأمام وانزل بالركبة الخلفية نحو الأرض، وارفع ذراعيك وادفع الحوض للأمام.',t:'اجعل الجذع مستقيماً.',sd:1,k:[S0,P(0,0,[175,175,175,175],[80,0,-25,-95])]},
+ catcow:{n:'القطة والبقرة',d:'على أربع: قوّس ظهرك للأعلى وأنزل رأسك، ثم أنزل البطن وارفع رأسك. بدّل مع كل نفَس.',t:'تنفّس مع كل حركة.',nh:1,hg:1,st:2400,k:[P(55,38,Z,[0,-90,0,-90]),P(75,-28,Z,[0,-90,0,-90])]},
+ child:{n:'وضعية الطفل',d:'اجلس على كعبيك وامدد ذراعيك للأمام وأنزل صدرك نحو الأرض، وأرخِ الظهر والكتفين.',t:'مناسبة لختام الجلسة.',k:[P(66,0,Z,[0,-90,0,-90]),P(80,12,[75,75,75,75],[85,-85,85,-85])]},
+ wrist:{n:'إطالة المعصم والساعد',d:'مدّ ذراعاً أمامك وكفّك للأعلى، واسحب أصابعك برفق للخلف بيدك الأخرى.',t:'مهمة للملاكمين بعد لفّ القفازات.',sd:1,k:[P(0,0,[90,92,0,0],Z),P(0,0,[90,92,60,140],Z)]},
+ hk:{n:'ركبة عالية',d:'اركض في مكانك وارفع ركبتيك إلى مستوى الحوض مع تحريك الذراعين بقوة.',alt:'امشِ في مكانك مع رفع الركبتين دون قفز.',st:230,k:[P(5,0,[-35,-35,40,70],[85,0,0,0],6),P(5,0,[40,70,-35,-35],[0,0,85,0],6)]},
+ wsq:{n:'قرفصاء هوائية',d:'انزل ببطء كأنك تجلس على كرسي ثم قف.',st:900,k:[S0,P(30,0,[80,80,80,80],[78,-52,78,-52])]},
+ swing:{n:'تأرجح الذراعين',d:'حرّك ذراعيك للأمام والخلف بسعة كاملة لتحرير الكتفين.',st:600,k:[P(0,0,[80,80,80,80],Z),P(0,0,[-70,-70,-70,-70],Z)]},
+ sqj:{n:'قفز القرفصاء',d:'انزل إلى قرفصاء ثم اقفز عالياً بأقصى قوة وارفع ذراعيك، واهبط بنعومة على أطراف قدميك.',alt:'قرفصاء سريعة ثم ارتفع على أطراف أصابعك دون قفز.',st:650,k:[P(30,0,[-45,-45,-45,-45],[78,-52,78,-52]),P(0,-5,[160,165,160,165],[-8,6,-8,6],22)]},
+ burp:{n:'بيربي',d:'انزل بيديك إلى الأرض، ارمِ قدميك للخلف إلى وضع الضغط، ثم عُد وانهض واقفز.',alt:'بلا ضغط وبلا قفز: ضع يديك على الأرض وامشِ بقدميك للخلف ثم للأمام وقف.',hg:1,st:480,k:[P(0,-5,[160,165,160,165],Z,20),P(60,0,Z,[80,-55,80,-55]),P(62,0,Z,[-62,-62,-62,-62]),P(60,0,Z,[80,-55,80,-55])]},
+ mtn:{n:'تسلّق الجبل',d:'من وضع الضغط اسحب ركبتيك نحو صدرك بالتبادل وبسرعة مع ثبات الجذع.',alt:'بإيقاع أبطأ: ركبة واحدة كل ثانيتين.',hg:1,st:230,k:[P(62,0,Z,[-62,-62,70,-75]),P(62,0,Z,[70,-75,-62,-62])]},
+ cpu:{n:'ضغط بتصفيق',d:'انزل في ضغط ثم ادفع بقوة لترتفع يداك عن الأرض وصفّق إن استطعت.',alt:'ضغط عادي على الركبتين بدفع سريع.',hg:1,st:520,k:[P(70,0,[-40,45,-40,45],[-70,-70,-70,-70]),P(62,0,Z,[-62,-62,-62,-62],12)]},
+ tuck:{n:'قفز التكوّر',d:'اقفز عالياً واسحب ركبتيك نحو صدرك في الهواء ثم اهبط بنعومة.',alt:'ارفع ركبة واحدة بالتبادل مع الارتفاع على أطراف القدمين.',st:650,k:[P(0,0,[170,175,170,175],Z),P(10,5,[20,40,20,40],[100,-20,100,-20],30)]},
+ jl:{n:'طعنة بالقفز',d:'من وضع الطعنة اقفز وبدّل رجليك في الهواء واهبط في طعنة معاكسة.',alt:'طعنة بالمشي بالتبادل بدون قفز.',st:420,k:[P(5,0,[40,60,-40,-60],[80,0,-25,-95]),P(0,0,Z,[20,-10,-20,10],22),P(5,0,[-40,-60,40,60],[-25,-95,80,0]),P(0,0,Z,[-20,10,20,-10],22)]},
+ pun:{n:'لكمات انفجارية',d:'من وضع الملاكم وجّه لكمات مستقيمة بسرعة وبأقصى قوة مع دوران الورك والكتف.',alt:'بنفس الحركة بقوة متوسطة وإيقاع أبطأ.',st:170,k:[P(8,0,[20,170,10,160],[25,0,-20,-5]),P(18,0,[90,92,15,165],[25,0,-25,-10]),P(8,0,[20,170,10,160],[25,0,-20,-5]),P(18,0,[15,165,90,92],[25,0,-25,-10])]}
+};
+var HOLD = { neck:1, tri:1, chest:1, fold:1, quad:1, hip:1, child:1, wrist:1 };
+Object.keys(X).forEach(function (id) {
+  var e = X[id], fr = e.k, xs = [1e9, -1e9];
+  e.fr = (HOLD[id] && !e.nh) ? [fr[0], fr[1], fr[1]] : fr;
+  fr.forEach(function (p) { var q = fk(p); for (var k in q) { var v = q[k].x; if (v - 9 < xs[0]) xs[0] = v - 9; if (v + 9 > xs[1]) xs[1] = v + 9; } });
+  e.cx = (xs[0] + xs[1]) / 2; e.st = e.st || 2600;
+});
+function fk(p) {
+  function sg(s, a, l) { return { x: s.x + l * Math.sin(a * R), y: s.y + l * Math.cos(a * R) }; }
+  var hip = { x: 0, y: 0 }, tr = p.t * R, neck = { x: LEN.t * Math.sin(tr), y: -LEN.t * Math.cos(tr) }, hr = (p.t + p.h) * R;
+  var head = { x: neck.x + 10 * Math.sin(hr), y: neck.y - 10 * Math.cos(hr) };
+  var e1 = sg(neck, p.a[0], LEN.ua), h1 = sg(e1, p.a[1], LEN.la), e2 = sg(neck, p.a[2], LEN.ua), h2 = sg(e2, p.a[3], LEN.la);
+  var k1 = sg(hip, p.l[0], LEN.th), f1 = sg(k1, p.l[1], LEN.sh), k2 = sg(hip, p.l[2], LEN.th), f2 = sg(k2, p.l[3], LEN.sh);
+  return { hip: hip, neck: neck, head: head, e1: e1, h1: h1, e2: e2, h2: h2, k1: k1, f1: f1, k2: k2, f2: f2 };
+}
+function layout(p, e, mir) {
+  var q = fk(p), ys = [q.f1.y, q.f2.y, q.k1.y, q.k2.y]; if (e.hg) ys.push(q.h1.y, q.h2.y);
+  var oy = 128 - p.air - Math.max.apply(null, ys), s = mir ? -1 : 1;
+  function T(o) { return { x: 100 + s * (o.x - e.cx), y: o.y + oy }; }
+  var n = T(q.neck), h = T(q.hip), E1 = T(q.e1), H1 = T(q.h1), E2 = T(q.e2), H2 = T(q.h2), K1 = T(q.k1), F1 = T(q.f1), K2 = T(q.k2), F2 = T(q.f2);
+  return { seg: [[n, E2, 6, .5], [E2, H2, 6, .5], [h, K2, 7, .5], [K2, F2, 7, .5], [h, n, 10, 1], [h, K1, 8, 1], [K1, F1, 8, 1], [n, E1, 7, 1], [E1, H1, 7, 1]], head: T(q.head) };
+}
+function thumb(id, i) {
+  var e = X[id], L = layout(e.k[Math.min(i, e.k.length - 1)], e, false), s = '<svg viewBox="0 -24 200 164" class="xr-th" aria-hidden="true"><line x1="20" x2="180" y1="131" y2="131" class="g"/>';
+  L.seg.forEach(function (g) { s += '<line x1="' + g[0].x.toFixed(1) + '" y1="' + g[0].y.toFixed(1) + '" x2="' + g[1].x.toFixed(1) + '" y2="' + g[1].y.toFixed(1) + '" stroke-width="' + g[2] + '" opacity="' + g[3] + '"/>'; });
+  return s + '<circle cx="' + L.head.x.toFixed(1) + '" cy="' + L.head.y.toFixed(1) + '" r="9"/></svg>';
+}
+function lerp(a, b, f) {
+  function m(x, y) { return x + (y - x) * f; }
+  return { t: m(a.t, b.t), h: m(a.h, b.h), air: m(a.air, b.air), a: a.a.map(function (v, i) { return m(v, b.a[i]); }), l: a.l.map(function (v, i) { return m(v, b.l[i]); }) };
+}
+/* ---- ربط التمارين بخدمة الوسائط الموجودة (GIF حقيقية + كاش) — المفتاح xr_<id> ---- */
+var MQ = {
+ neck:[['side neck stretch','neck side stretch','neck stretch'],'stretching'], tri:[['triceps stretch','overhead triceps stretch','triceps stretch behind head'],'stretching'],
+ chest:[['chest stretch','chest and front of shoulder stretch','doorway chest stretch'],'stretching'], fold:[['standing hamstring stretch','standing toe touches','forward fold','hamstring stretch'],'stretching'],
+ quad:[['standing quad stretch','quadriceps stretch','standing quadriceps stretch'],'stretching'], hip:[['hip flexor stretch','kneeling hip flexor stretch','lunge hip flexor stretch'],'stretching'],
+ catcow:[['cat cow','cat stretch','cat-camel stretch'],'stretching'], child:[["child's pose",'childs pose','kneeling lat stretch'],'stretching'],
+ wrist:[['wrist flexor stretch','wrist stretch','kneeling forearm stretch','wrist circles'],'stretching'], hk:[['high knees','high knee skips','running in place','jog in place'],'cardio'],
+ wsq:[['bodyweight squat','air squat','squat'],'legs'], swing:[['arm circles','arm swing','arm swings'],'mobility'], sqj:[['jump squat','squat jump','jump squats'],'legs'],
+ burp:[['burpee','burpees'],'cardio'], mtn:[['mountain climber','mountain climbers'],'core'], cpu:[['clap push-up','clapping push-up','plyo push-up','push-up'],'chest'],
+ tuck:[['tuck jump','knee tuck jump','jump tuck'],'cardio'], jl:[['jumping lunge','lunge jump','split jump','alternating jump lunge'],'legs'], pun:[['shadow boxing','jab cross','boxing punches','punch'],'boxing']
+};
+try { Object.keys(MQ).forEach(function (id) { if (typeof EXERCISE_MEDIA !== 'undefined' && !EXERCISE_MEDIA['xr_' + id]) EXERCISE_MEDIA['xr_' + id] = { pinnedIds: [], queries: MQ[id][0], category: MQ[id][1], fallbackType: 'svg', arabicName: X[id].n, englishName: MQ[id][0][0] }; }); } catch (e) {}
+/* ---- بيانات الجلسات ---- */
+var LV = [{ w: .75, r: 1.5, n: 'مبتدئ' }, { w: 1, r: 1, n: 'متوسط' }, { w: 1.25, r: .75, n: 'متقدم' }];
+var SS = [
+ { h: 'جلسات سريعة', i: [
+  { id: 'q3', n: 'إطالة سريعة', g: 'linear-gradient(135deg,#0f766e,#2dd4bf)', l: [['neck', 30], ['tri', 40], ['chest', 30], ['fold', 40], ['child', 40]] }] },
+ { h: 'بعد التمرين', i: [
+  { id: 'box', n: 'بعد الكيس: كتفان وساعدان', g: 'linear-gradient(135deg,#b91c1c,#f97316)', l: [['wrist', 40], ['tri', 50], ['chest', 40], ['neck', 40], ['catcow', 40], ['child', 40]] },
+  { id: 'str', n: 'بعد القوة والجري', g: 'linear-gradient(135deg,#1d4ed8,#38bdf8)', l: [['quad', 60], ['hip', 70], ['fold', 50], ['child', 40]] }] },
+ { h: 'حسب المنطقة', i: [
+  { id: 'nk', n: 'الرقبة والكتفان', g: 'linear-gradient(135deg,#7c3aed,#c084fc)', l: [['neck', 50], ['tri', 60], ['chest', 40], ['wrist', 40]] },
+  { id: 'bk', n: 'الظهر', g: 'linear-gradient(135deg,#047857,#34d399)', l: [['catcow', 60], ['child', 60], ['fold', 50], ['hip', 50]] },
+  { id: 'lg', n: 'الوركان والساقان', g: 'linear-gradient(135deg,#a16207,#facc15)', l: [['hip', 80], ['quad', 60], ['fold', 60], ['child', 40]] }] },
+ { h: 'روتين', i: [
+  { id: 'am', n: 'إطالة الصباح', g: 'linear-gradient(135deg,#ea580c,#fbbf24)', l: [['catcow', 40], ['chest', 30], ['tri', 40], ['fold', 40], ['hip', 50]] },
+  { id: 'pm', n: 'قبل النوم', g: 'linear-gradient(135deg,#312e81,#6366f1)', l: [['neck', 50], ['child', 60], ['fold', 60], ['catcow', 50], ['hip', 60]] }] }
+];
+var ES = [
+ { id: 'tab', n: 'تاباتا انفجاري', g: 'linear-gradient(135deg,#991b1b,#ef4444)', w: 20, r: 10, ex: ['sqj', 'hk', 'mtn', 'tuck', 'sqj', 'hk', 'mtn', 'tuck'], d: '8 جولات: 20 ثانية عمل و10 راحة.' },
+ { id: 'emm', n: 'EMOM: كل دقيقة', g: 'linear-gradient(135deg,#c2410c,#fb923c)', w: 40, r: 20, ex: ['burp', 'sqj', 'mtn', 'cpu', 'jl', 'hk', 'tuck', 'sqj'], d: 'كل دقيقة: 40 عمل و20 راحة.' },
+ { id: 'cir', n: 'دوائر القوة', g: 'linear-gradient(135deg,#7f1d1d,#f43f5e)', w: 40, r: 20, ex: ['burp', 'sqj', 'cpu', 'mtn', 'jl', 'tuck', 'burp', 'sqj', 'cpu', 'mtn', 'jl', 'tuck'], d: '12 محطة بترتيب ثابت.' },
+ { id: 'pun', n: 'لكمات انفجارية', g: 'linear-gradient(135deg,#1e3a8a,#3b82f6)', w: 30, r: 15, ex: ['pun', 'sqj', 'pun', 'hk', 'pun', 'jl', 'pun', 'burp'], d: 'لكمات سريعة تتخللها حركات الساقين.' }
+];
+function find(id) { var r = null; SS.forEach(function (s) { s.i.forEach(function (x) { if (x.id === id) r = x; }); }); return r || ES.filter(function (x) { return x.id === id; })[0]; }
+function lvl() { var v = parseInt(safeGet('xrLevel', '1'), 10); return v >= 0 && v <= 2 ? v : 1; }
+function seqS(s) {
+  var o = []; s.l.forEach(function (it, ix) {
+    var id = it[0], sec = it[1], e = X[id]; o.push({ k: 'prep', ex: id, sec: ix ? 4 : 5 });
+    if (e.sd) { o.push({ k: 'hold', ex: id, sec: Math.round(sec / 2), side: 0 }, { k: 'hold', ex: id, sec: Math.round(sec / 2), side: 1 }); } else o.push({ k: 'hold', ex: id, sec: sec });
+  }); return o;
+}
+function seqE(s, lv) {
+  var L = LV[lv], w = Math.round(s.w * L.w / 5) * 5, r = Math.max(10, Math.round(s.r * L.r / 5) * 5);
+  var o = [{ k: 'warm', ex: 'hk', sec: 20 }, { k: 'warm', ex: 'wsq', sec: 20 }, { k: 'warm', ex: 'swing', sec: 20 }];
+  s.ex.forEach(function (id, i) { if (!i) o.push({ k: 'prep', ex: id, sec: 5 }); o.push({ k: 'work', ex: id, sec: w }); if (i < s.ex.length - 1) o.push({ k: 'rest', ex: s.ex[i + 1], sec: r }); });
+  return o;
+}
+function total(q) { return q.reduce(function (a, b) { return a + b.sec; }, 0); }
+function mins(sec) { return Math.max(1, Math.round(sec / 60)); }
+function ico(n) { return '<svg class="ico"><use href="#ico-' + n + '"/></svg>'; }
+function card(s, type, lv) {
+  var q = type === 's' ? seqS(s) : seqE(s, lv), ids = type === 's' ? s.l.map(function (z) { return z[0]; }) : s.ex.filter(function (v, i, a) { return a.indexOf(v) === i; });
+  var li = ids.map(function (id) { var e = X[id]; return '<li data-ex="' + id + '">' + thumb(id, 1) + '<div><b>' + e.n + '</b><span>' + e.d + '</span></div></li>'; }).join('');
+  return '<div class="xr-card" style="--g:' + s.g + '"><div class="xr-cm"><div class="xr-cf">' + thumb(ids[0], 1) + '</div><div class="xr-ci"><h3>' + s.n + '</h3><div class="xr-meta"><span>' + ico('clock') + mins(total(q)) + ' دقائق</span><span>' + ico('zap') + ids.length + ' تمارين</span></div>' + (s.d ? '<p>' + s.d + '</p>' : '') + '</div><button class="xr-go" onclick="xrStart(\'' + type + '\',\'' + s.id + '\')">ابدأ</button></div><details><summary>عرض التمارين</summary><ul>' + li + '</ul></details></div>';
+}
+var listRes = [];
+function relList() { listRes.forEach(function (r) { try { ExerciseMediaService.release(r); } catch (e) {} }); listRes = []; }
+function wireLists(el) {
+  el.querySelectorAll('details').forEach(function (d) {
+    d.addEventListener('toggle', async function () {
+      if (!d.open || d._done) return; d._done = true;
+      var items = d.querySelectorAll('li[data-ex]');
+      for (var i = 0; i < items.length; i++) {
+        var li = items[i], key = 'xr_' + li.getAttribute('data-ex');
+        try {
+          var r = await ExerciseMediaService.get(key);
+          if (r && r.type === 'image' && r.blobUrl) { listRes.push(r); var im = new Image(); im.className = 'xr-li-img'; im.alt = ''; im.src = r.blobUrl; var sv = li.querySelector('.xr-th'); if (sv) sv.replaceWith(im); }
+          else if (r) ExerciseMediaService.release(r);
+        } catch (e) {}
+      }
+    });
+  });
+}
+window.renderStretch = function () {
+  var el = document.getElementById('stretchList'); if (!el) return; relList();
+  el.innerHTML = SS.map(function (sec) { return '<div class="xr-h">' + sec.h + '</div>' + sec.i.map(function (s) { return card(s, 's', 1); }).join(''); }).join(''); wireLists(el);
+};
+window.renderExplosive = function () {
+  var el = document.getElementById('explosiveList'); if (!el) return; relList(); var lv = lvl();
+  el.innerHTML = '<div class="xr-level" role="group">' + LV.map(function (l, i) { return '<button type="button" class="' + (i === lv ? 'on' : '') + '" onclick="xrLevel(' + i + ')">' + l.n + '</button>'; }).join('') + '</div>' +
+   '<div class="xr-note">' + ico('alert-triangle') + '<span>كل جلسة تبدأ بإحماء 60 ثانية. في مستوى «مبتدئ» تظهر لكل تمرين بديل بلا قفز، وتقصر فترات العمل وتطول الراحة.</span></div>' +
+   '<div class="xr-h">جلسات انفجارية</div>' + ES.map(function (s) { return card(s, 'e', lv); }).join(''); wireLists(el);
+};
+window.xrLevel = function (i) { safeSet('xrLevel', String(i)); renderExplosive(); try { haptic('light'); } catch (e) {} };
+/* ---- المشغّل ---- */
+var ov = null, S = null, raf = 0, cur = null, wl = null;
+function build() {
+  if (ov) return; ov = document.createElement('div'); ov.id = 'xr'; ov.className = 'xr'; ov.hidden = true;
+  var segs = ''; for (var i = 0; i < 9; i++) segs += '<line stroke-linecap="round"/>';
+  ov.innerHTML = '<div class="xr-top"><button type="button" class="xr-x" aria-label="إغلاق">' + ico('x') + '</button><div class="xr-ttl"></div><div class="xr-cnt"></div></div>' +
+   '<div class="xr-stage"><svg viewBox="0 -24 200 164" id="xrSvg"><line x1="20" x2="180" y1="131" y2="131" class="g"/>' + segs + '<circle r="9"/></svg><img class="xr-media" alt="" hidden><video class="xr-vid" muted loop playsinline hidden></video><span class="xr-badge"></span></div>' +
+   '<div class="xr-name"></div><div class="xr-desc"></div><div class="xr-alt"></div>' +
+   '<div class="xr-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" class="bg"/><circle cx="50" cy="50" r="44" class="fg"/></svg><div class="xr-sec">0</div></div>' +
+   '<div class="xr-bar"><i></i></div>' +
+   '<div class="xr-ctl"><button type="button" class="xr-prev" aria-label="السابق">' + ico('chevron-left') + '</button><button type="button" class="xr-pp" aria-label="إيقاف مؤقت">' + ico('pause') + '</button><button type="button" class="xr-skip" aria-label="التالي">' + ico('chevron-right') + '</button></div>' +
+   '<div class="xr-done"></div>';
+  document.body.appendChild(ov);
+  ov.querySelector('.xr-x').onclick = function () { xrClose(); };
+  ov.querySelector('.xr-pp').onclick = pause; ov.querySelector('.xr-skip').onclick = function () { go(S.i + 1, true); }; ov.querySelector('.xr-prev').onclick = function () { go(Math.max(0, S.i - 1), true); };
+}
+function animate(id, mir) {
+  var e = X[id], svg = document.getElementById('xrSvg'), lines = svg.querySelectorAll('line:not(.g)'), head = svg.querySelector('circle'), t0 = performance.now(), slow = (S.type === 'e' && S.lv === 0 && S.cat !== 'warm') ? 1.35 : 1;
+  cancelAnimationFrame(raf);
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(p) {
+    var L = layout(p, e, mir);
+    L.seg.forEach(function (g, i) { var ln = lines[i]; ln.setAttribute('x1', g[0].x); ln.setAttribute('y1', g[0].y); ln.setAttribute('x2', g[1].x); ln.setAttribute('y2', g[1].y); ln.setAttribute('stroke-width', g[2]); ln.setAttribute('opacity', g[3]); });
+    head.setAttribute('cx', L.head.x); head.setAttribute('cy', L.head.y);
+  }
+  function loop(now) {
+    var n = e.fr.length, pos = (now - t0) / (e.st * slow), i = Math.floor(pos) % n, f = pos - Math.floor(pos); f = f * f * (3 - 2 * f);
+    draw(lerp(e.fr[i], e.fr[(i + 1) % n], f)); raf = requestAnimationFrame(loop);
+  }
+  if (still) draw(e.fr[e.fr.length > 1 ? 1 : 0]); else raf = requestAnimationFrame(loop);
+}
+var mtok = 0, mres = null, mtimer = 0, mex = null;
+function clearMedia() {
+  clearInterval(mtimer); mtimer = 0; mex = null;
+  if (mres) { try { ExerciseMediaService.release(mres); } catch (e) {} mres = null; }
+  if (!ov) return; var im = ov.querySelector('.xr-media'), v = ov.querySelector('.xr-vid');
+  im.hidden = true; im.removeAttribute('src'); v.hidden = true; try { v.pause(); } catch (e) {} v.removeAttribute('src');
+  ov.querySelector('.xr-stage').classList.remove('has-media');
+}
+/* الصورة الحقيقية من خدمة الوسائط نفسها؛ الرسم المتحرك يبقى احتياطاً إن لم تتوفر (دون إنترنت ولا كاش) */
+function showMedia(ex, mir) {
+  var im = ov.querySelector('.xr-media'), v = ov.querySelector('.xr-vid'), stage = ov.querySelector('.xr-stage');
+  if (mex === ex && mres) { im.style.transform = v.style.transform = mir ? 'scaleX(-1)' : ''; return; }
+  clearMedia(); if (typeof ExerciseMediaService === 'undefined') return;
+  var tk = ++mtok, tf = mir ? 'scaleX(-1)' : '';
+  ExerciseMediaService.get('xr_' + ex).then(function (res) {
+    if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; }
+    if (res && res.type === 'image' && res.blobUrl) {
+      var pre = new Image(); pre.onload = function () {
+        if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; }
+        mres = res; mex = ex; im.style.transform = tf; im.src = res.blobUrl; im.hidden = false; stage.classList.add('has-media');
+        if (res.blobUrl2) { var f = 0; mtimer = setInterval(function () { f ^= 1; im.src = f ? res.blobUrl2 : res.blobUrl; }, 900); }
+      };
+      pre.onerror = function () { ExerciseMediaService.release(res); }; pre.src = res.blobUrl;
+    } else if (res && res.type === 'video' && res.url) {
+      v.onloadeddata = function () { if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; } mres = res; mex = ex; v.style.transform = tf; v.hidden = false; stage.classList.add('has-media'); try { v.play(); } catch (e) {} };
+      v.onerror = function () { ExerciseMediaService.release(res); }; v.src = res.url;
+    } else if (res) ExerciseMediaService.release(res);
+  }).catch(function () {});
+}
+function say(t, r) { try { cvCancel(); cvSpeakWait(t, { rate: r || 1.05 }); } catch (e) {} }
+var HYPE = ['انفجر!', 'بأقصى قوة!', 'هيا!', 'أسرع!'];
+function go(i, manual) {
+  if (!S) return; if (i >= S.q.length) return finish();
+  S.i = i; var st = S.q[i], e = X[st.ex], q = S.q, now = Date.now(); S.cat = st.k;
+  S.end = now + st.sec * 1000; S.dur = st.sec * 1000; S.half = false; S.lastSec = -1; S.t0 = now; if (S.paused) { S.paused = false; setPP(); }
+  var lab = { warm: 'إحماء', work: 'اعمل!', rest: 'راحة', hold: st.side ? 'بدّل الجهة' : 'ثبّت', prep: 'استعد' }[st.k];
+  ov.className = 'xr show k-' + st.k + ' t-' + S.type;
+  ov.querySelector('.xr-badge').textContent = lab;
+  ov.querySelector('.xr-name').textContent = e.n;
+  ov.querySelector('.xr-desc').textContent = e.d + (e.t && S.type === 's' ? ' ' + e.t : '');
+  var alt = ov.querySelector('.xr-alt'); alt.textContent = (S.type === 'e' && S.lv === 0 && e.alt && st.k !== 'warm') ? 'بديل بلا قفز: ' + e.alt : '';
+  var main = q.filter(function (z) { return z.k === 'hold' || z.k === 'work' || z.k === 'warm'; }), idx = main.indexOf(st);
+  ov.querySelector('.xr-cnt').textContent = idx >= 0 ? (idx + 1) + ' من ' + main.length : '';
+  animate(st.ex, !!st.side); showMedia(st.ex, !!st.side);
+  var done = q.slice(0, i).reduce(function (a, b) { return a + b.sec; }, 0); S.base = done * 1000;
+  try { haptic('light'); } catch (er) {}
+  if (st.k === 'work') { try { playBoxingBell(); } catch (er) {} say(HYPE[Math.floor(Math.random() * HYPE.length)], 1.15); }
+  else if (st.k === 'rest') { try { playRoundEndBell(); } catch (er) {} say('راحة. التالي، ' + e.n); }
+  else if (st.k === 'prep') say('استعد. ' + e.n); else if (st.k === 'warm') say('إحماء. ' + e.n);
+  else if (st.k === 'hold') say(st.side ? 'بدّل الجهة' : e.n + '. ثبّت');
+  S.tm = S.tm || setInterval(tick, 100); tick();
+}
+function tick() {
+  if (!S || S.paused) return; var rem = S.end - Date.now(), st = S.q[S.i], sec = Math.max(0, Math.ceil(rem / 1000));
+  if (rem <= 0) return go(S.i + 1);
+  ov.querySelector('.xr-sec').textContent = sec;
+  ov.querySelector('.xr-ring .fg').style.strokeDashoffset = (276.46 * (1 - rem / S.dur)).toFixed(1);
+  var tot = S.tot * 1000, el = S.base + (S.dur - rem); ov.querySelector('.xr-bar i').style.width = Math.min(100, el / tot * 100) + '%';
+  if (sec !== S.lastSec) { S.lastSec = sec; if (sec <= 3 && sec > 0) { try { playTick(); } catch (e) {} } }
+  if (!S.half && rem < S.dur / 2 && st.sec >= 30 && st.k !== 'prep') { S.half = true; if (st.k === 'work') say('استمر! لا تتوقف', 1.15); else if (st.k === 'hold' && !st.side && !X[st.ex].sd) say('تنفّس ببطء'); }
+}
+function setPP() { var b = ov.querySelector('.xr-pp'); b.innerHTML = ico(S.paused ? 'play' : 'pause'); ov.classList.toggle('paused', !!S.paused); }
+function pause() { if (!S) return; if (!S.paused) { S.rem = S.end - Date.now(); S.paused = true; try { cvCancel(); } catch (e) {} } else { S.end = Date.now() + S.rem; S.paused = false; } setPP(); }
+function finish() {
+  var mn = Math.max(1, Math.round((Date.now() - S.start) / 60000)), nm = S.name; clearInterval(S.tm); S.tm = 0; cancelAnimationFrame(raf); clearMedia();
+  try { addWorkoutToHistory(S.type === 's' ? 'stretch' : 'explosive', nm, mn); } catch (e) {}
+  ov.className = 'xr show done t-' + S.type;
+  ov.querySelector('.xr-done').innerHTML = '<div class="xr-trophy">' + ico('trophy') + '</div><h2>أحسنت!</h2><p>أنهيت «' + nm + '» في ' + mn + ' د، وتم حفظ الجلسة في تقدمي.</p><button type="button" class="xr-go" onclick="xrClose()">إغلاق</button>';
+  say('أحسنت! انتهت الجلسة', 1);
+  try { navigator.vibrate && navigator.vibrate([60, 40, 60]); } catch (e) {}
+}
+window.xrStart = function (type, id) {
+  var s = find(id); if (!s) return; build(); var lv = lvl();
+  var q = type === 's' ? seqS(s) : seqE(s, lv);
+  S = { type: type, lv: lv, q: q, name: s.n, tot: total(q), start: Date.now(), i: 0 };
+  try { var seen = {}, ks = []; q.forEach(function (z) { if (!seen[z.ex]) { seen[z.ex] = 1; ks.push('xr_' + z.ex); } }); ExerciseMediaService.prefetch(ks); } catch (e) {}
+  ov.hidden = false; ov.querySelector('.xr-ttl').textContent = s.n; ov.querySelector('.xr-done').innerHTML = '';
+  document.body.classList.add('xr-open'); try { playClick(); } catch (e) {}
+  try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { wl = l; }).catch(function () {}); } catch (e) {}
+  go(0);
+};
+window.xrClose = function () {
+  if (!ov || ov.hidden) return; if (S) { clearInterval(S.tm); } S = null; cancelAnimationFrame(raf); clearMedia(); try { cvCancel(); } catch (e) {}
+  try { wl && wl.release(); } catch (e) {} wl = null; ov.hidden = true; ov.className = 'xr'; document.body.classList.remove('xr-open');
+};
+})();
+</script>
+
 </body>
 </html>
