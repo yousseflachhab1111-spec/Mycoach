@@ -18848,6 +18848,20 @@ body.xr-open #coachFab { display:none !important; } body.xr-open { overflow:hidd
 .xr-level button.on { background:var(--gradient-primary,#dc2626); }
 .xr-card u { text-decoration:none; display:inline-block; margin-top:.2rem; padding:0 .5rem; border-radius:999px; background:color-mix(in srgb,var(--accent-hiit,#14b8a6) 22%,transparent); font-weight:800; }
 .xr-stage .pr, .xr-th .pr { fill:none; stroke:var(--xr-acc,currentColor); stroke-width:3; } .xr-stage .pr.f, .xr-th .pr.f { fill:var(--xr-acc,currentColor); }
+/* بطاقات مضغوطة: بلا صور، والاسم الإنجليزي بجوار العربي */
+.xr-card { margin-bottom:.5rem; }
+.xr-card .xr-cf, .xr-card li > .xr-th { display:none; }
+.xr-card .xr-cm { padding:.5rem .8rem .5rem 1rem; gap:.6rem; }
+.xr-card .xr-ci h3 { margin:0; font-size:1rem; line-height:1.35; }
+.xr-card .xr-en { display:inline-block; margin:0 .45rem; font-size:.68rem; font-weight:600; opacity:.65; direction:ltr; unicode-bidi:isolate; vertical-align:middle; }
+.xr-card .xr-ci p { margin:.1rem 0 0; font-size:.74rem; line-height:1.4; }
+.xr-card .xr-meta { margin-top:.15rem; }
+.xr-card .xr-go { height:38px; min-height:0; min-width:58px; padding:0 .85rem; font-size:.85rem; }
+.xr-card summary { padding-block:.4rem; min-height:0; }
+.xr-card li { padding-block:.4rem; }
+.xr-card li b { display:inline-block; }
+.xr-card li span { display:block; margin-top:.1rem; line-height:1.45; }
+.xr-card .xr-li-yt { width:38px; height:38px; min-width:0; flex:0 0 auto; }
 </style>
 <script>
 /* ===== إطالة + انفجاري: رسوم متحركة (هيكل عظمي بالزوايا) + مشغّل صوتي ===== */
@@ -18919,7 +18933,14 @@ function layout(p, e, mir) {
 }
 var PR = { b: [8, 1], p: [11, 0], r: [12, 0], k: [8, 1] };
 function thumb(id, i) {
-  var e = X[id], L = layout(e.k[Math.min(i, e.k.length - 1)], e, false), s = '<svg viewBox="0 -24 200 164" class="xr-th" aria-hidden="true"><line x1="20" x2="180" y1="131" y2="131" class="g"/>';
+  var e = X[id], L = layout(e.k[Math.min(i, e.k.length - 1)], e, false);
+  var x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  function ex(x, y, r) { if (x - r < x0) x0 = x - r; if (x + r > x1) x1 = x + r; if (y - r < y0) y0 = y - r; if (y + r > y1) y1 = y + r; }
+  [e.k[Math.min(i, e.k.length - 1)]].forEach(function (p) { var M = layout(p, e, false); M.seg.forEach(function (g) { ex(g[0].x, g[0].y, g[2] / 2); ex(g[1].x, g[1].y, g[2] / 2); }); ex(M.head.x, M.head.y, 9); if (e.pr) ex(M.pr.x, M.pr.y, PR[e.pr][0] + 2); });
+  var w = Math.max(x1 - x0 + 24, 90), h = Math.max(y1 - y0 + 24, 90), asp = 1.35;
+  if (w / h < asp) w = h * asp; else h = w / asp;
+  var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  var s = '<svg viewBox="' + (cx - w / 2).toFixed(1) + ' ' + (cy - h / 2).toFixed(1) + ' ' + w.toFixed(1) + ' ' + h.toFixed(1) + '" class="xr-th" aria-hidden="true"><line x1="' + (cx - w / 2 + 8).toFixed(1) + '" x2="' + (cx + w / 2 - 8).toFixed(1) + '" y1="131" y2="131" class="g"/>';
   L.seg.forEach(function (g) { s += '<line x1="' + g[0].x.toFixed(1) + '" y1="' + g[0].y.toFixed(1) + '" x2="' + g[1].x.toFixed(1) + '" y2="' + g[1].y.toFixed(1) + '" stroke-width="' + g[2] + '" opacity="' + g[3] + '"/>'; });
   return s + '<circle cx="' + L.head.x.toFixed(1) + '" cy="' + L.head.y.toFixed(1) + '" r="9"/>' + (e.pr ? '<circle class="pr' + (PR[e.pr][1] ? ' f' : '') + '" cx="' + L.pr.x.toFixed(1) + '" cy="' + L.pr.y.toFixed(1) + '" r="' + PR[e.pr][0] + '"/>' : '') + '</svg>';
 }
