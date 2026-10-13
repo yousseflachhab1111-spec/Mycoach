@@ -11452,6 +11452,28 @@ async function aiFetchText(url, opts, ms) {
     return { status: res.status, ok: res.ok, body: body };
   } finally { clearTimeout(tm); }
 }
+/* [iOS] سفاري يقطع أي طلب لا تصله منه بيانات خلال ~60 ثانية ("Load failed")؛ توليد البرنامج يستغرق أطول، لذلك نستعمل البث (stream) فتصل البيانات تباعاً */
+async function aiFetchStream(url, opts, ms) {
+  const ctrl = new AbortController(); const tm = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(url, Object.assign({}, opts, { signal: ctrl.signal }));
+    const ct = String(res.headers.get('content-type') || '');
+    if (!res.ok || !res.body || !res.body.getReader || ct.indexOf('text/event-stream') < 0) { const body = await res.text(); return { status: res.status, ok: res.ok, body: body }; }
+    const rd = res.body.getReader(), dec = new TextDecoder(); let buf = '', full = '', err = null;
+    for (;;) {
+      const c = await rd.read(); if (c.done) break;
+      buf += dec.decode(c.value, { stream: true });
+      let nl; while ((nl = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, nl).trim(); buf = buf.slice(nl + 1);
+        if (line.indexOf('data:') !== 0) continue;
+        const d = line.slice(5).trim(); if (!d || d === '[DONE]') continue;
+        try { const j = JSON.parse(d); if (j.error) err = j; else { const dl = j.choices && j.choices[0] && j.choices[0].delta; if (dl && typeof dl.content === 'string') full += dl.content; } } catch (x) {}
+      }
+    }
+    if (err && !full) return { status: 200, ok: true, body: JSON.stringify(err) };
+    return { status: 200, ok: true, body: JSON.stringify({ choices: [{ message: { content: full } }] }) };
+  } finally { clearTimeout(tm); }
+}
 async function aiCheckKey(key) {
   try {
     const r = await aiFetchText('https://openrouter.ai/api/v1/auth/key', { method: 'GET', headers: { 'Authorization': 'Bearer ' + key } }, 15000);
@@ -11491,7 +11513,8 @@ async function aiRunModelChain(key, messages, opts) {
       if (prov === 'or') { headers['HTTP-Referer'] = aiReferer(); headers['X-Title'] = 'Coach App'; }
       const body = { model: model, messages: messages, temperature: (opts.temperature != null ? opts.temperature : 0.3), max_tokens: prov === 'groq' ? Math.min(opts.max_tokens || 7000, 6000) : (opts.max_tokens || 7000) };
       if (prov === 'groq' && /^llama/.test(model)) body.response_format = { type: 'json_object' };
-      const r = await aiFetchText(url, { method: 'POST', headers: headers, body: JSON.stringify(body) }, Math.min(75000, left));
+      let r; try { r = await aiFetchStream(url, { method: 'POST', headers: headers, body: JSON.stringify(Object.assign({}, body, { stream: true })) }, Math.min(120000, left)); }
+      catch (se) { if (se && se.name === 'AbortError') throw se; r = await aiFetchText(url, { method: 'POST', headers: headers, body: JSON.stringify(body) }, Math.min(75000, left)); }
       if (!r.ok) {
         console.error('[AI] model failed:', prov, model, r.status, r.body);
         const err = aiHttpErr(r.status, r.body); fails.push({ model: model, err: err });
@@ -18786,7 +18809,15 @@ body.xr-open #coachFab { display:none !important; } body.xr-open { overflow:hidd
 .xr.k-rest .xr-stage svg, .xr.k-prep .xr-stage svg { opacity:.6; } .xr.paused .xr-stage svg { opacity:.4; }
 .xr-media, .xr-vid { position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:contain; background:#fff; border-radius:20px; }
 .xr-media[hidden], .xr-vid[hidden] { display:none; } .xr-stage.has-media svg { visibility:hidden; } .xr.k-rest .xr-media, .xr.k-prep .xr-media, .xr.k-rest .xr-vid, .xr.k-prep .xr-vid { opacity:.75; }
+.xr-yt { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; }
+.xr-yt button { min-height:40px; padding:0 .9rem; border-radius:999px; border:1px solid var(--border-color); background:var(--bg-secondary); color:inherit; font:inherit; font-size:.78rem; font-weight:800; display:inline-flex; align-items:center; gap:.4rem; cursor:pointer; }
+.xr-yt .ico { width:1.1rem; height:1.1rem; color:#ef4444; } .xr.nomedia .xr-yt button { background:#dc2626; border-color:#dc2626; color:#fff; } .xr.nomedia .xr-yt .ico { color:#fff; }
+.xr-li-yt { flex:0 0 40px; width:40px; height:40px; border-radius:50%; border:0; background:rgba(255,255,255,.18); color:#fff; display:grid; place-items:center; cursor:pointer; } .xr-li-yt .ico { width:1.2rem; height:1.2rem; }
+.xr-en { display:block; font-style:normal; font-size:.7rem; font-weight:700; opacity:.8; direction:ltr; text-align:start; margin-top:.1rem; }
+.xr-name .exercise-title-ar { font-size:1.3rem; font-weight:900; color:var(--text-primary,#fff); margin:0; } .xr-name .exercise-title-en { font-size:.82rem; font-weight:700; color:var(--text-muted,#9aa); direction:ltr; margin-top:.15rem; }
 .xr-li-img { flex:0 0 64px; width:64px; height:48px; object-fit:cover; background:#fff; border-radius:10px; }
+.xr-simb { position:absolute; z-index:2; bottom:.6rem; inset-inline-start:.6rem; padding:.2rem .7rem; border-radius:999px; background:rgba(0,0,0,.65); color:#fff; font-size:.72rem; font-weight:800; }
+.xr-simb[hidden] { display:none; }
 .xr-badge { z-index:2; position:absolute; top:.6rem; inset-inline-start:.6rem; padding:.25rem .8rem; border-radius:999px; background:var(--xr-acc); color:#fff; font-weight:900; font-size:.82rem; }
 .xr-name { font-size:1.25rem; font-weight:900; } .xr-desc { max-width:360px; font-size:.82rem; line-height:1.7; color:var(--text-secondary); } .xr-alt { max-width:360px; font-size:.76rem; color:#f59e0b; } .xr-alt:empty { display:none; }
 .xr-ring { position:relative; width:128px; height:128px; flex:0 0 auto; } .xr-ring svg { width:100%; height:100%; transform:rotate(-90deg); } .xr-ring circle { fill:none; stroke-width:7; }
@@ -18803,6 +18834,20 @@ body.xr-open #coachFab { display:none !important; } body.xr-open { overflow:hidd
 .progress-welcome h3 { margin: .4rem 0 .25rem; font-size: 1.05rem; }
 .progress-welcome p { margin: 0 0 .8rem; font-size: .8rem; color: var(--text-secondary); line-height: 1.6; }
 .progress-welcome .pw-btn { min-height: 44px; padding: 0 1.4rem; border: 0; border-radius: 999px; font-family: inherit; font-weight: 800; color: #fff; background: var(--gradient-primary); cursor: pointer; }
+/* تحسين بصري: يتبع ألوان كل الثيمات */
+.xr-hero, .xr-hero.xr-s, .xr-hero.xr-e { --a:var(--accent-hiit,#14b8a6); background:linear-gradient(135deg,color-mix(in srgb,var(--a) 40%,var(--bg-secondary)),var(--bg-secondary)); color:var(--text-primary); border:1px solid color-mix(in srgb,var(--a) 50%,var(--border-color)); }
+.xr-hero.xr-e { --a:var(--accent-boxing,#ef4444); }
+.xr-card { position:relative; background:var(--bg-secondary); color:var(--text-primary); border:1px solid var(--border-color); box-shadow:0 6px 18px -12px rgba(0,0,0,.5); }
+.xr-card::before { content:""; position:absolute; inset-block:0; inset-inline-start:0; width:5px; background:var(--g); }
+.xr-cm { padding-inline-start:1rem; } .xr-card ul { padding-inline-start:1rem; } .xr-card summary { padding-inline-start:1rem; }
+.xr-cf, .xr-card li .xr-th { background:color-mix(in srgb,var(--text-primary) 8%,transparent); } .xr-th { color:var(--text-primary); }
+.xr-th line, .xr-th circle { stroke:currentColor; fill:currentColor; } .xr-th line.g { stroke:var(--border-color); }
+.xr-card details { background:color-mix(in srgb,var(--text-primary) 5%,transparent); } .xr-card li { border-top:1px solid var(--border-color); }
+.xr-li-yt { background:color-mix(in srgb,var(--text-primary) 10%,transparent); color:inherit; }
+.xr-go { flex:0 0 auto; min-width:68px; padding:0 1rem; white-space:nowrap; border-radius:999px; background:var(--gradient-primary,#dc2626); color:#fff; }
+.xr-level button.on { background:var(--gradient-primary,#dc2626); }
+.xr-card u { text-decoration:none; display:inline-block; margin-top:.2rem; padding:0 .5rem; border-radius:999px; background:color-mix(in srgb,var(--accent-hiit,#14b8a6) 22%,transparent); font-weight:800; }
+.xr-stage .pr, .xr-th .pr { fill:none; stroke:var(--xr-acc,currentColor); stroke-width:3; } .xr-stage .pr.f, .xr-th .pr.f { fill:var(--xr-acc,currentColor); }
 </style>
 <script>
 /* ===== إطالة + انفجاري: رسوم متحركة (هيكل عظمي بالزوايا) + مشغّل صوتي ===== */
@@ -18830,9 +18875,27 @@ var X = {
  cpu:{n:'ضغط بتصفيق',d:'انزل في ضغط ثم ادفع بقوة لترتفع يداك عن الأرض وصفّق إن استطعت.',alt:'ضغط عادي على الركبتين بدفع سريع.',hg:1,st:520,k:[P(70,0,[-40,45,-40,45],[-70,-70,-70,-70]),P(62,0,Z,[-62,-62,-62,-62],12)]},
  tuck:{n:'قفز التكوّر',d:'اقفز عالياً واسحب ركبتيك نحو صدرك في الهواء ثم اهبط بنعومة.',alt:'ارفع ركبة واحدة بالتبادل مع الارتفاع على أطراف القدمين.',st:650,k:[P(0,0,[170,175,170,175],Z),P(10,5,[20,40,20,40],[100,-20,100,-20],30)]},
  jl:{n:'طعنة بالقفز',d:'من وضع الطعنة اقفز وبدّل رجليك في الهواء واهبط في طعنة معاكسة.',alt:'طعنة بالمشي بالتبادل بدون قفز.',st:420,k:[P(5,0,[40,60,-40,-60],[80,0,-25,-95]),P(0,0,Z,[20,-10,-20,10],22),P(5,0,[-40,-60,40,60],[-25,-95,80,0]),P(0,0,Z,[-20,10,20,-10],22)]},
- pun:{n:'لكمات انفجارية',d:'من وضع الملاكم وجّه لكمات مستقيمة بسرعة وبأقصى قوة مع دوران الورك والكتف.',alt:'بنفس الحركة بقوة متوسطة وإيقاع أبطأ.',st:170,k:[P(8,0,[20,170,10,160],[25,0,-20,-5]),P(18,0,[90,92,15,165],[25,0,-25,-10]),P(8,0,[20,170,10,160],[25,0,-20,-5]),P(18,0,[15,165,90,92],[25,0,-25,-10])]}
+ pun:{n:'لكمات انفجارية',d:'من وضع الملاكم وجّه لكمات مستقيمة بسرعة وبأقصى قوة مع دوران الورك والكتف.',alt:'بنفس الحركة بقوة متوسطة وإيقاع أبطأ.',st:170,k:[P(8,0,[20,170,10,160],[25,0,-20,-5]),P(18,0,[90,92,15,165],[25,0,-25,-10]),P(8,0,[20,170,10,160],[25,0,-20,-5]),P(18,0,[15,165,90,92],[25,0,-25,-10])]},
+ mbr:{n:'رمية الكرة الطبية الدورانية',d:'قف بجانب الجدار، أدر الحوض والجذع بقوة وارمِ الكرة بالجانب كأنها خطّافية، ثم التقطها وكرر. بدّل الجهة كل جولة.',t:'القوة تبدأ من القدمين والحوض لا من الذراعين.',wt:'كرة 3–6 كغ',pr:'b',st:520,k:[P(5,0,[-25,-15,-25,-15],[25,-20,25,-20]),P(8,0,[95,95,95,95],[8,4,8,4])]},
+ mbs:{n:'ضرب الكرة الطبية بالأرض',d:'ارفع الكرة فوق رأسك وتمدّد، ثم اضربها بالأرض بأقصى قوة مع ثني الركبتين والجذع.',t:'استعمل كرة لا ترتد.',wt:'كرة 4–8 كغ',pr:'b',st:600,k:[P(0,0,[170,175,170,175],Z),P(55,10,[10,5,10,5],[70,-45,70,-45])]},
+ mbc:{n:'تمرير الكرة من الصدر',d:'من وضع الملاكم ادفع الكرة من صدرك إلى الجدار بسرعة كلكمة مستقيمة، والتقطها وكرر.',t:'ادفع بالورك مع الذراعين.',wt:'كرة 3–5 كغ',pr:'b',st:420,k:[P(6,0,[30,120,30,120],[12,-8,-12,8]),P(10,0,[92,92,92,92],[12,-8,-12,8])]},
+ plp:{n:'دفع القرص للأمام',d:'أمسك قرصاً بيديك عند صدرك وادفعه للأمام بسرعة لتمدّ الذراعين، ثم اسحبه بسرعة.',t:'لا تقفل المرفقين بعنف.',wt:'قرص 2.5–10 كغ',pr:'p',st:420,k:[P(6,0,[30,120,30,120],[12,-8,-12,8]),P(10,0,[92,92,92,92],[12,-8,-12,8])]},
+ plw:{n:'ضربة الحطّاب بالقرص',d:'ارفع القرص قطرياً فوق كتفك ثم اسحبه بقوة نحو الورك المقابل مع دوران الجذع وثني الركبتين.',t:'حافظ على استقامة الظهر.',wt:'قرص 5–10 كغ',pr:'p',st:650,k:[P(5,0,[150,155,150,155],[20,-15,20,-15]),P(35,0,[-10,-5,-10,-5],[50,-35,50,-35])]},
+ lmp:{n:'لكمة اللاندماين',d:'ضع طرف البار في زاوية، وأمسك الطرف الآخر عند كتفك بيد واحدة، ثم ادفعه للأعلى والأمام مع دوران الورك كلكمة.',t:'بدّل الذراع كل جولة.',wt:'بار + 5–10 كغ',st:480,k:[P(8,0,[20,170,10,160],[25,0,-20,-5]),P(14,0,[115,120,10,160],[25,0,-25,-10])]},
+ psh:{n:'ضغط الدفع بالبار',d:'ضع البار على الكتفين، اثنِ الركبتين قليلاً ثم ادفع بالساقين بانفجار وارفع البار فوق رأسك.',t:'ابدأ بوزن خفيف جداً.',wt:'بار 20–40 كغ',pr:'r',st:700,k:[P(0,0,[30,170,30,170],[30,-30,30,-30]),P(0,0,[175,178,175,178],Z,4)]},
+ cln:{n:'الكلين الانفجاري بالبار',d:'من انحناء الوركين مع البار عند الركبتين اقفز بقوة واسحب البار ثم التقطه عند الكتفين.',t:'احتاج مدرباً في التعلم.',wt:'بار 20–40 كغ',pr:'r',st:800,k:[P(40,0,[10,5,10,5],[30,-10,30,-10]),P(0,0,[30,170,30,170],[40,-30,40,-30])]},
+ ksw:{n:'تأرجح الكيتلبل',d:'ادفع الحوض للأمام بانفجار ليرتفع الكيتلبل إلى مستوى الصدر، ثم دعه ينزل بين ساقيك.',t:'القوة من الورك لا من الكتفين.',wt:'كيتلبل 8–16 كغ',pr:'k',st:620,k:[P(55,5,[10,0,10,0],[30,-15,30,-15]),P(0,0,[90,90,90,90],Z)]},
+ spr:{n:'سبراول',d:'من وضع الاستعداد ألقِ ساقيك للخلف بسرعة وانزل بالوركين إلى الأرض كأنك تتفادى مسكة، ثم انهض.',t:'مهارة أساسية في MMA.',hg:1,st:480,k:[P(25,0,[60,60,60,60],[78,-52,78,-52]),P(62,0,Z,[-62,-62,-62,-62])]},
+ pig:{n:'وضعية الحمامة',d:'ضع ساقاً مثنية أمامك والأخرى ممدودة خلفك وانحنِ بصدرك للأمام فوق الساق الأمامية.',t:'تنفس بعمق.',sd:1,k:[S0,P(70,0,[100,100,100,100],[80,-100,-88,-88])]},
+ cal:{n:'إطالة السمانة',d:'ضع يديك على الجدار، ورجل خلفك ممدودة بكعب ملتصق بالأرض، وادفع الحوض للأمام.',t:'اجعل القدم الخلفية للأمام.',sd:1,k:[S0,P(18,0,[100,100,100,100],[40,0,-28,-28])]},
+ lat:{n:'إطالة الظهر العريض',d:'امسك الجدار أو البار بيديك، وادفع الصدر نحو الأسفل وأرجع الحوض للخلف.',t:'أبقِ الذراعين ممدودتين.',k:[S0,P(95,0,[105,105,105,105],[10,-5,10,-5])]},
+ lsw:{n:'تأرجح الساق',d:'استند بيد على الجدار وأرجح ساقاً للأمام والخلف بسعة متزايدة ثم بدّل الساق.',t:'قبل التمرين مباشرة.',st:900,k:[P(0,0,[60,60,60,60],[60,50,0,0]),P(0,0,[60,60,60,60],[-40,-45,0,0])]}
 };
-var HOLD = { neck:1, tri:1, chest:1, fold:1, quad:1, hip:1, child:1, wrist:1 };
+var EN = { neck:'Neck Stretch', tri:'Triceps Stretch', chest:'Chest Opener', fold:'Standing Forward Fold', quad:'Standing Quad Stretch', hip:'Hip Flexor Lunge Stretch', catcow:'Cat-Cow', child:"Child's Pose", wrist:'Wrist & Forearm Stretch',
+ hk:'High Knees', wsq:'Air Squats', swing:'Arm Swings', sqj:'Jump Squats', burp:'Burpees', mtn:'Mountain Climbers', cpu:'Clap Push-ups', tuck:'Tuck Jumps', jl:'Jumping Lunges', pun:'Explosive Punches', mbr:'Rotational Med Ball Throw', mbs:'Med Ball Slam', mbc:'Med Ball Chest Pass', plp:'Plate Push-Out', plw:'Plate Wood Chop', lmp:'Landmine Punch Press', psh:'Barbell Push Press', cln:'Hang Power Clean', ksw:'Kettlebell Swing', spr:'Sprawl', pig:'Pigeon Pose', cal:'Calf Stretch', lat:'Lat Stretch', lsw:'Leg Swings' };
+Object.keys(EN).forEach(function (k) { X[k].en = EN[k]; });
+function nm(e) { return '<span class="exercise-title-ar">' + e.n + '</span>' + (e.en ? '<span class="exercise-title-en">' + e.en + '</span>' : ''); }
+var HOLD = { neck:1, tri:1, chest:1, fold:1, quad:1, hip:1, child:1, wrist:1, pig:1, cal:1, lat:1 };
 Object.keys(X).forEach(function (id) {
   var e = X[id], fr = e.k, xs = [1e9, -1e9];
   e.fr = (HOLD[id] && !e.nh) ? [fr[0], fr[1], fr[1]] : fr;
@@ -18852,12 +18915,13 @@ function layout(p, e, mir) {
   var oy = 128 - p.air - Math.max.apply(null, ys), s = mir ? -1 : 1;
   function T(o) { return { x: 100 + s * (o.x - e.cx), y: o.y + oy }; }
   var n = T(q.neck), h = T(q.hip), E1 = T(q.e1), H1 = T(q.h1), E2 = T(q.e2), H2 = T(q.h2), K1 = T(q.k1), F1 = T(q.f1), K2 = T(q.k2), F2 = T(q.f2);
-  return { seg: [[n, E2, 6, .5], [E2, H2, 6, .5], [h, K2, 7, .5], [K2, F2, 7, .5], [h, n, 10, 1], [h, K1, 8, 1], [K1, F1, 8, 1], [n, E1, 7, 1], [E1, H1, 7, 1]], head: T(q.head) };
+  return { seg: [[n, E2, 6, .5], [E2, H2, 6, .5], [h, K2, 7, .5], [K2, F2, 7, .5], [h, n, 10, 1], [h, K1, 8, 1], [K1, F1, 8, 1], [n, E1, 7, 1], [E1, H1, 7, 1]], head: T(q.head), pr: { x: (H1.x + H2.x) / 2, y: (H1.y + H2.y) / 2 } };
 }
+var PR = { b: [8, 1], p: [11, 0], r: [12, 0], k: [8, 1] };
 function thumb(id, i) {
   var e = X[id], L = layout(e.k[Math.min(i, e.k.length - 1)], e, false), s = '<svg viewBox="0 -24 200 164" class="xr-th" aria-hidden="true"><line x1="20" x2="180" y1="131" y2="131" class="g"/>';
   L.seg.forEach(function (g) { s += '<line x1="' + g[0].x.toFixed(1) + '" y1="' + g[0].y.toFixed(1) + '" x2="' + g[1].x.toFixed(1) + '" y2="' + g[1].y.toFixed(1) + '" stroke-width="' + g[2] + '" opacity="' + g[3] + '"/>'; });
-  return s + '<circle cx="' + L.head.x.toFixed(1) + '" cy="' + L.head.y.toFixed(1) + '" r="9"/></svg>';
+  return s + '<circle cx="' + L.head.x.toFixed(1) + '" cy="' + L.head.y.toFixed(1) + '" r="9"/>' + (e.pr ? '<circle class="pr' + (PR[e.pr][1] ? ' f' : '') + '" cx="' + L.pr.x.toFixed(1) + '" cy="' + L.pr.y.toFixed(1) + '" r="' + PR[e.pr][0] + '"/>' : '') + '</svg>';
 }
 function lerp(a, b, f) {
   function m(x, y) { return x + (y - x) * f; }
@@ -18865,16 +18929,52 @@ function lerp(a, b, f) {
 }
 /* ---- ربط التمارين بخدمة الوسائط الموجودة (GIF حقيقية + كاش) — المفتاح xr_<id> ---- */
 var MQ = {
- neck:[['side neck stretch','neck side stretch','neck stretch'],'stretching'], tri:[['triceps stretch','overhead triceps stretch','triceps stretch behind head'],'stretching'],
- chest:[['chest stretch','chest and front of shoulder stretch','doorway chest stretch'],'stretching'], fold:[['standing hamstring stretch','standing toe touches','forward fold','hamstring stretch'],'stretching'],
- quad:[['standing quad stretch','quadriceps stretch','standing quadriceps stretch'],'stretching'], hip:[['hip flexor stretch','kneeling hip flexor stretch','lunge hip flexor stretch'],'stretching'],
- catcow:[['cat cow','cat stretch','cat-camel stretch'],'stretching'], child:[["child's pose",'childs pose','kneeling lat stretch'],'stretching'],
- wrist:[['wrist flexor stretch','wrist stretch','kneeling forearm stretch','wrist circles'],'stretching'], hk:[['high knees','high knee skips','running in place','jog in place'],'cardio'],
- wsq:[['bodyweight squat','air squat','squat'],'legs'], swing:[['arm circles','arm swing','arm swings'],'mobility'], sqj:[['jump squat','squat jump','jump squats'],'legs'],
- burp:[['burpee','burpees'],'cardio'], mtn:[['mountain climber','mountain climbers'],'core'], cpu:[['clap push-up','clapping push-up','plyo push-up','push-up'],'chest'],
- tuck:[['tuck jump','knee tuck jump','jump tuck'],'cardio'], jl:[['jumping lunge','lunge jump','split jump','alternating jump lunge'],'legs'], pun:[['shadow boxing','jab cross','boxing punches','punch'],'boxing']
+ neck:[["side neck stretch", "neck side stretch", "neck stretch", "neck-smr", "chin to chest stretch", "neck flexion stretch", "lateral neck stretch", "seated neck stretch"],'stretching',["shoulder stretch", "neck rotation", "neck exercise"]],
+ tri:[["triceps stretch", "overhead triceps stretch", "triceps stretch behind head", "tricep stretch", "standing triceps stretch", "triceps overhead stretch", "tricep side stretch"],'stretching',["shoulder stretch", "arm stretch", "upper arm stretch"]],
+ chest:[["chest stretch", "chest and front of shoulder stretch", "doorway chest stretch", "standing chest stretch", "pectoral stretch", "behind back chest stretch", "chest opener"],'stretching',["shoulder stretch", "arm stretch behind back"]],
+ fold:[["standing hamstring stretch", "standing toe touches", "forward fold", "hamstring stretch", "standing hamstring and calf stretch", "toe touch", "standing forward bend", "hamstring stretch standing"],'stretching',["hamstring", "back stretch", "toe touch"]],
+ quad:[["standing quad stretch", "quadriceps stretch", "standing quadriceps stretch", "quad stretch", "standing quad stretch with hand", "quadriceps stretch standing"],'stretching',["leg stretch", "thigh stretch", "hip flexor stretch"]],
+ hip:[["hip flexor stretch", "kneeling hip flexor stretch", "lunge hip flexor stretch", "kneeling hip flexor", "half kneeling hip flexor stretch", "runners lunge stretch", "low lunge stretch"],'stretching',["lunge", "hip stretch", "split squat"]],
+ catcow:[["cat cow", "cat stretch", "cat-camel stretch", "cat camel", "cat-cow stretch", "cat and cow", "cat cow pose"],'stretching',["spinal stretch", "back stretch", "quadruped"]],
+ child:[["child's pose", "childs pose", "child pose", "kneeling lat stretch", "childs pose stretch", "balasana"],'stretching',["lat stretch", "back stretch", "kneeling stretch"]],
+ wrist:[["wrist flexor stretch", "wrist stretch", "kneeling forearm stretch", "wrist circles", "forearm stretch", "wrist extensor stretch", "wrist flexion stretch"],'stretching',["forearm", "wrist", "finger stretch"]],
+ hk:[["high knees", "high knee skips", "running in place", "jog in place", "high knee run", "high knees running", "jogging in place", "knee raise run", "fast skipping"],'cardio',["run", "jump rope", "jumping jacks", "skipping"]],
+ wsq:[["bodyweight squat", "air squat", "squat", "bodyweight squats", "freehand squat", "body weight squat", "squat bodyweight"],'legs',["squat"]],
+ swing:[["arm circles", "arm swing", "arm swings", "arm circle", "shoulder circles", "arm rotation", "arms circles"],'mobility',["shoulder rotation", "shoulder stretch", "shoulder warm up"]],
+ sqj:[["jump squat", "squat jump", "jump squats", "freehand jump squat", "bodyweight jump squat", "squat jumps", "explosive squat jump", "plyometric squat"],'legs',["squat", "jump"]],
+ burp:[["burpee", "burpees", "burpee exercise", "squat thrust", "jump burpee", "burpee with push up"],'cardio',["squat thrust", "mountain climber", "push-up", "jumping jacks"]],
+ mtn:[["mountain climber", "mountain climbers", "mountain climbers exercise", "climber", "plank mountain climber", "spider climb"],'core',["plank", "push-up", "spiderman climb"]],
+ cpu:[["clap push-up", "clapping push-up", "plyo push-up", "clap push up", "clapping push up", "plyometric push up", "explosive push up", "plyo push up"],'chest',["push-up", "push up", "pushups"]],
+ tuck:[["tuck jump", "knee tuck jump", "jump tuck", "tuck jumps", "knee tuck jumps", "jump knee tuck", "jumping knee tuck"],'cardio',["jump squat", "box jump", "jump"]],
+ jl:[["jumping lunge", "lunge jump", "split jump", "alternating jump lunge", "jump lunge", "scissor jump", "split squat jump", "jumping lunges", "alternate jump lunge"],'legs',["lunge", "split squat", "alternating lunge", "walking lunge"]],
+ pun:[["shadow boxing", "jab cross", "boxing punches", "punch", "boxing", "jab", "cross punch", "boxing shadow", "punching", "shadow box"],'boxing',["boxing", "punch", "jab", "speed bag"]],
+ mbr:[["medicine ball rotational throw", "med ball rotational throw", "medicine ball side throw"], "cardio", ["medicine ball throw", "wood chop"]],
+ mbs:[["medicine ball slam", "med ball slam", "ball slam"], "cardio", ["medicine ball", "slam"]],
+ mbc:[["medicine ball chest pass", "med ball chest pass", "medicine ball chest throw"], "chest", ["medicine ball", "push-up"]],
+ plp:[["plate press out", "weight plate push out", "plate chest press"], "chest", ["plate front raise", "chest press"]],
+ plw:[["weight plate wood chop", "plate wood chop", "wood chop"], "core", ["russian twist", "wood chop"]],
+ lmp:[["landmine press", "landmine punch", "single arm landmine press"], "shoulders", ["barbell press", "shoulder press"]],
+ psh:[["push press", "barbell push press", "barbell shoulder press"], "shoulders", ["shoulder press", "overhead press"]],
+ cln:[["hang power clean", "power clean", "barbell hang clean"], "legs", ["deadlift", "barbell clean"]],
+ ksw:[["kettlebell swing", "kettlebell two hand swing", "russian kettlebell swing"], "legs", ["kettlebell", "deadlift"]],
+ spr:[["sprawl", "sprawl exercise", "wrestling sprawl"], "cardio", ["burpee", "squat thrust"]],
+ pig:[["pigeon pose", "pigeon stretch", "pigeon hip stretch"], "stretching", ["hip stretch", "glute stretch"]],
+ cal:[["calf stretch", "wall calf stretch", "standing calf stretch"], "stretching", ["calf", "leg stretch"]],
+ lat:[["lat stretch", "standing lat stretch", "overhead lat stretch"], "stretching", ["back stretch", "shoulder stretch"]],
+ lsw:[["leg swings", "leg swing", "standing leg swing"], "mobility", ["hip mobility", "leg stretch"]]
 };
-try { Object.keys(MQ).forEach(function (id) { if (typeof EXERCISE_MEDIA !== 'undefined' && !EXERCISE_MEDIA['xr_' + id]) EXERCISE_MEDIA['xr_' + id] = { pinnedIds: [], queries: MQ[id][0], category: MQ[id][1], fallbackType: 'svg', arabicName: X[id].n, englishName: MQ[id][0][0] }; }); } catch (e) {}
+try { Object.keys(MQ).forEach(function (id) { if (typeof EXERCISE_MEDIA !== 'undefined' && !EXERCISE_MEDIA['xr_' + id]) EXERCISE_MEDIA['xr_' + id] = { pinnedIds: [], queries: MQ[id][0], category: MQ[id][1], fallbackType: 'svg', arabicName: X[id].n, englishName: MQ[id][0][0] }; if (!EXERCISE_MEDIA['xr_' + id + '_s']) EXERCISE_MEDIA['xr_' + id + '_s'] = { pinnedIds: [], queries: MQ[id][2], category: MQ[id][1], fallbackType: 'svg', arabicName: X[id].n, englishName: MQ[id][2][0] }; }); } catch (e) {}
+/* يطلب الصورة الدقيقة أولاً، وإن لم توجد يطلب صورة حركة مشابهة (وتُعلَّم للمستخدم) */
+async function getMedia(id) {
+  var ok = function (r) { return r && ((r.type === 'image' && r.blobUrl) || (r.type === 'video' && r.url)); }, r = null;
+  try { r = await ExerciseMediaService.get('xr_' + id); } catch (e) { r = null; }
+  if (ok(r)) return { res: r, sim: false };
+  if (r) { try { ExerciseMediaService.release(r); } catch (e) {} }
+  try { r = await ExerciseMediaService.get('xr_' + id + '_s'); } catch (e) { r = null; }
+  if (ok(r)) return { res: r, sim: true };
+  if (r) { try { ExerciseMediaService.release(r); } catch (e) {} }
+  return null;
+}
 /* ---- بيانات الجلسات ---- */
 var LV = [{ w: .75, r: 1.5, n: 'مبتدئ' }, { w: 1, r: 1, n: 'متوسط' }, { w: 1.25, r: .75, n: 'متقدم' }];
 var SS = [
@@ -18887,6 +18987,11 @@ var SS = [
   { id: 'nk', n: 'الرقبة والكتفان', g: 'linear-gradient(135deg,#7c3aed,#c084fc)', l: [['neck', 50], ['tri', 60], ['chest', 40], ['wrist', 40]] },
   { id: 'bk', n: 'الظهر', g: 'linear-gradient(135deg,#047857,#34d399)', l: [['catcow', 60], ['child', 60], ['fold', 50], ['hip', 50]] },
   { id: 'lg', n: 'الوركان والساقان', g: 'linear-gradient(135deg,#a16207,#facc15)', l: [['hip', 80], ['quad', 60], ['fold', 60], ['child', 40]] }] },
+ { h: 'قبل التمرين (ديناميكي)', i: [
+   { id: 'dyn', n: 'إحماء ديناميكي للمقاتل', g: 'linear-gradient(135deg,#0369a1,#22d3ee)', l: [['swing', 30], ['lsw', 40], ['wsq', 30], ['hip', 40], ['hk', 30]] }] },
+ { h: 'للمقاتلين', i: [
+   { id: 'fgt', n: 'مرونة الوركين والساقين', g: 'linear-gradient(135deg,#9a3412,#fb923c)', l: [['pig', 80], ['hip', 70], ['cal', 50], ['quad', 60], ['fold', 50]] },
+   { id: 'bkl', n: 'الظهر العريض والكتفان', g: 'linear-gradient(135deg,#4c1d95,#a78bfa)', l: [['lat', 50], ['chest', 40], ['tri', 50], ['wrist', 40]] }] },
  { h: 'روتين', i: [
   { id: 'am', n: 'إطالة الصباح', g: 'linear-gradient(135deg,#ea580c,#fbbf24)', l: [['catcow', 40], ['chest', 30], ['tri', 40], ['fold', 40], ['hip', 50]] },
   { id: 'pm', n: 'قبل النوم', g: 'linear-gradient(135deg,#312e81,#6366f1)', l: [['neck', 50], ['child', 60], ['fold', 60], ['catcow', 50], ['hip', 60]] }] }
@@ -18895,19 +19000,25 @@ var ES = [
  { id: 'tab', n: 'تاباتا انفجاري', g: 'linear-gradient(135deg,#991b1b,#ef4444)', w: 20, r: 10, ex: ['sqj', 'hk', 'mtn', 'tuck', 'sqj', 'hk', 'mtn', 'tuck'], d: '8 جولات: 20 ثانية عمل و10 راحة.' },
  { id: 'emm', n: 'EMOM: كل دقيقة', g: 'linear-gradient(135deg,#c2410c,#fb923c)', w: 40, r: 20, ex: ['burp', 'sqj', 'mtn', 'cpu', 'jl', 'hk', 'tuck', 'sqj'], d: 'كل دقيقة: 40 عمل و20 راحة.' },
  { id: 'cir', n: 'دوائر القوة', g: 'linear-gradient(135deg,#7f1d1d,#f43f5e)', w: 40, r: 20, ex: ['burp', 'sqj', 'cpu', 'mtn', 'jl', 'tuck', 'burp', 'sqj', 'cpu', 'mtn', 'jl', 'tuck'], d: '12 محطة بترتيب ثابت.' },
- { id: 'pun', n: 'لكمات انفجارية', g: 'linear-gradient(135deg,#1e3a8a,#3b82f6)', w: 30, r: 15, ex: ['pun', 'sqj', 'pun', 'hk', 'pun', 'jl', 'pun', 'burp'], d: 'لكمات سريعة تتخللها حركات الساقين.' }
+ { id: 'pun', n: 'لكمات انفجارية', g: 'linear-gradient(135deg,#1e3a8a,#3b82f6)', w: 30, r: 15, ex: ['pun', 'sqj', 'pun', 'hk', 'pun', 'jl', 'pun', 'burp'], d: 'لكمات سريعة تتخللها حركات الساقين.' },
+ { id: 'pwr', n: 'قوة الضربة: كرة وقرص', g: 'linear-gradient(135deg,#7c2d12,#f59e0b)', w: 30, r: 20, ex: ['mbr', 'mbc', 'plp', 'lmp', 'pun', 'cpu', 'mbr', 'plp'], d: 'كرة طبية وقرص وبار لقوة اللكمة والخطّافية.' },
+ { id: 'cor', n: 'جذع المقاتل', g: 'linear-gradient(135deg,#134e4a,#10b981)', w: 30, r: 20, ex: ['plw', 'mbs', 'mbr', 'plw', 'mbs', 'mbr'], d: 'دوران وضرب بالكرة والقرص لجذع قوي.' },
+ { id: 'bar', n: 'بار وكيتلبل', g: 'linear-gradient(135deg,#374151,#9ca3af)', w: 30, r: 30, ex: ['cln', 'psh', 'ksw', 'lmp', 'cln', 'ksw'], d: 'حركات الورك والرفع الانفجارية. بوزن خفيف.' },
+ { id: 'mma', n: 'مقاتل MMA شامل', g: 'linear-gradient(135deg,#581c87,#ec4899)', w: 40, r: 20, ex: ['spr', 'mbs', 'ksw', 'pun', 'jl', 'plw', 'burp', 'mbc'], d: 'سبراول وكرة وكيتلبل ولكمات بدوائر متنوعة.' }
 ];
+var SEN = { dyn:'Dynamic Warm-up', fgt:'Hips & Legs Flexibility', bkl:'Lats & Shoulders', pwr:'Punch Power', cor:'Fighter Core', bar:'Barbell & Kettlebell', mma:'MMA Power Circuit', q3:'Quick Stretch', box:'Post-Bag Stretch', str:'Post-Strength Stretch', nk:'Neck & Shoulders', bk:'Back', lg:'Hips & Legs', am:'Morning Stretch', pm:'Bedtime Stretch', tab:'Explosive Tabata', emm:'EMOM', cir:'Power Circuit', pun:'Explosive Punches' };
+SS.forEach(function (g) { g.i.forEach(function (x) { x.e = SEN[x.id]; }); }); ES.forEach(function (x) { x.e = SEN[x.id]; });
 function find(id) { var r = null; SS.forEach(function (s) { s.i.forEach(function (x) { if (x.id === id) r = x; }); }); return r || ES.filter(function (x) { return x.id === id; })[0]; }
 function lvl() { var v = parseInt(safeGet('xrLevel', '1'), 10); return v >= 0 && v <= 2 ? v : 1; }
 function seqS(s) {
   var o = []; s.l.forEach(function (it, ix) {
     var id = it[0], sec = it[1], e = X[id]; o.push({ k: 'prep', ex: id, sec: ix ? 4 : 5 });
-    if (e.sd) { o.push({ k: 'hold', ex: id, sec: Math.round(sec / 2), side: 0 }, { k: 'hold', ex: id, sec: Math.round(sec / 2), side: 1 }); } else o.push({ k: 'hold', ex: id, sec: sec });
+    if ({ swing: 1, lsw: 1, wsq: 1, hk: 1 }[id]) o.push({ k: 'warm', ex: id, sec: sec }); else if (e.sd) { o.push({ k: 'hold', ex: id, sec: Math.round(sec / 2), side: 0 }, { k: 'hold', ex: id, sec: Math.round(sec / 2), side: 1 }); } else o.push({ k: 'hold', ex: id, sec: sec });
   }); return o;
 }
-function seqE(s, lv) {
+function seqE(s, lv, nw) {
   var L = LV[lv], w = Math.round(s.w * L.w / 5) * 5, r = Math.max(10, Math.round(s.r * L.r / 5) * 5);
-  var o = [{ k: 'warm', ex: 'hk', sec: 20 }, { k: 'warm', ex: 'wsq', sec: 20 }, { k: 'warm', ex: 'swing', sec: 20 }];
+  var o = nw ? [] : [{ k: 'warm', ex: 'hk', sec: 20 }, { k: 'warm', ex: 'wsq', sec: 20 }, { k: 'warm', ex: 'swing', sec: 20 }];
   s.ex.forEach(function (id, i) { if (!i) o.push({ k: 'prep', ex: id, sec: 5 }); o.push({ k: 'work', ex: id, sec: w }); if (i < s.ex.length - 1) o.push({ k: 'rest', ex: s.ex[i + 1], sec: r }); });
   return o;
 }
@@ -18916,8 +19027,8 @@ function mins(sec) { return Math.max(1, Math.round(sec / 60)); }
 function ico(n) { return '<svg class="ico"><use href="#ico-' + n + '"/></svg>'; }
 function card(s, type, lv) {
   var q = type === 's' ? seqS(s) : seqE(s, lv), ids = type === 's' ? s.l.map(function (z) { return z[0]; }) : s.ex.filter(function (v, i, a) { return a.indexOf(v) === i; });
-  var li = ids.map(function (id) { var e = X[id]; return '<li data-ex="' + id + '">' + thumb(id, 1) + '<div><b>' + e.n + '</b><span>' + e.d + '</span></div></li>'; }).join('');
-  return '<div class="xr-card" style="--g:' + s.g + '"><div class="xr-cm"><div class="xr-cf">' + thumb(ids[0], 1) + '</div><div class="xr-ci"><h3>' + s.n + '</h3><div class="xr-meta"><span>' + ico('clock') + mins(total(q)) + ' دقائق</span><span>' + ico('zap') + ids.length + ' تمارين</span></div>' + (s.d ? '<p>' + s.d + '</p>' : '') + '</div><button class="xr-go" onclick="xrStart(\'' + type + '\',\'' + s.id + '\')">ابدأ</button></div><details><summary>عرض التمارين</summary><ul>' + li + '</ul></details></div>';
+  var li = ids.map(function (id) { var e = X[id]; return '<li data-ex="' + id + '">' + thumb(id, 1) + '<div><b>' + e.n + '</b>' + (e.en ? '<em class="xr-en">' + e.en + '</em>' : '') + '<span>' + e.d + '</span></div><button type="button" class="xr-li-yt" aria-label="شاهد على يوتيوب" onclick="xrYt(\'' + id + '\',\'en\')">' + ico('play-circle') + '</button></li>'; }).join('');
+  return '<div class="xr-card" style="--g:' + s.g + '"><div class="xr-cm"><div class="xr-cf">' + thumb(ids[0], 1) + '</div><div class="xr-ci"><h3>' + s.n + (s.e ? '<em class="xr-en">' + s.e + '</em>' : '') + '</h3><div class="xr-meta"><span>' + ico('clock') + mins(total(q)) + ' دقائق</span><span>' + ico('zap') + ids.length + ' تمارين</span></div>' + (s.d ? '<p>' + s.d + '</p>' : '') + '</div><button class="xr-go" onclick="xrStart(\'' + type + '\',\'' + s.id + '\')">ابدأ</button></div><details><summary>عرض التمارين</summary><ul>' + li + '</ul></details></div>';
 }
 var listRes = [];
 function relList() { listRes.forEach(function (r) { try { ExerciseMediaService.release(r); } catch (e) {} }); listRes = []; }
@@ -18929,9 +19040,9 @@ function wireLists(el) {
       for (var i = 0; i < items.length; i++) {
         var li = items[i], key = 'xr_' + li.getAttribute('data-ex');
         try {
-          var r = await ExerciseMediaService.get(key);
-          if (r && r.type === 'image' && r.blobUrl) { listRes.push(r); var im = new Image(); im.className = 'xr-li-img'; im.alt = ''; im.src = r.blobUrl; var sv = li.querySelector('.xr-th'); if (sv) sv.replaceWith(im); }
-          else if (r) ExerciseMediaService.release(r);
+          var g = await getMedia(li.getAttribute('data-ex'));
+          if (g && g.res.type === 'image') { listRes.push(g.res); var im = new Image(); im.className = 'xr-li-img'; im.alt = ''; im.src = g.res.blobUrl; var sv = li.querySelector('.xr-th'); if (sv) sv.replaceWith(im); if (g.sim) li.querySelector('b').insertAdjacentHTML('beforeend', ' <small style="opacity:.8">(حركة مشابهة)</small>'); }
+          else if (g) ExerciseMediaService.release(g.res);
         } catch (e) {}
       }
     });
@@ -18941,11 +19052,15 @@ window.renderStretch = function () {
   var el = document.getElementById('stretchList'); if (!el) return; relList();
   el.innerHTML = SS.map(function (sec) { return '<div class="xr-h">' + sec.h + '</div>' + sec.i.map(function (s) { return card(s, 's', 1); }).join(''); }).join(''); wireLists(el);
 };
+function lib() {
+  var G = [['كرة طبية', ['mbr', 'mbs', 'mbc']], ['قرص الوزن', ['plp', 'plw']], ['البار', ['lmp', 'psh', 'cln']], ['كيتلبل وأرضي', ['ksw', 'spr']]];
+  return '<div class="xr-h">مكتبة تمارين المقاتلين (اضغط جرّب)</div>' + G.map(function (g) { return '<div class="xr-card" style="--g:linear-gradient(180deg,var(--accent-boxing,#ef4444),var(--accent-hiit,#f59e0b))"><details open><summary>' + g[0] + '</summary><ul>' + g[1].map(function (id) { var e = X[id]; return '<li>' + thumb(id, 1) + '<div><b>' + e.n + '</b><em class="xr-en">' + e.en + '</em><span>' + e.d + (e.wt ? ' <u>' + e.wt + '</u>' : '') + '</span></div><button type="button" class="xr-go" style="min-height:36px;padding:0 .8rem" onclick="xrStart(\'e\',\'try:' + id + '\')">جرّب</button></li>'; }).join('') + '</ul></details></div>'; }).join('');
+}
 window.renderExplosive = function () {
   var el = document.getElementById('explosiveList'); if (!el) return; relList(); var lv = lvl();
   el.innerHTML = '<div class="xr-level" role="group">' + LV.map(function (l, i) { return '<button type="button" class="' + (i === lv ? 'on' : '') + '" onclick="xrLevel(' + i + ')">' + l.n + '</button>'; }).join('') + '</div>' +
    '<div class="xr-note">' + ico('alert-triangle') + '<span>كل جلسة تبدأ بإحماء 60 ثانية. في مستوى «مبتدئ» تظهر لكل تمرين بديل بلا قفز، وتقصر فترات العمل وتطول الراحة.</span></div>' +
-   '<div class="xr-h">جلسات انفجارية</div>' + ES.map(function (s) { return card(s, 'e', lv); }).join(''); wireLists(el);
+   '<div class="xr-h">جلسات انفجارية</div>' + ES.map(function (s) { return card(s, 'e', lv); }).join('') + lib(); wireLists(el);
 };
 window.xrLevel = function (i) { safeSet('xrLevel', String(i)); renderExplosive(); try { haptic('light'); } catch (e) {} };
 /* ---- المشغّل ---- */
@@ -18954,14 +19069,16 @@ function build() {
   if (ov) return; ov = document.createElement('div'); ov.id = 'xr'; ov.className = 'xr'; ov.hidden = true;
   var segs = ''; for (var i = 0; i < 9; i++) segs += '<line stroke-linecap="round"/>';
   ov.innerHTML = '<div class="xr-top"><button type="button" class="xr-x" aria-label="إغلاق">' + ico('x') + '</button><div class="xr-ttl"></div><div class="xr-cnt"></div></div>' +
-   '<div class="xr-stage"><svg viewBox="0 -24 200 164" id="xrSvg"><line x1="20" x2="180" y1="131" y2="131" class="g"/>' + segs + '<circle r="9"/></svg><img class="xr-media" alt="" hidden><video class="xr-vid" muted loop playsinline hidden></video><span class="xr-badge"></span></div>' +
+   '<div class="xr-stage"><svg viewBox="0 -24 200 164" id="xrSvg"><line x1="20" x2="180" y1="131" y2="131" class="g"/>' + segs + '<circle r="9"/><circle class="pr" r="0"/></svg><span class="xr-simb" hidden>صورة لحركة مشابهة</span><img class="xr-media" alt="" hidden><video class="xr-vid" muted loop playsinline hidden></video><span class="xr-badge"></span></div>' +
    '<div class="xr-name"></div><div class="xr-desc"></div><div class="xr-alt"></div>' +
+   '<div class="xr-yt"><button type="button" data-l="ar">' + ico('play-circle') + 'يوتيوب عربي</button><button type="button" data-l="en">' + ico('play-circle') + 'YouTube English</button></div>' +
    '<div class="xr-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" class="bg"/><circle cx="50" cy="50" r="44" class="fg"/></svg><div class="xr-sec">0</div></div>' +
    '<div class="xr-bar"><i></i></div>' +
-   '<div class="xr-ctl"><button type="button" class="xr-prev" aria-label="السابق">' + ico('chevron-left') + '</button><button type="button" class="xr-pp" aria-label="إيقاف مؤقت">' + ico('pause') + '</button><button type="button" class="xr-skip" aria-label="التالي">' + ico('chevron-right') + '</button></div>' +
+   '<div class="xr-ctl"><button type="button" class="xr-skip" aria-label="التالي">' + ico('chevron-right') + '</button><button type="button" class="xr-pp" aria-label="إيقاف مؤقت">' + ico('pause') + '</button><button type="button" class="xr-prev" aria-label="السابق">' + ico('chevron-left') + '</button></div>' +
    '<div class="xr-done"></div>';
   document.body.appendChild(ov);
   ov.querySelector('.xr-x').onclick = function () { xrClose(); };
+  ov.querySelectorAll('.xr-yt button').forEach(function (b) { b.onclick = function () { if (S && S.q[S.i]) { if (!S.paused) pause(); xrYt(S.q[S.i].ex, b.getAttribute('data-l')); } }; });
   ov.querySelector('.xr-pp').onclick = pause; ov.querySelector('.xr-skip').onclick = function () { go(S.i + 1, true); }; ov.querySelector('.xr-prev').onclick = function () { go(Math.max(0, S.i - 1), true); };
 }
 function animate(id, mir) {
@@ -18972,9 +19089,10 @@ function animate(id, mir) {
     var L = layout(p, e, mir);
     L.seg.forEach(function (g, i) { var ln = lines[i]; ln.setAttribute('x1', g[0].x); ln.setAttribute('y1', g[0].y); ln.setAttribute('x2', g[1].x); ln.setAttribute('y2', g[1].y); ln.setAttribute('stroke-width', g[2]); ln.setAttribute('opacity', g[3]); });
     head.setAttribute('cx', L.head.x); head.setAttribute('cy', L.head.y);
+    var pc = svg.querySelector('.pr'); if (e.pr) { var d = PR[e.pr]; pc.setAttribute('cx', L.pr.x); pc.setAttribute('cy', L.pr.y); pc.setAttribute('r', d[0]); pc.setAttribute('class', 'pr' + (d[1] ? ' f' : '')); } else pc.setAttribute('r', 0);
   }
   function loop(now) {
-    var n = e.fr.length, pos = (now - t0) / (e.st * slow), i = Math.floor(pos) % n, f = pos - Math.floor(pos); f = f * f * (3 - 2 * f);
+    var n = e.fr.length, pos = Math.max(0, now - t0) / (e.st * slow), i = Math.floor(pos) % n, f = pos - Math.floor(pos); f = f * f * (3 - 2 * f);
     draw(lerp(e.fr[i], e.fr[(i + 1) % n], f)); raf = requestAnimationFrame(loop);
   }
   if (still) draw(e.fr[e.fr.length > 1 ? 1 : 0]); else raf = requestAnimationFrame(loop);
@@ -18985,30 +19103,50 @@ function clearMedia() {
   if (mres) { try { ExerciseMediaService.release(mres); } catch (e) {} mres = null; }
   if (!ov) return; var im = ov.querySelector('.xr-media'), v = ov.querySelector('.xr-vid');
   im.hidden = true; im.removeAttribute('src'); v.hidden = true; try { v.pause(); } catch (e) {} v.removeAttribute('src');
-  ov.querySelector('.xr-stage').classList.remove('has-media');
+  ov.querySelector('.xr-stage').classList.remove('has-media'); ov.querySelector('.xr-simb').hidden = true;
 }
 /* الصورة الحقيقية من خدمة الوسائط نفسها؛ الرسم المتحرك يبقى احتياطاً إن لم تتوفر (دون إنترنت ولا كاش) */
 function showMedia(ex, mir) {
-  var im = ov.querySelector('.xr-media'), v = ov.querySelector('.xr-vid'), stage = ov.querySelector('.xr-stage');
+  var im = ov.querySelector('.xr-media'), v = ov.querySelector('.xr-vid'), stage = ov.querySelector('.xr-stage'), sb = ov.querySelector('.xr-simb');
   if (mex === ex && mres) { im.style.transform = v.style.transform = mir ? 'scaleX(-1)' : ''; return; }
   clearMedia(); if (typeof ExerciseMediaService === 'undefined') return;
   var tk = ++mtok, tf = mir ? 'scaleX(-1)' : '';
-  ExerciseMediaService.get('xr_' + ex).then(function (res) {
+  getMedia(ex).then(function (g) {
+    if (!g) { noMedia(tk, ex); return; }
+    var res = g.res;
     if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; }
-    if (res && res.type === 'image' && res.blobUrl) {
+    function shown() { mres = res; mex = ex; sb.hidden = !g.sim; stage.classList.add('has-media'); }
+    if (res.type === 'image') {
       var pre = new Image(); pre.onload = function () {
         if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; }
-        mres = res; mex = ex; im.style.transform = tf; im.src = res.blobUrl; im.hidden = false; stage.classList.add('has-media');
+        shown(); im.style.transform = tf; im.src = res.blobUrl; im.hidden = false;
         if (res.blobUrl2) { var f = 0; mtimer = setInterval(function () { f ^= 1; im.src = f ? res.blobUrl2 : res.blobUrl; }, 900); }
       };
-      pre.onerror = function () { ExerciseMediaService.release(res); }; pre.src = res.blobUrl;
-    } else if (res && res.type === 'video' && res.url) {
-      v.onloadeddata = function () { if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; } mres = res; mex = ex; v.style.transform = tf; v.hidden = false; stage.classList.add('has-media'); try { v.play(); } catch (e) {} };
-      v.onerror = function () { ExerciseMediaService.release(res); }; v.src = res.url;
-    } else if (res) ExerciseMediaService.release(res);
-  }).catch(function () {});
+      pre.onerror = function () { ExerciseMediaService.release(res); noMedia(tk, ex); }; pre.src = res.blobUrl;
+    } else {
+      v.onloadeddata = function () { if (tk !== mtok || !S) { ExerciseMediaService.release(res); return; } shown(); v.style.transform = tf; v.hidden = false; try { v.play(); } catch (e) {} };
+      v.onerror = function () { ExerciseMediaService.release(res); noMedia(tk, ex); }; v.src = res.url;
+    }
+  }).catch(function () { noMedia(tk, ex); });
 }
 function say(t, r) { try { cvCancel(); cvSpeakWait(t, { rate: r || 1.05 }); } catch (e) {} }
+/* فتح الحركة على يوتيوب (نفس دالة البحث الموجودة في التطبيق) */
+window.xrYt = function (id, lang) {
+  var q = lang === 'ar' ? 'شرح تمرين ' + X[id].n : MQ[id][0][0] + ' exercise how to';
+  try { openYoutubeSearch(q); } catch (e) { window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(q), '_blank', 'noopener,noreferrer'); }
+};
+var nomed = {};
+function noMedia(tk, ex) { nomed[ex] = 1; if (tk === mtok && ov && S) ov.classList.add('nomedia'); }
+/* لغة المدرب من الإعدادات (voiceLang): العبارات والأسماء المنطوقة تتبعها. عبارات التطبيق (t / pickCallPhrase) تُستعمل حيثما وُجدت لتعمل «جودة الصوت: بشرية» والتسجيلات الشخصية */
+var VT = { 'ar-SA': { warm: 'إحماء', next: 'التالي', hold: 'ثبّت', side: 'بدّل الجهة', breathe: 'تنفّس ببطء' },
+  'en-US': { warm: 'Warm-up', next: 'Next', hold: 'Hold', side: 'Switch sides', breathe: 'Breathe slowly' },
+  'fr-FR': { warm: 'Échauffement', next: 'Ensuite', hold: 'Tiens la position', side: 'Change de côté', breathe: 'Respire lentement' } };
+var FRN = { neck: 'Étirement du cou', tri: 'Étirement des triceps', chest: 'Ouverture de la poitrine', fold: 'Flexion avant debout', quad: 'Étirement des quadriceps', hip: 'Étirement des fléchisseurs de hanche', catcow: 'Chat-vache', child: "Posture de l'enfant", wrist: 'Étirement du poignet',
+  hk: 'Montées de genoux', wsq: 'Squats sans charge', swing: 'Balancement des bras', sqj: 'Squats sautés', burp: 'Burpees', mtn: 'Mountain climbers', cpu: 'Pompes avec claquement', tuck: 'Sauts groupés', jl: 'Fentes sautées', pun: 'Coups de poing explosifs' };
+function VL() { return VT[voiceLang] ? voiceLang : 'ar-SA'; }
+function sname(id) { var l = VL(); return l === 'en-US' ? (X[id].en || X[id].n) : l === 'fr-FR' ? (FRN[id] || X[id].en) : X[id].n; }
+function tx(k) { try { return window.t(k) || ''; } catch (e) { return ''; } }
+function hype() { try { return boxingCallsEnabled ? pickCallPhrase('hype') : ''; } catch (e) { return ''; } }
 var HYPE = ['انفجر!', 'بأقصى قوة!', 'هيا!', 'أسرع!'];
 function go(i, manual) {
   if (!S) return; if (i >= S.q.length) return finish();
@@ -19017,18 +19155,20 @@ function go(i, manual) {
   var lab = { warm: 'إحماء', work: 'اعمل!', rest: 'راحة', hold: st.side ? 'بدّل الجهة' : 'ثبّت', prep: 'استعد' }[st.k];
   ov.className = 'xr show k-' + st.k + ' t-' + S.type;
   ov.querySelector('.xr-badge').textContent = lab;
-  ov.querySelector('.xr-name').textContent = e.n;
-  ov.querySelector('.xr-desc').textContent = e.d + (e.t && S.type === 's' ? ' ' + e.t : '');
+  ov.querySelector('.xr-name').innerHTML = nm(e);
+  ov.querySelector('.xr-desc').textContent = e.d + (e.t ? ' ' + e.t : '') + (e.wt ? ' — ' + e.wt : '');
   var alt = ov.querySelector('.xr-alt'); alt.textContent = (S.type === 'e' && S.lv === 0 && e.alt && st.k !== 'warm') ? 'بديل بلا قفز: ' + e.alt : '';
   var main = q.filter(function (z) { return z.k === 'hold' || z.k === 'work' || z.k === 'warm'; }), idx = main.indexOf(st);
   ov.querySelector('.xr-cnt').textContent = idx >= 0 ? (idx + 1) + ' من ' + main.length : '';
+  if (nomed[st.ex]) ov.classList.add('nomedia');
   animate(st.ex, !!st.side); showMedia(st.ex, !!st.side);
   var done = q.slice(0, i).reduce(function (a, b) { return a + b.sec; }, 0); S.base = done * 1000;
   try { haptic('light'); } catch (er) {}
-  if (st.k === 'work') { try { playBoxingBell(); } catch (er) {} say(HYPE[Math.floor(Math.random() * HYPE.length)], 1.15); }
-  else if (st.k === 'rest') { try { playRoundEndBell(); } catch (er) {} say('راحة. التالي، ' + e.n); }
-  else if (st.k === 'prep') say('استعد. ' + e.n); else if (st.k === 'warm') say('إحماء. ' + e.n);
-  else if (st.k === 'hold') say(st.side ? 'بدّل الجهة' : e.n + '. ثبّت');
+  var V = VT[VL()], nmv = sname(st.ex);
+  if (st.k === 'work') { try { playBoxingBell(); } catch (er) {} var hp = hype(); if (hp) say(hp, 1.15); }
+  else if (st.k === 'rest') { try { playRoundEndBell(); } catch (er) {} say(tx('restNow') + '. ' + V.next + ', ' + nmv); }
+  else if (st.k === 'prep') say(tx('ready') + '. ' + nmv); else if (st.k === 'warm') say(V.warm + '. ' + nmv);
+  else if (st.k === 'hold') say(st.side ? V.side : nmv + '. ' + V.hold);
   S.tm = S.tm || setInterval(tick, 100); tick();
 }
 function tick() {
@@ -19038,7 +19178,7 @@ function tick() {
   ov.querySelector('.xr-ring .fg').style.strokeDashoffset = (276.46 * (1 - rem / S.dur)).toFixed(1);
   var tot = S.tot * 1000, el = S.base + (S.dur - rem); ov.querySelector('.xr-bar i').style.width = Math.min(100, el / tot * 100) + '%';
   if (sec !== S.lastSec) { S.lastSec = sec; if (sec <= 3 && sec > 0) { try { playTick(); } catch (e) {} } }
-  if (!S.half && rem < S.dur / 2 && st.sec >= 30 && st.k !== 'prep') { S.half = true; if (st.k === 'work') say('استمر! لا تتوقف', 1.15); else if (st.k === 'hold' && !st.side && !X[st.ex].sd) say('تنفّس ببطء'); }
+  if (!S.half && rem < S.dur / 2 && st.sec >= 30 && st.k !== 'prep') { S.half = true; if (st.k === 'work') { var hp2 = hype(); if (hp2) say(hp2, 1.15); } else if (st.k === 'hold' && !st.side && !X[st.ex].sd) say(VT[VL()].breathe); }
 }
 function setPP() { var b = ov.querySelector('.xr-pp'); b.innerHTML = ico(S.paused ? 'play' : 'pause'); ov.classList.toggle('paused', !!S.paused); }
 function pause() { if (!S) return; if (!S.paused) { S.rem = S.end - Date.now(); S.paused = true; try { cvCancel(); } catch (e) {} } else { S.end = Date.now() + S.rem; S.paused = false; } setPP(); }
@@ -19047,22 +19187,31 @@ function finish() {
   try { addWorkoutToHistory(S.type === 's' ? 'stretch' : 'explosive', nm, mn); } catch (e) {}
   ov.className = 'xr show done t-' + S.type;
   ov.querySelector('.xr-done').innerHTML = '<div class="xr-trophy">' + ico('trophy') + '</div><h2>أحسنت!</h2><p>أنهيت «' + nm + '» في ' + mn + ' د، وتم حفظ الجلسة في تقدمي.</p><button type="button" class="xr-go" onclick="xrClose()">إغلاق</button>';
-  say('أحسنت! انتهت الجلسة', 1);
+  say(tx('goodJob') + '. ' + tx('done'), 1);
   try { navigator.vibrate && navigator.vibrate([60, 40, 60]); } catch (e) {}
 }
 window.xrStart = function (type, id) {
-  var s = find(id); if (!s) return; build(); var lv = lvl();
-  var q = type === 's' ? seqS(s) : seqE(s, lv);
-  S = { type: type, lv: lv, q: q, name: s.n, tot: total(q), start: Date.now(), i: 0 };
+  var s = id.indexOf('try:') === 0 ? { n: X[id.slice(4)].n, ex: [id.slice(4)], w: 30, r: 10 } : find(id); if (!s) return; build(); var lv = lvl();
+  var q = type === 's' ? seqS(s) : seqE(s, lv, id.indexOf('try:') === 0);
+  nomed = {}; S = { type: type, lv: lv, q: q, name: s.n, tot: total(q), start: Date.now(), i: 0 };
   try { var seen = {}, ks = []; q.forEach(function (z) { if (!seen[z.ex]) { seen[z.ex] = 1; ks.push('xr_' + z.ex); } }); ExerciseMediaService.prefetch(ks); } catch (e) {}
   ov.hidden = false; ov.querySelector('.xr-ttl').textContent = s.n; ov.querySelector('.xr-done').innerHTML = '';
-  document.body.classList.add('xr-open'); try { playClick(); } catch (e) {}
+  document.body.classList.add('xr-open'); if (!xrP) { xrP = true; try { history.pushState({ xr: 1 }, '', location.href); } catch (e) { xrP = false; } } try { playClick(); } catch (e) {}
   try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { wl = l; }).catch(function () {}); } catch (e) {}
   go(0);
 };
-window.xrClose = function () {
+var xrP = false, swl = false;
+/* زر الرجوع في الهاتف يغلق المشغّل أولاً بدل الانتقال لصفحة أخرى */
+var hbk = window.handleBackButton;
+window.handleBackButton = function () {
+  if (swl) { swl = false; return; }
+  if (xrP && ov && !ov.hidden) { xrClose(true); return; }
+  return hbk ? hbk.apply(this, arguments) : undefined;
+};
+window.xrClose = function (fp) {
   if (!ov || ov.hidden) return; if (S) { clearInterval(S.tm); } S = null; cancelAnimationFrame(raf); clearMedia(); try { cvCancel(); } catch (e) {}
   try { wl && wl.release(); } catch (e) {} wl = null; ov.hidden = true; ov.className = 'xr'; document.body.classList.remove('xr-open');
+  if (xrP) { xrP = false; if (fp !== true) { swl = true; setTimeout(function () { swl = false; }, 600); try { history.back(); } catch (e) { swl = false; } } }
 };
 })();
 </script>
