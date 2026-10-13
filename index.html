@@ -5620,6 +5620,16 @@ body.floor-mode #floorHint.show { display:block; }
      </div>
      <div class="settings-item">
       <div class="item-info">
+       <span class="item-icon"><svg class="ico"><use href="#ico-volume-2"/></svg></span>
+       <div class="item-text">
+        <span class="item-title">الأصوات مع الموسيقى</span>
+        <span class="item-desc">تعمل فوق موسيقى الهاتف دون إيقافها (يكتمها زر الصامت)</span>
+       </div>
+      </div>
+      <label class="switch"><input type="checkbox" id="audioMixToggle" checked onchange="toggleAudioMix(this.checked)"><span class="switch-slider"></span></label>
+     </div>
+     <div class="settings-item">
+      <div class="item-info">
        <span class="item-icon"><svg class="ico"><use href="#ico-vibrate"/></svg></span>
        <div class="item-text">
         <span class="item-title">الاهتزاز</span>
@@ -6259,7 +6269,16 @@ let audioUnlocked = false;
    لمسة طالما الحالة لم تصبح "running" بعد (وليس مرة واحدة فقط). */
 /* iOS: زر الصامت يكتم Web Audio، لكن تشغيل عنصر <audio> يحوّل جلسة الصوت إلى "playback" فيعمل الصوت حتى في الوضع الصامت */
 let _silentEl = null;
+/* [iOS] وضع "مع الموسيقى" (الافتراضي): جلسة ambient تخلط أصوات التطبيق مع موسيقى الهاتف بدل مقاطعتها. إيقافه يعيد وضع playback الذي يتجاوز زر الصامت لكنه يقاطع الموسيقى */
+function audioMixOn() { try { return localStorage.getItem('audioMix') !== '0'; } catch (e) { return true; } }
+function toggleAudioMix(on) { try { localStorage.setItem('audioMix', on ? '1' : '0'); } catch (e) {} iosSilentSwitchBypass(); try { const c = getAudioCtx(); if (c && c.state !== 'running') c.resume(); } catch (e) {} }
+document.addEventListener('DOMContentLoaded', () => { const t = document.getElementById('audioMixToggle'); if (t) t.checked = audioMixOn(); });
 function iosSilentSwitchBypass() {
+  if (audioMixOn()) {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'ambient'; } catch (e) {}
+    try { if (_silentEl && !_silentEl.paused) _silentEl.pause(); } catch (e) {}
+    return;
+  }
   try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
   try {
     if (!_silentEl) {
