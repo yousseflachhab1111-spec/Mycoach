@@ -13555,7 +13555,7 @@ async function mediaCoverageUI(note) {
   [bCopy, bClose, bFill].forEach(b => { b.type = 'button'; b.style.cssText = 'flex:1;padding:10px;border-radius:10px;border:1px solid var(--border-color,#333);background:var(--bg-elevated,#262a36);color:inherit;font-weight:700;font-family:inherit'; });
   bCopy.textContent = 'نسخ القائمة'; bClose.textContent = 'إغلاق'; bFill.textContent = '⬇️ جلب المتاح'; bFill.onclick = () => { ov.remove(); mediaAutoFill(); };
   bClose.onclick = () => ov.remove();
-  bCopy.onclick = () => { body.select(); try { if (navigator.clipboard) navigator.clipboard.writeText(body.value); else document.execCommand('copy'); } catch (e) { try { document.execCommand('copy'); } catch (x) {} } };
+  bCopy.onclick = () => { body.select(); try { if (navigator.clipboard) navigator.clipboard.writeText(body.value).catch(() => { try { document.execCommand('copy'); } catch (x) {} }); else document.execCommand('copy'); } catch (e) { try { document.execCommand('copy'); } catch (x) {} } };
   row.appendChild(bFill); row.appendChild(bCopy); row.appendChild(bClose); card.appendChild(head); card.appendChild(body); card.appendChild(row); ov.appendChild(card); document.body.appendChild(ov);
   let pers = 'غير معروف'; try { if (navigator.storage && navigator.storage.persisted) pers = (await navigator.storage.persisted()) ? 'مفعّل ✅' : 'غير مفعّل ⚠️ (قد يحذف المتصفح البيانات؛ الأفضل تثبيت التطبيق على رابط https)'; } catch (e) {}
   const memo = (window.__localMediaMemo = window.__localMediaMemo || {}); keys.forEach(k => { delete memo[k]; });
@@ -18881,6 +18881,35 @@ body.xr-open #coachFab { display:none !important; } body.xr-open { overflow:hidd
 .xr-card li b { display:inline-block; }
 .xr-card li span { display:block; margin-top:.1rem; line-height:1.45; }
 .xr-card .xr-li-yt { width:38px; height:38px; min-width:0; flex:0 0 auto; }
+/* ===== إصلاحات التوافق + تمييز المؤقت الحر ===== */
+/* iOS: أي حقل بخط أصغر من 16px يُكبّر الصفحة عند التركيز */
+@supports (-webkit-touch-callout: none) { input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea { font-size: 16px !important; } }
+/* شريط التنقل السفلي يبقى ظاهراً في شاشة "تقدمي" (الآيفون بلا زر رجوع) */
+#mainApp.dash-hidden > .bottom-nav { display: flex !important; }
+#dashboardScreen.active { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+/* المؤقت الحر: إطار منقّط بلون الثيم ونقطة نابضة، وعند التفعيل تدرّج كامل */
+#tab-freetimer { position: relative; border: 1px dashed color-mix(in srgb, var(--accent-hiit, #14b8a6) 75%, transparent) !important; background: linear-gradient(135deg, color-mix(in srgb, var(--accent-hiit, #14b8a6) 20%, transparent), transparent); }
+#tab-freetimer .ico { color: var(--accent-hiit, #14b8a6); }
+#tab-freetimer::after { content: ""; position: absolute; top: 6px; inset-inline-end: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-hiit, #14b8a6); animation: ftPulse 2s ease-out infinite; }
+@keyframes ftPulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-hiit, #14b8a6) 70%, transparent); } 70%, 100% { box-shadow: 0 0 0 8px transparent; } }
+#tab-freetimer.active { border-style: solid !important; background: linear-gradient(135deg, var(--accent-hiit, #14b8a6), color-mix(in srgb, var(--accent-hiit, #14b8a6) 55%, #000)); color: #fff; }
+#tab-freetimer.active .ico { color: #fff; }
+#tab-freetimer.active::after { background: #fff; }
+@media (prefers-reduced-motion: reduce) { #tab-freetimer::after { animation: none; } }
+/* ===== تحسينات بصرية وتجربة استخدام ===== */
+.coach-fab { transition: transform .3s ease, opacity .3s ease; }
+body.fab-away .coach-fab { transform: translateY(150px) scale(.6); opacity: 0; pointer-events: none; }
+.main-content.active { animation: xrTabIn .28s ease both; }
+@keyframes xrTabIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+button:focus-visible, [role=tab]:focus-visible, summary:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent-hiit, #14b8a6); outline-offset: 2px; }
+.xr-ring { filter: drop-shadow(0 0 7px color-mix(in srgb, var(--xr-acc, var(--accent-boxing, #ef4444)) 55%, transparent)); }
+.xr-card { transition: transform .15s ease, box-shadow .2s ease; }
+.xr-card:active { transform: scale(.992); }
+.xr-go:active, .xr-level button:active { transform: scale(.95); }
+.xr-hero { box-shadow: 0 10px 28px -16px color-mix(in srgb, var(--a, var(--accent-hiit, #14b8a6)) 70%, transparent); }
+.xr-h { letter-spacing: .01em; }
+.xr-card details[open] summary { border-bottom: 1px solid var(--border-color); }
+@media (prefers-reduced-motion: reduce) { .main-content.active, .coach-fab, .xr-card { animation: none !important; transition: none !important; } }
 </style>
 <script>
 /* ===== إطالة + انفجاري: رسوم متحركة (هيكل عظمي بالزوايا) + مشغّل صوتي ===== */
@@ -19254,6 +19283,9 @@ window.xrClose = function (fp) {
   if (xrP) { xrP = false; if (fp !== true) { swl = true; setTimeout(function () { swl = false; }, 600); try { history.back(); } catch (e) { swl = false; } } }
 };
 })();
+
+/* إخفاء زر المدرب أثناء التمرير للأسفل كي لا يغطي الأزرار، ويعود عند التمرير للأعلى */
+(function () { var last = 0, t; document.addEventListener('scroll', function (e) { var el = e.target; if (el !== document && el !== document.body && el !== document.documentElement) return; var y = (el === document.body ? document.body.scrollTop : 0) || window.scrollY || 0; if (y > last + 8 && y > 120) document.body.classList.add('fab-away'); else if (y < last - 8) document.body.classList.remove('fab-away'); last = y; clearTimeout(t); t = setTimeout(function () { document.body.classList.remove('fab-away'); }, 1400); }, { passive: true, capture: true }); })();
 </script>
 
 </body>
