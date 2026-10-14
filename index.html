@@ -5623,10 +5623,10 @@ body.floor-mode #floorHint.show { display:block; }
        <span class="item-icon"><svg class="ico"><use href="#ico-volume-2"/></svg></span>
        <div class="item-text">
         <span class="item-title">الأصوات مع الموسيقى</span>
-        <span class="item-desc">تعمل فوق موسيقى الهاتف دون إيقافها (يكتمها زر الصامت)</span>
+        <span class="item-desc">تجريبي: خلط الأصوات مع الموسيقى دون إيقافها، لكن زر الصامت يكتمها. أبقه مطفأً إن اختفى الصوت</span>
        </div>
       </div>
-      <label class="switch"><input type="checkbox" id="audioMixToggle" checked onchange="toggleAudioMix(this.checked)"><span class="switch-slider"></span></label>
+      <label class="switch"><input type="checkbox" id="audioMixToggle" onchange="toggleAudioMix(this.checked)"><span class="switch-slider"></span></label>
      </div>
      <div class="settings-item">
       <div class="item-info">
@@ -6270,8 +6270,8 @@ let audioUnlocked = false;
 /* iOS: زر الصامت يكتم Web Audio، لكن تشغيل عنصر <audio> يحوّل جلسة الصوت إلى "playback" فيعمل الصوت حتى في الوضع الصامت */
 let _silentEl = null;
 /* [iOS] وضع "مع الموسيقى" (الافتراضي): جلسة ambient تخلط أصوات التطبيق مع موسيقى الهاتف بدل مقاطعتها. إيقافه يعيد وضع playback الذي يتجاوز زر الصامت لكنه يقاطع الموسيقى */
-function audioMixOn() { try { return localStorage.getItem('audioMix') !== '0'; } catch (e) { return true; } }
-function toggleAudioMix(on) { try { localStorage.setItem('audioMix', on ? '1' : '0'); } catch (e) {} iosSilentSwitchBypass(); try { const c = getAudioCtx(); if (c && c.state !== 'running') c.resume(); } catch (e) {} }
+function audioMixOn() { try { return localStorage.getItem('audioMix2') === '1'; } catch (e) { return false; } }
+function toggleAudioMix(on) { try { localStorage.setItem('audioMix2', on ? '1' : '0'); } catch (e) {} iosSilentSwitchBypass(); try { const c = getAudioCtx(); if (c && c.state !== 'running') c.resume(); } catch (e) {} }
 document.addEventListener('DOMContentLoaded', () => { const t = document.getElementById('audioMixToggle'); if (t) t.checked = audioMixOn(); });
 function iosSilentSwitchBypass() {
   if (audioMixOn()) {
