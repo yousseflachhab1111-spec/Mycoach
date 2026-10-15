@@ -6270,9 +6270,10 @@ let audioUnlocked = false;
 /* iOS: زر الصامت يكتم Web Audio، لكن تشغيل عنصر <audio> يحوّل جلسة الصوت إلى "playback" فيعمل الصوت حتى في الوضع الصامت */
 let _silentEl = null;
 /* [iOS] وضع "مع الموسيقى" (الافتراضي): جلسة ambient تخلط أصوات التطبيق مع موسيقى الهاتف بدل مقاطعتها. إيقافه يعيد وضع playback الذي يتجاوز زر الصامت لكنه يقاطع الموسيقى */
-function audioMixOn() { try { return localStorage.getItem('audioMix2') === '1'; } catch (e) { return false; } }
+function audioMixOn() { try { return localStorage.getItem('audioMix2') !== '0'; } catch (e) { return true; } }
 function toggleAudioMix(on) { try { localStorage.setItem('audioMix2', on ? '1' : '0'); } catch (e) {} iosSilentSwitchBypass(); try { const c = getAudioCtx(); if (c && c.state !== 'running') c.resume(); } catch (e) {} }
-document.addEventListener('DOMContentLoaded', () => { const t = document.getElementById('audioMixToggle'); if (t) t.checked = audioMixOn(); });
+document.addEventListener('DOMContentLoaded', () => { const t = document.getElementById('audioMixToggle'); if (t) t.checked = audioMixOn(); try { if (audioMixOn() && navigator.audioSession) navigator.audioSession.type = 'ambient'; } catch (e) {} });
+window.addEventListener('pageshow', () => { try { if (audioMixOn() && navigator.audioSession) navigator.audioSession.type = 'ambient'; } catch (e) {} });
 function iosSilentSwitchBypass() {
   if (audioMixOn()) {
     try { if (navigator.audioSession) navigator.audioSession.type = 'ambient'; } catch (e) {}
