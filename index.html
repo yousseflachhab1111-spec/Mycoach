@@ -18869,7 +18869,7 @@ body.xr-open #coachFab { display:none !important; } body.xr-open { overflow:hidd
 .xr-stage .pr, .xr-th .pr { fill:none; stroke:var(--xr-acc,currentColor); stroke-width:3; } .xr-stage .pr.f, .xr-th .pr.f { fill:var(--xr-acc,currentColor); }
 /* بطاقات مضغوطة: بلا صور، والاسم الإنجليزي بجوار العربي */
 .xr-card { margin-bottom:.5rem; }
-.xr-card .xr-cf, .xr-card li > .xr-th { display:none; }
+.xr-card .xr-cf { display:none; }
 .xr-card .xr-cm { padding:.5rem .8rem .5rem 1rem; gap:.6rem; }
 .xr-card .xr-ci h3 { margin:0; font-size:1rem; line-height:1.35; }
 .xr-card .xr-en { display:inline-block; margin:0 .45rem; font-size:.68rem; font-weight:600; opacity:.65; direction:ltr; unicode-bidi:isolate; vertical-align:middle; }
@@ -18910,6 +18910,112 @@ button:focus-visible, [role=tab]:focus-visible, summary:focus-visible, a:focus-v
 .xr-h { letter-spacing: .01em; }
 .xr-card details[open] summary { border-bottom: 1px solid var(--border-color); }
 @media (prefers-reduced-motion: reduce) { .main-content.active, .coach-fab, .xr-card { animation: none !important; transition: none !important; } }
+/* ===== تصميم v2 لخانتي الانفجاري والإطالة ===== */
+.xr-hero { display: none !important; }
+.xh { --xa: var(--accent-hiit, #14b8a6); } .xh.xh-e, .xh-sheet.xh-e { --xa: var(--accent-boxing, #ef4444); } .xh-sheet.xh-s { --xa: var(--accent-hiit, #14b8a6); }
+.xh-hero { position: relative; overflow: hidden; border-radius: 22px; padding: 1rem 1rem .9rem; margin-bottom: .8rem; color: var(--text-primary); background: linear-gradient(135deg, color-mix(in srgb, var(--xa) 40%, var(--bg-secondary)), var(--bg-secondary) 78%); border: 1px solid color-mix(in srgb, var(--xa) 45%, var(--border-color)); box-shadow: 0 16px 30px -20px var(--xa); }
+.xh-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .6rem; }
+.xh-top h2 { margin: 0; font-size: 1.6rem; font-weight: 900; line-height: 1.1; } .xh-top p { margin: .2rem 0 0; font-size: .8rem; opacity: .75; }
+.xh-streak { text-align: center; background: color-mix(in srgb, var(--xa) 22%, transparent); border-radius: 14px; padding: .35rem .75rem; font-size: 1rem; line-height: 1.1; } .xh-streak b { font-size: 1.45rem; margin-inline-start: .25rem; } .xh-streak small { display: block; font-size: .6rem; opacity: .8; }
+.xh-dots { display: flex; gap: .35rem; margin: .85rem 0 .5rem; } .xh-dots span { flex: 1; text-align: center; font-size: .62rem; opacity: .9; }
+.xh-dots i { display: block; position: relative; height: 26px; border-radius: 9px; margin-bottom: 3px; background: color-mix(in srgb, var(--text-primary) 11%, transparent); }
+.xh-dots .on i { background: var(--xa); box-shadow: 0 0 14px -3px var(--xa); } .xh-dots .on i::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-style: normal; font-size: .8rem; font-weight: 900; }
+.xh-dots .tdy i { outline: 2px dashed var(--xa); outline-offset: 1px; }
+.xh-stats { display: flex; gap: 1rem; font-size: .74rem; opacity: .9; margin-bottom: .75rem; } .xh-stats b { font-size: 1.05rem; }
+.xh-cta { width: 100%; height: 46px; border: none; border-radius: 14px; font-weight: 800; font-size: .92rem; color: #fff; background: linear-gradient(135deg, var(--xa), color-mix(in srgb, var(--xa) 55%, #000)); display: flex; align-items: center; justify-content: center; gap: .5rem; } .xh-cta:active { transform: scale(.98); }
+.xh-gen { margin-bottom: .8rem; border-radius: 18px; background: var(--bg-secondary); border: 1px solid var(--border-color); overflow: hidden; }
+.xh-gen summary { list-style: none; cursor: pointer; padding: .85rem 1rem; font-weight: 800; font-size: .9rem; display: flex; justify-content: space-between; align-items: center; } .xh-gen summary::-webkit-details-marker { display: none; }
+.xh-pl { opacity: .6; transition: transform .25s; } .xh-gen[open] .xh-pl { transform: rotate(180deg); } .xh-gen .gb { padding: 0 1rem 1rem; }
+.xh-lab { font-size: .72rem; font-weight: 700; opacity: .7; margin: .7rem 0 .35rem; } .xh-gbtn { margin-top: 1rem; }
+.xh-chips, .xh-fil { display: flex; gap: .4rem; flex-wrap: wrap; } .xh-fil { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: .2rem 0 .75rem; padding-bottom: .15rem; } .xh-fil::-webkit-scrollbar { display: none; }
+.xh-chip { flex: 0 0 auto; padding: .42rem .8rem; border-radius: 999px; border: 1px solid var(--border-color); background: transparent; color: var(--text-primary); font-size: .78rem; font-weight: 700; white-space: nowrap; } .xh-chip.on { background: var(--xa); border-color: var(--xa); color: #fff; }
+.xh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; } .xh-grid > .xh-tile:last-child:nth-child(odd) { grid-column: 1 / -1; min-height: 0; flex-direction: row; align-items: center; gap: .8rem; } .xh-grid > .xh-tile:last-child:nth-child(odd) small { margin: 0 auto 0 0; } .xh-h { margin: .8rem .2rem .45rem; font-size: .85rem; font-weight: 800; opacity: .8; }
+.xh-tile { display: flex; flex-direction: column; align-items: flex-start; gap: .22rem; min-height: 138px; padding: .8rem; text-align: start; border-radius: 18px; border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-primary); transition: transform .15s; } .xh-tile:active { transform: scale(.97); }
+.xh-ic { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; font-size: 1.35rem; margin-bottom: .25rem; box-shadow: 0 8px 16px -8px rgba(0,0,0,.6); }
+.xh-tile b { font-size: .95rem; line-height: 1.3; } .xh-tile em { font-style: normal; font-size: .62rem; opacity: .6; direction: ltr; } .xh-tile small { margin-top: auto; font-size: .7rem; opacity: .85; }
+.xh-th { flex: 0 0 64px; width: 64px; height: 48px; border-radius: 10px; overflow: hidden; background: color-mix(in srgb, var(--text-primary) 9%, transparent); } .xh-th svg { width: 100%; height: 100%; } .xh-row .xr-li-img { flex: 0 0 64px; }
+.xh-note { margin: 1rem .2rem .4rem; font-size: .72rem; opacity: .7; line-height: 1.6; }
+.xh-back { position: fixed; inset: 0; z-index: 10040; background: rgba(0,0,0,.55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity .25s; }
+.xh-sheet { position: fixed; inset-inline: 0; bottom: 0; z-index: 10050; max-height: 86vh; display: flex; flex-direction: column; background: var(--bg-secondary); color: var(--text-primary); border-radius: 26px 26px 0 0; border-top: 1px solid var(--border-color); box-shadow: 0 -20px 50px -20px rgba(0,0,0,.6); transform: translateY(108%); transition: transform .32s cubic-bezier(.2,.8,.2,1); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.xh-open .xh-back { opacity: 1; pointer-events: auto; } .xh-open .xh-sheet { transform: none; }
+.xh-grab { width: 44px; height: 5px; border-radius: 3px; background: var(--border-color); margin: .65rem auto .3rem; flex: 0 0 auto; } .xh-sb { overflow-y: auto; padding: .3rem 1.1rem .6rem; -webkit-overflow-scrolling: touch; }
+.xh-sh { display: flex; align-items: center; gap: .8rem; } .xh-sh h3 { margin: 0; font-size: 1.15rem; } .xh-sh small { opacity: .6; direction: ltr; display: block; font-size: .7rem; } .xh-sd { margin: .6rem 0 .2rem; font-size: .82rem; opacity: .8; line-height: 1.6; }
+.xh-mt { display: flex; flex-wrap: wrap; gap: .4rem; margin: .6rem 0 .4rem; } .xh-mt span { padding: .25rem .65rem; border-radius: 999px; font-size: .72rem; font-weight: 700; background: color-mix(in srgb, var(--xa) 20%, transparent); }
+.xh-row { display: flex; gap: .7rem; align-items: flex-start; padding: .7rem 0; border-top: 1px solid var(--border-color); } .xh-row > div { flex: 1; min-width: 0; }
+.xh-n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--xa); color: #fff; font-size: .75rem; font-weight: 800; }
+.xh-row b { font-size: .92rem; } .xh-row em { font-style: normal; font-size: .62rem; opacity: .6; margin-inline-start: .4rem; direction: ltr; display: inline-block; } .xh-row p { margin: .2rem 0 0; font-size: .76rem; opacity: .78; line-height: 1.55; }
+.xh-wt { display: inline-block; margin: .3rem .3rem 0 0; padding: 0 .55rem; border-radius: 999px; font-size: .68rem; font-weight: 800; background: color-mix(in srgb, var(--xa) 22%, transparent); }
+.xh-start { width: auto; margin: .4rem 1.1rem 1rem; flex: 0 0 auto; }
+.xh-conf { position: fixed; inset: 0; z-index: 10060; pointer-events: none; overflow: hidden; } .xh-conf i { position: absolute; top: -16px; width: 8px; height: 14px; border-radius: 2px; animation: xhFall linear forwards; } @keyframes xhFall { to { transform: translateY(110vh) rotate(560deg); opacity: .9; } }
+@media (prefers-reduced-motion: reduce) { .xh-conf { display: none; } .xh-sheet, .xh-back, .xh-tile { transition: none; } }
+/* أيقونات SVG */
+.xi { flex: 0 0 auto; display: inline-block; vertical-align: middle; }
+.xh-chip, .xh-cta, .xh-mt span, .xh-sm, .xh-stats span, .xh-tile small { display: inline-flex; align-items: center; gap: .4rem; } .xh-note { display: flex; align-items: center; gap: .4rem; } .xh-tile small { gap: .3rem; }
+.xh-ic .xi { color: #fff; filter: drop-shadow(0 2px 3px rgba(0,0,0,.35)); }
+.xh-streak { display: flex; flex-direction: column; align-items: center; } .xh-streak .xi { color: var(--xa); } .xh-streak b { margin: 0; line-height: 1; }
+.xh-deco { position: absolute; inset-inline-start: -14px; bottom: -26px; color: var(--xa); opacity: .1; pointer-events: none; transform: rotate(-12deg); } .xh-deco .xi { stroke-width: 1.2; }
+.xh-dots .on i::after { content: ""; background: #fff; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E") center / 62% no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E") center / 62% no-repeat; }
+.xh-gen summary .xi:first-child { color: var(--xa); }
+
+/* ===== تنظيف بصري: الانفجاري + الإطالة (v3) ===== */
+body:has(#content-explosive.active), body:has(#content-stretch.active) { background-image: none !important; }
+body:has(#content-explosive.active)::before, body:has(#content-stretch.active)::before { opacity: .4; }
+body:has(#content-explosive.active) .coach-fab, body:has(#content-stretch.active) .coach-fab { width: 40px; height: 40px; font-size: 1.05rem; }
+.xh { padding-bottom: 88px; }
+.xh-hero { padding: .8rem .9rem; border-radius: 18px; margin-bottom: .6rem; background: color-mix(in srgb, var(--xa) 9%, var(--bg-secondary)); border: 1px solid color-mix(in srgb, var(--xa) 26%, var(--border-color)); box-shadow: none; }
+.xh-deco { display: none; }
+.xh-top h2 { font-size: 1.2rem; } .xh-top p { font-size: .74rem; margin: .1rem 0 0; opacity: .7; }
+.xh-streak { flex-direction: row; gap: .3rem; padding: .28rem .65rem; border-radius: 999px; background: color-mix(in srgb, var(--xa) 15%, transparent); font-size: .85rem; }
+.xh-streak b { font-size: 1rem; } .xh-streak small { font-size: .68rem; opacity: .8; }
+.xh-dots { display: flex; justify-content: space-between; gap: 0; margin: .7rem 0 .55rem; }
+.xh-dots span { flex: 0 0 auto; font-size: inherit; opacity: 1; }
+.xh-dots i { display: grid; place-items: center; position: static; width: 30px; height: 30px; margin: 0; border-radius: 50%; font-style: normal; font-size: .7rem; font-weight: 700; line-height: 1; color: var(--text-secondary); background: color-mix(in srgb, var(--text-primary) 8%, transparent); }
+.xh-dots .on i { background: var(--xa); color: #fff; box-shadow: none; }
+.xh-dots .on i::after { display: none; }
+.xh-dots .tdy i { outline: 2px solid color-mix(in srgb, var(--xa) 70%, transparent); outline-offset: 2px; }
+.xh-stats { gap: .9rem; font-size: .72rem; opacity: .8; margin-bottom: .6rem; } .xh-stats b { font-size: .9rem; }
+.xh-cta { height: 42px; border-radius: 12px; font-size: .88rem; background: var(--xa); box-shadow: none; }
+.xh-gen { border-radius: 14px; margin-bottom: .6rem; background: transparent; border: 1px dashed var(--border-color); }
+.xh-gen[open] { background: var(--bg-secondary); border-style: solid; }
+.xh-gen summary { padding: .65rem .9rem; font-size: .85rem; }
+.xh-gen .gb { padding: 0 .9rem .9rem; }
+.xh-lab { font-size: .7rem; margin: .55rem 0 .3rem; } .xh-gbtn { margin-top: .8rem; }
+.xh-chips { gap: .35rem; }
+.xh-chip { padding: .32rem .7rem; font-size: .75rem; } .xh-chip.on { background: var(--xa); border-color: var(--xa); color: #fff; }
+.xh-fil { margin: 0 0 .6rem; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14%); mask-image: linear-gradient(to right, transparent 0, #000 14%); }
+.xr-level { padding: 3px; margin-bottom: .55rem; border-radius: 12px; }
+.xr-level button { min-height: 34px; font-size: .82rem; } .xr-level button.on { background: var(--xa); color: #fff; }
+.xh-h { margin: 1rem .2rem .4rem; font-size: .78rem; font-weight: 700; color: var(--text-secondary); }
+.xh-grid { gap: .5rem; }
+.xh .xh-grid > .xh-tile:last-child:nth-child(odd) { grid-column: auto; }
+.xh-tile { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "ic m" "t t" "e e"; align-items: center; row-gap: .15rem; min-height: 0; padding: .65rem .75rem; border-radius: 14px; box-shadow: none; }
+.xh-tile .xh-ic, .xh-sheet .xh-ic { background: color-mix(in srgb, var(--xa) 14%, transparent); box-shadow: none; }
+.xh-tile .xh-ic { grid-area: ic; width: 34px; height: 34px; border-radius: 10px; margin: 0; }
+.xh-ic .xi { color: var(--xa); filter: none; }
+.xh-tile .xh-ic .xi { width: 19px; height: 19px; }
+.xh-tile b { grid-area: t; font-size: .88rem; margin-top: .35rem; }
+.xh-tile em { grid-area: e; direction: rtl; unicode-bidi: isolate; text-align: start; }
+.xh-tile small { grid-area: m; justify-self: end; margin: 0; font-size: .66rem; opacity: .7; }
+.xh-s .xh-grid { grid-template-columns: 1fr; }
+.xh-s .xh-tile { grid-template-columns: auto 1fr auto; grid-template-areas: "ic t m" "ic e m"; column-gap: .75rem; row-gap: 0; padding: .55rem .75rem; }
+.xh-s .xh-tile .xh-ic { grid-row: span 2; } .xh-s .xh-tile b { margin: 0; }
+.xh .xr-h::before, .xh .xr-card::before { background: var(--xa); }
+
+/* --- v4: تباين + أهداف لمس 44px + مكتبة موحّدة --- */
+.xh-top p { opacity: .85; } .xh-streak small { opacity: .9; } .xh-stats { opacity: .92; } .xh-lab { opacity: .85; } .xh-note { opacity: .85; }
+.xh-tile em { opacity: .8; } .xh-tile small { opacity: .88; } .xh-sd { opacity: .88; } .xh-row p { opacity: .88; }
+.xh-chip, .xr-level button { position: relative; }
+.xh-chips .xh-chip::after, .xr-level button::after { content: ""; position: absolute; inset: -6px -3px; }
+.xr-level button { min-height: 40px; }
+.xh-fil { padding-block: 7px; margin-block: -7px .3rem; }
+.xh-fil .xh-chip { min-height: 34px; }
+.xh-chip:focus-visible, .xr-level button:focus-visible, .xh-tile:focus-visible, .xh-cta:focus-visible, .xh-gen summary:focus-visible { outline: 2px solid var(--xa); outline-offset: 2px; }
+.xh .xr-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 14px; box-shadow: none; margin-bottom: .5rem; }
+.xh .xr-card::before { display: none; }
+.xh .xr-card summary { padding: .6rem .9rem; font-size: .85rem; font-weight: 700; }
+.xh .xr-card li b { font-size: .86rem; } .xh .xr-card li span { opacity: .85; }
+.xh .xr-go { background: var(--xa); color: #fff; border: 0; border-radius: 10px; }
+.xh .xr-en { opacity: .8; }
 </style>
 <script>
 /* ===== إطالة + انفجاري: رسوم متحركة (هيكل عظمي بالزوايا) + مشغّل صوتي ===== */
@@ -19077,7 +19183,7 @@ var ES = [
 ];
 var SEN = { dyn:'Dynamic Warm-up', fgt:'Hips & Legs Flexibility', bkl:'Lats & Shoulders', pwr:'Punch Power', cor:'Fighter Core', bar:'Barbell & Kettlebell', mma:'MMA Power Circuit', q3:'Quick Stretch', box:'Post-Bag Stretch', str:'Post-Strength Stretch', nk:'Neck & Shoulders', bk:'Back', lg:'Hips & Legs', am:'Morning Stretch', pm:'Bedtime Stretch', tab:'Explosive Tabata', emm:'EMOM', cir:'Power Circuit', pun:'Explosive Punches' };
 SS.forEach(function (g) { g.i.forEach(function (x) { x.e = SEN[x.id]; }); }); ES.forEach(function (x) { x.e = SEN[x.id]; });
-function find(id) { var r = null; SS.forEach(function (s) { s.i.forEach(function (x) { if (x.id === id) r = x; }); }); return r || ES.filter(function (x) { return x.id === id; })[0]; }
+function find(id) { if (id === 'gen' && GEN) return GEN; var r = null; SS.forEach(function (s) { s.i.forEach(function (x) { if (x.id === id) r = x; }); }); return r || ES.filter(function (x) { return x.id === id; })[0]; }
 function lvl() { var v = parseInt(safeGet('xrLevel', '1'), 10); return v >= 0 && v <= 2 ? v : 1; }
 function seqS(s) {
   var o = []; s.l.forEach(function (it, ix) {
@@ -19094,44 +19200,161 @@ function seqE(s, lv, nw) {
 function total(q) { return q.reduce(function (a, b) { return a + b.sec; }, 0); }
 function mins(sec) { return Math.max(1, Math.round(sec / 60)); }
 function ico(n) { return '<svg class="ico"><use href="#ico-' + n + '"/></svg>'; }
-function card(s, type, lv) {
-  var q = type === 's' ? seqS(s) : seqE(s, lv), ids = type === 's' ? s.l.map(function (z) { return z[0]; }) : s.ex.filter(function (v, i, a) { return a.indexOf(v) === i; });
-  var li = ids.map(function (id) { var e = X[id]; return '<li data-ex="' + id + '">' + thumb(id, 1) + '<div><b>' + e.n + '</b>' + (e.en ? '<em class="xr-en">' + e.en + '</em>' : '') + '<span>' + e.d + '</span></div><button type="button" class="xr-li-yt" aria-label="شاهد على يوتيوب" onclick="xrYt(\'' + id + '\',\'en\')">' + ico('play-circle') + '</button></li>'; }).join('');
-  return '<div class="xr-card" style="--g:' + s.g + '"><div class="xr-cm"><div class="xr-cf">' + thumb(ids[0], 1) + '</div><div class="xr-ci"><h3>' + s.n + (s.e ? '<em class="xr-en">' + s.e + '</em>' : '') + '</h3><div class="xr-meta"><span>' + ico('clock') + mins(total(q)) + ' دقائق</span><span>' + ico('zap') + ids.length + ' تمارين</span></div>' + (s.d ? '<p>' + s.d + '</p>' : '') + '</div><button class="xr-go" onclick="xrStart(\'' + type + '\',\'' + s.id + '\')">ابدأ</button></div><details><summary>عرض التمارين</summary><ul>' + li + '</ul></details></div>';
-}
 var listRes = [];
 function relList() { listRes.forEach(function (r) { try { ExerciseMediaService.release(r); } catch (e) {} }); listRes = []; }
-function wireLists(el) {
-  el.querySelectorAll('details').forEach(function (d) {
-    d.addEventListener('toggle', async function () {
-      if (!d.open || d._done) return; d._done = true;
-      var items = d.querySelectorAll('li[data-ex]');
-      for (var i = 0; i < items.length; i++) {
-        var li = items[i], key = 'xr_' + li.getAttribute('data-ex');
-        try {
-          var g = await getMedia(li.getAttribute('data-ex'));
-          if (g && g.res.type === 'image') { listRes.push(g.res); var im = new Image(); im.className = 'xr-li-img'; im.alt = ''; im.src = g.res.blobUrl; var sv = li.querySelector('.xr-th'); if (sv) sv.replaceWith(im); if (g.sim) li.querySelector('b').insertAdjacentHTML('beforeend', ' <small style="opacity:.8">(حركة مشابهة)</small>'); }
-          else if (g) ExerciseMediaService.release(g.res);
-        } catch (e) {}
-      }
-    });
-  });
-}
-window.renderStretch = function () {
-  var el = document.getElementById('stretchList'); if (!el) return; relList();
-  el.innerHTML = SS.map(function (sec) { return '<div class="xr-h">' + sec.h + '</div>' + sec.i.map(function (s) { return card(s, 's', 1); }).join(''); }).join(''); wireLists(el);
-};
 function lib() {
   var G = [['كرة طبية', ['mbr', 'mbs', 'mbc']], ['قرص الوزن', ['plp', 'plw']], ['البار', ['lmp', 'psh', 'cln']], ['كيتلبل وأرضي', ['ksw', 'spr']]];
-  return '<div class="xr-h">مكتبة تمارين المقاتلين (اضغط جرّب)</div>' + G.map(function (g) { return '<div class="xr-card" style="--g:linear-gradient(180deg,var(--accent-boxing,#ef4444),var(--accent-hiit,#f59e0b))"><details open><summary>' + g[0] + '</summary><ul>' + g[1].map(function (id) { var e = X[id]; return '<li>' + thumb(id, 1) + '<div><b>' + e.n + '</b><em class="xr-en">' + e.en + '</em><span>' + e.d + (e.wt ? ' <u>' + e.wt + '</u>' : '') + '</span></div><button type="button" class="xr-go" style="min-height:36px;padding:0 .8rem" onclick="xrStart(\'e\',\'try:' + id + '\')">جرّب</button></li>'; }).join('') + '</ul></details></div>'; }).join('');
+  return '<div class="xh-h">مكتبة تمارين المقاتلين (اضغط جرّب)</div>' + G.map(function (g) { return '<div class="xr-card" style="--g:linear-gradient(180deg,var(--accent-boxing,#ef4444),var(--accent-hiit,#f59e0b))"><details open><summary>' + g[0] + '</summary><ul>' + g[1].map(function (id) { var e = X[id]; return '<li data-ex="' + id + '">' + thumb(id, 1) + '<div><b>' + e.n + '</b><em class="xr-en">' + e.en + '</em><span>' + e.d + (e.wt ? ' <u>' + e.wt + '</u>' : '') + '</span></div><button type="button" class="xr-go" style="min-height:36px;padding:0 .8rem" onclick="xrStart(\'e\',\'try:' + id + '\')">جرّب</button></li>'; }).join('') + '</ul></details></div>'; }).join('');
 }
-window.renderExplosive = function () {
-  var el = document.getElementById('explosiveList'); if (!el) return; relList(); var lv = lvl();
-  el.innerHTML = '<div class="xr-level" role="group">' + LV.map(function (l, i) { return '<button type="button" class="' + (i === lv ? 'on' : '') + '" onclick="xrLevel(' + i + ')">' + l.n + '</button>'; }).join('') + '</div>' +
-   '<div class="xr-note">' + ico('alert-triangle') + '<span>كل جلسة تبدأ بإحماء 60 ثانية. في مستوى «مبتدئ» تظهر لكل تمرين بديل بلا قفز، وتقصر فترات العمل وتطول الراحة.</span></div>' +
-   '<div class="xr-h">جلسات انفجارية</div>' + ES.map(function (s) { return card(s, 'e', lv); }).join('') + lib(); wireLists(el);
+/* ===== تصميم v2: مركز الجلسات + مولّد ذكي + متتبّع أسبوعي + ورقة تفاصيل + احتفال ===== */
+/* ===== مكتبة أيقونات SVG مخصصة (خط 1.9، تتبع لون النص) ===== */
+var XI = {
+  flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  timer: '<circle cx="12" cy="13.5" r="8"/><path d="M12 9.5v4l2.5 1.5M9.5 2.5h5"/>',
+  play: '<path d="M8 5.2v13.6a.6.6 0 0 0 .92.5l10.6-6.8a.6.6 0 0 0 0-1L8.92 4.7A.6.6 0 0 0 8 5.2z" fill="currentColor"/>',
+  ball: '<circle cx="12" cy="12" r="9"/><path d="M3.4 9.2c5.2 2.2 12 2.2 17.2 0M3.4 14.8c5.2-2.2 12-2.2 17.2 0M12 3c-3.4 3.4-3.4 14.6 0 18M12 3c3.4 3.4 3.4 14.6 0 18"/>',
+  plate: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.8M12 18.2V21M3 12h2.8M18.2 12H21"/>',
+  barbell: '<path d="M7 12h10"/><rect x="3.5" y="7" width="3.5" height="10" rx="1.2"/><rect x="17" y="7" width="3.5" height="10" rx="1.2"/><path d="M1.5 10v4M22.5 10v4"/>',
+  kettlebell: '<path d="M8.8 9.4V7.2a3.2 3.2 0 0 1 6.4 0v2.2"/><circle cx="12" cy="15" r="6"/>',
+  glove: '<path d="M6.5 10.5V8a4.5 4.5 0 0 1 4.5-4.5h2.5A4.5 4.5 0 0 1 18 8v5.5a5.5 5.5 0 0 1-5.5 5.5H11a4.5 4.5 0 0 1-4.5-4.5z"/><path d="M6.5 12.2C4.2 12.2 3 13.4 3 15s1.2 2.8 3.5 2.8"/><rect x="8" y="19" width="9" height="2.6" rx=".9"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/>',
+  chevrons: '<path d="m6.5 11 5.5-5.5 5.5 5.5M6.5 18.5 12 13l5.5 5.5"/>',
+  layers: '<path d="M12.8 2.2a2 2 0 0 0-1.6 0L2.6 6.1a1 1 0 0 0 0 1.8l8.6 3.9a2 2 0 0 0 1.6 0l8.6-3.9a1 1 0 0 0 0-1.8z"/><path d="m22 17.6-9.2 4.2a2 2 0 0 1-1.6 0L2 17.6M22 12.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 12.6"/>',
+  gauge: '<path d="m12 14 4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/>',
+  sparkles: '<path d="M9.9 15.5A2 2 0 0 0 8.5 14.1l-6.1-1.6a.5.5 0 0 1 0-1l6.1-1.6A2 2 0 0 0 9.9 8.5l1.6-6.1a.5.5 0 0 1 1 0l1.6 6.1a2 2 0 0 0 1.4 1.4l6.1 1.6a.5.5 0 0 1 0 1l-6.1 1.6a2 2 0 0 0-1.4 1.4l-1.6 6.1a.5.5 0 0 1-1 0z"/><path d="M20 3v4M22 5h-4"/>',
+  chevron: '<path d="m6 9 6 6 6-6"/>',
+  repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
+  rotate: '<path d="M21 12a9 9 0 1 1-9-9c2.5 0 4.9 1 6.7 2.7L21 8"/><path d="M21 3v5h-5"/>',
+  shield: '<path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/>',
+  wind: '<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>',
+  person: '<circle cx="12" cy="4.8" r="2.2"/><path d="M12 7.5V15M4.5 9.5l7.5 2 7.5-2M8.8 21.5 12 15l3.2 6.5"/>',
+  bend: '<circle cx="19" cy="13" r="2"/><path d="M7 21.5V11.5l8.5 2.2M15.5 13.7 16 20.5"/>',
+  foot: '<path d="M4 16v-2.4C4 11.5 3 10.5 3 8c0-2.7 1.5-6 4.5-6C9.4 2 10 3.8 10 5.5c0 3.1-2 5.7-2 8.7V16a2 2 0 1 1-4 0z"/><path d="M20 20v-2.4c0-2.1 1-3.1 1-5.6 0-2.7-1.5-6-4.5-6C14.6 6 14 7.8 14 9.5c0 3.1 2 5.7 2 8.7V20a2 2 0 1 0 4 0z"/><path d="M16 17h4M4 13h4"/>',
+  heart: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>'
 };
-window.xrLevel = function (i) { safeSet('xrLevel', String(i)); renderExplosive(); try { haptic('light'); } catch (e) {} };
+function xi(n, sz, cl) { return '<svg class="xi' + (cl ? ' ' + cl : '') + '" width="' + (sz || 18) + '" height="' + (sz || 18) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (XI[n] || XI.zap) + '</svg>'; }
+window.xi = xi;
+var ICM = { tab: 'timer', emm: 'repeat', cir: 'rotate', pun: 'glove', pwr: 'ball', cor: 'target', bar: 'barbell', mma: 'shield', gen: 'sparkles', q3: 'zap', box: 'glove', str: 'barbell', nk: 'person', bk: 'bend', lg: 'foot', dyn: 'flame', fgt: 'bend', bkl: 'person', am: 'sun', pm: 'moon' };
+var GEN = null, LASTT = '', xsP = false, FIL = { e: 'all', s: 'all' }, GO = {};
+var GS = { e: { eq: {}, goal: 'all', dur: 15 }, s: { rg: { hips: 1, legs: 1 }, dur: 10 } };
+var EQ = { sqj: 'bw', burp: 'bw', mtn: 'bw', cpu: 'bw', tuck: 'bw', jl: 'bw', pun: 'bw', spr: 'bw', mbr: 'mb', mbs: 'mb', mbc: 'mb', plp: 'pl', plw: 'pl', lmp: 'br', psh: 'br', cln: 'br', ksw: 'kb' };
+var GL = { punch: ['mbr', 'mbc', 'plp', 'lmp', 'pun', 'cpu', 'psh'], legs: ['sqj', 'jl', 'tuck', 'ksw', 'cln', 'spr', 'burp'], core: ['plw', 'mbs', 'mbr', 'mtn', 'burp', 'spr'] };
+var RG = { neck: ['neck'], shoulders: ['chest', 'tri', 'lat'], back: ['catcow', 'child', 'fold', 'lat'], hips: ['hip', 'pig', 'catcow'], legs: ['quad', 'cal', 'fold', 'pig'], wrist: ['wrist'] };
+var IE = ['zap', 'flame', 'glove', 'zap', 'barbell', 'foot', 'rotate', 'target'], IS = ['person', 'moon', 'sun', 'bend', 'heart', 'wind', 'foot', 'person'];
+function shuf(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function uq(v, i, a) { return a.indexOf(v) === i; }
+function xlog() { try { return JSON.parse(localStorage.getItem('xrLog') || '[]'); } catch (e) { return []; } }
+function xlogAdd(ty, mn) { var a = xlog(); a.push({ t: Date.now(), ty: ty, m: mn }); try { localStorage.setItem('xrLog', JSON.stringify(a.slice(-300))); } catch (e) {} }
+function dayAgo(n) { var d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - n); return d; }
+function dkey(d) { var x = new Date(d); return x.getFullYear() + '-' + (x.getMonth() + 1) + '-' + x.getDate(); }
+function stats(ty) {
+  var a = xlog().filter(function (r) { return r.ty === ty; }), days = {}, mins = 0, wk = 0, now = Date.now(), nm = ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'], dots = [], st = 0, i;
+  a.forEach(function (r) { days[dkey(r.t)] = 1; if (now - r.t < 7 * 864e5) { wk++; mins += r.m; } });
+  for (i = 6; i >= 0; i--) { var d = dayAgo(i); dots.push({ on: !!days[dkey(d)], n: nm[d.getDay()], td: i === 0 }); }
+  for (i = 0; i < 90; i++) { if (days[dkey(dayAgo(i))]) st++; else if (i > 0) break; }
+  return { wk: wk, mins: mins, dots: dots, st: st };
+}
+function meta(s, ty, lv) { var q = ty === 's' ? seqS(s) : seqE(s, lv); return { min: Math.max(1, Math.round(total(q) / 60)), n: ty === 's' ? s.l.length : s.ex.filter(uq).length }; }
+function rec(ty) {
+  if (ty === 'e') {
+    var have = GS.e.eq, pool = ES.filter(function (x) { return x.ex.every(function (k) { var q = EQ[k]; return !q || q === 'bw' || have[q]; }); });
+    if (!pool.length) pool = ES.filter(function (x) { return !hasGear(x); });
+    if (!pool.length) pool = ES;
+    var dn = Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
+    return pool[dn % pool.length];
+  } var td = xlog().some(function (r) { return r.ty === 'e' && dkey(r.t) === dkey(Date.now()); }); return (td ? find('str') : find('q3')) || SS[0].i[0]; }
+function hero(ty, rc) {
+  var E = ty === 'e', st = stats(ty);
+  return '<div class="xh-hero"><span class="xh-deco">' + xi(E ? 'zap' : 'wind', 150) + '</span><div class="xh-top"><div><h2>' + (E ? 'انفجاري' : 'إطالة') + '</h2><p>' + (E ? 'قوة المقاتل وسرعته' : 'مرونة وتعافٍ أسرع') + '</p></div><div class="xh-streak">' + xi('flame', 16) + '<b>' + st.st + '</b><small>يوم متتالٍ</small></div></div>' +
+    '<div class="xh-dots">' + st.dots.map(function (d) { return '<span class="' + (d.on ? 'on ' : '') + (d.td ? 'tdy' : '') + '"><i>' + d.n + '</i></span>'; }).join('') + '</div>' +
+    '<div class="xh-stats"><span><b>' + st.wk + '</b> جلسة هذا الأسبوع</span><span><b>' + st.mins + '</b> دقيقة</span></div>' +
+    '<button type="button" class="xh-cta" onclick="xrOpen(\'' + ty + '\',\'' + rc.id + '\')">' + xi('play', 16) + ' جلسة اليوم · ' + rc.n + '</button></div>';
+}
+function chips(t, grp, items, sel) { return '<div class="xh-chips">' + items.map(function (it) { return '<button type="button" class="xh-chip' + (sel(it[0]) ? ' on' : '') + '" aria-pressed="' + (!!sel(it[0])) + '" onclick="xrChip(\'' + t + '\',\'' + grp + '\',\'' + it[0] + '\')">' + it[1] + '</button>'; }).join('') + '</div>'; }
+function genBody(t) {
+  var g = GS[t], b;
+  if (t === 'e') b = '<div class="xh-lab">المعدات المتوفرة (وزن الجسم متاح دائماً)</div>' + chips('e', 'eq', [['mb', xi('ball', 16) + ' كرة طبية'], ['pl', xi('plate', 16) + ' قرص'], ['br', xi('barbell', 16) + ' بار'], ['kb', xi('kettlebell', 16) + ' كيتلبل']], function (k) { return g.eq[k]; }) +
+    '<div class="xh-lab">الهدف</div>' + chips('e', 'goal', [['all', xi('layers', 16) + ' شامل'], ['punch', xi('glove', 16) + ' قوة الضربة'], ['legs', xi('chevrons', 16) + ' الأرجل'], ['core', xi('target', 16) + ' الجذع']], function (k) { return g.goal === k; }) +
+    '<div class="xh-lab">المدة</div>' + chips('e', 'dur', [[10, '10 د'], [15, '15 د'], [20, '20 د']], function (k) { return g.dur == k; });
+  else b = '<div class="xh-lab">أين تشعر بالشدّ؟ (اختر أكثر من منطقة)</div>' + chips('s', 'rg', [['neck', 'الرقبة'], ['shoulders', 'الكتفان والصدر'], ['back', 'الظهر'], ['hips', 'الوركان'], ['legs', 'الساقان'], ['wrist', 'المعصمان']], function (k) { return g.rg[k]; }) +
+    '<div class="xh-lab">المدة</div>' + chips('s', 'dur', [[5, '5 د'], [10, '10 د'], [15, '15 د']], function (k) { return g.dur == k; });
+  return b + '<button type="button" class="xh-cta xh-gbtn" onclick="xrGen(\'' + t + '\')">' + xi('sparkles', 16) + ' ولّد وافتح</button>';
+}
+window.xrGo = function (t, o) { GO[t] = o; };
+window.xrChip = function (t, grp, v) { var g = GS[t]; if (grp === 'eq' || grp === 'rg') { if (g[grp][v]) delete g[grp][v]; else g[grp][v] = 1; } else g[grp] = grp === 'dur' ? parseInt(v, 10) : v; var el = document.getElementById('xhGb-' + t); if (el) el.innerHTML = genBody(t); try { haptic('light'); } catch (e) {} };
+window.xrGen = function (t) {
+  var g = GS[t];
+  if (t === 'e') {
+    var pool = Object.keys(EQ).filter(function (k) { return EQ[k] === 'bw' || g.eq[EQ[k]]; }), gl = GL[g.goal];
+    if (gl) { var f = pool.filter(function (k) { return gl.indexOf(k) >= 0; }); if (f.length >= 3) pool = f; }
+    pool = shuf(pool); var n = Math.max(4, Math.round((g.dur * 60 - 60) / 50)), ex = [];
+    for (var i = 0; i < n; i++) ex.push(pool[i % pool.length]);
+    GEN = { id: 'gen', n: 'جلستك المولّدة', g: 'linear-gradient(135deg,#7c3aed,#ec4899)', w: 30, r: 20, ex: ex, d: 'جلسة مخصصة حسب معداتك وهدفك.' };
+  } else {
+    var ids = []; Object.keys(g.rg).forEach(function (r) { (RG[r] || []).forEach(function (k) { if (ids.indexOf(k) < 0) ids.push(k); }); });
+    if (!ids.length) ids = ['neck', 'hip', 'quad', 'fold'];
+    var sec = Math.max(30, Math.min(90, Math.round(g.dur * 60 / ids.length / 5) * 5));
+    GEN = { id: 'gen', n: 'روتينك المخصص', g: 'linear-gradient(135deg,#0ea5e9,#22d3ee)', l: ids.map(function (k) { return [k, sec]; }), d: 'روتين مبني على المناطق التي اخترتها.' };
+  }
+  xrOpen(t, 'gen');
+};
+function tile(s, ty, lv, ic) { var m = meta(s, ty, lv), en = SEN[s.id] || s.en || ''; return '<button type="button" class="xh-tile" onclick="xrOpen(\'' + ty + '\',\'' + s.id + '\')"><span class="xh-ic">' + xi(ICM[s.id] || ic, 24) + '</span><b>' + s.n + '</b>' + (en ? '<em>' + en + '</em>' : '') + '<small>' + xi('timer', 13) + m.min + ' د · ' + m.n + ' تمارين</small></button>'; }
+function hasGear(s) { return s.ex.some(function (k) { return EQ[k] && EQ[k] !== 'bw'; }); }
+function hub(ty) {
+  var E = ty === 'e', lv = lvl(), h = '<div class="xh ' + (E ? 'xh-e' : 'xh-s') + '">' + hero(ty, rec(ty));
+  h += '<details class="xh-gen"' + (GO[ty] ? ' open' : '') + ' ontoggle="xrGo(\'' + ty + '\',this.open)"><summary><span class="xh-sm">' + xi('sparkles', 18) + (E ? 'ولّد جلسة على مقاسك' : 'ولّد روتيناً لما تشعر به اليوم') + '</span><span class="xh-pl">' + xi('chevron', 18) + '</span></summary><div class="gb" id="xhGb-' + ty + '">' + genBody(ty) + '</div></details>';
+  if (E) h += '<div class="xr-level" role="group" aria-label="المستوى">' + LV.map(function (l, i) { return '<button type="button" class="' + (i === lv ? 'on' : '') + '" aria-pressed="' + (i === lv) + '" onclick="xrLevel(' + i + ')">' + l.n + '</button>'; }).join('') + '</div>';
+  var fl = E ? [['all', 'الكل'], ['bw', 'بدون معدات'], ['gear', 'بمعدات']] : [['all', 'الكل']].concat(SS.map(function (g, i) { return [i, g.h]; }));
+  h += '<div class="xh-fil" role="group" aria-label="تصفية">' + fl.map(function (f) { return '<button type="button" class="xh-chip' + (String(FIL[ty]) === String(f[0]) ? ' on' : '') + '" aria-pressed="' + (String(FIL[ty]) === String(f[0])) + '" onclick="xrFil(\'' + ty + '\',\'' + f[0] + '\')">' + f[1] + '</button>'; }).join('') + '</div>';
+  if (E) { h += '<div class="xh-grid">'; ES.forEach(function (s, i) { var f = FIL.e; if (f === 'all' || (f === 'bw' && !hasGear(s)) || (f === 'gear' && hasGear(s))) h += tile(s, 'e', lv, IE[i % IE.length]); }); h += '</div>'; }
+  else { var c = 0; SS.forEach(function (g, gi) { var show = FIL.s === 'all' || String(FIL.s) === String(gi); if (show) h += (FIL.s === 'all' ? '<div class="xh-h">' + g.h + '</div>' : '') + '<div class="xh-grid">'; g.i.forEach(function (s) { if (show) h += tile(s, 's', 1, IS[c % IS.length]); c++; }); if (show) h += '</div>'; }); }
+  if (E) h += '<div class="xh-note">' + xi('timer', 13) + ' كل جلسة تبدأ بإحماء 60 ثانية · مستوى «مبتدئ» يستبدل القفز ببدائل أخف</div>' + lib();
+  return h + '</div>';
+}
+function xhScroller(el) { for (var p = el.parentElement; p; p = p.parentElement) { var o = getComputedStyle(p).overflowY; if ((o === 'auto' || o === 'scroll') && p.scrollHeight > p.clientHeight) return p; } return null; }
+function xhKeep(el, fn) {
+  if (!el) { fn(); return; }
+  var sc = xhScroller(el), y = sc ? sc.scrollTop : (window.pageYOffset || 0), f0 = el.querySelector('.xh-fil'), fx = f0 ? f0.scrollLeft : 0;
+  fn(); if (sc) sc.scrollTop = y; else window.scrollTo(0, y);
+  var f1 = el.querySelector('.xh-fil'); if (f1) f1.scrollLeft = fx;
+}
+window.xrFil = function (t, k) { FIL[t] = k; xhKeep(document.getElementById(t === 'e' ? 'explosiveList' : 'stretchList'), function () { (t === 'e' ? window.renderExplosive : window.renderStretch)(); }); };
+window.renderStretch = function () { var el = document.getElementById('stretchList'); if (!el) return; relList(); el.innerHTML = hub('s'); };
+window.renderExplosive = function () { var el = document.getElementById('explosiveList'); if (!el) return; relList(); el.innerHTML = hub('e'); loadImgs(el, listRes); };
+function sheet() { var el = document.getElementById('xhSheet'); if (el) return el; el = document.createElement('div'); el.id = 'xhSheet'; el.innerHTML = '<div class="xh-back" onclick="xrSheetClose()"></div><div class="xh-sheet"></div>'; document.body.appendChild(el); return el; }
+var shRes = [], SHT = 0;
+function relSheet() { SHT++; shRes.forEach(function (r) { try { ExerciseMediaService.release(r); } catch (e) {} }); shRes = []; }
+/* الصور التوضيحية الحقيقية (GIF) تُحمّل تباعاً وتستبدل الرسم البديل */
+async function loadImgs(root, arr, tok) {
+  var rows = root.querySelectorAll('[data-ex]');
+  for (var i = 0; i < rows.length; i++) {
+    if (tok !== undefined && tok !== SHT) return;
+    var row = rows[i], id = row.getAttribute('data-ex'), ph = row.querySelector('.xh-th, .xr-th');
+    try {
+      var g = await getMedia(id); if (!g) continue;
+      if (tok !== undefined && tok !== SHT) { ExerciseMediaService.release(g.res); return; }
+      if (g.res.type === 'image') { arr.push(g.res); var im = new Image(); im.className = 'xr-li-img'; im.alt = ''; im.src = g.res.blobUrl; if (ph) ph.replaceWith(im); }
+      else ExerciseMediaService.release(g.res);
+    } catch (e) {}
+  }
+}
+function xhHide() { document.body.classList.remove('xh-open'); relSheet(); }
+window.xrSheetClose = function (fp) { xhHide(); if (xsP) { xsP = false; if (fp !== true) { swl = true; setTimeout(function () { swl = false; }, 600); try { history.back(); } catch (e) { swl = false; } } } };
+window.xrOpen = function (ty, id) {
+  var s = find(id); if (!s) return; var E = ty === 'e', lv = lvl(), m = meta(s, ty, lv), el = sheet(), box = el.querySelector('.xh-sheet');
+  var ids = E ? s.ex.filter(uq) : s.l.map(function (z) { return z[0]; }), en = SEN[s.id] || s.en || '';
+  var rows = ids.map(function (k, i) { var e = X[k]; return '<div class="xh-row" data-ex="' + k + '"><span class="xh-n">' + (i + 1) + '</span><span class="xh-th">' + thumb(k, 1) + '</span><div><b>' + e.n + '</b>' + (e.en ? '<em>' + e.en + '</em>' : '') + '<p>' + e.d + '</p>' + (e.wt ? '<span class="xh-wt">' + e.wt + '</span>' : '') + (E ? '' : '<span class="xh-wt">' + s.l[i][1] + ' ثانية</span>') + '</div><button type="button" class="xr-li-yt" aria-label="يوتيوب" onclick="xrYt(\'' + k + '\',\'en\')">' + ico('play-circle') + '</button></div>'; }).join('');
+  box.className = 'xh-sheet ' + (E ? 'xh-e' : 'xh-s');
+  box.innerHTML = '<div class="xh-grab" onclick="xrSheetClose()"></div><div class="xh-sb"><div class="xh-sh"><span class="xh-ic">' + xi(ICM[s.id] || (E ? 'zap' : 'person'), 26) + '</span><div><h3>' + s.n + '</h3>' + (en ? '<small>' + en + '</small>' : '') + '</div></div>' + (s.d ? '<p class="xh-sd">' + s.d + '</p>' : '') +
+    '<div class="xh-mt"><span>' + xi('timer', 14) + m.min + ' د</span><span>' + xi('layers', 14) + m.n + ' تمارين</span>' + (E ? '<span>' + xi('gauge', 14) + LV[lv].n + '</span><span>' + xi('flame', 14) + 'إحماء 60ث</span>' : '') + '</div>' + rows + '</div><button type="button" class="xh-cta xh-start" onclick="xrStart(\'' + ty + '\',\'' + id + '\')">' + xi('play', 16) + ' ابدأ الآن</button>';
+  box.querySelector('.xh-sb').scrollTop = 0; relSheet(); var tk = SHT; document.body.classList.add('xh-open'); loadImgs(box.querySelector('.xh-sb'), shRes, tk);
+  if (!xsP) { xsP = true; try { history.pushState({ xh: 1 }, '', location.href); } catch (e) { xsP = false; } }
+  try { haptic('light'); } catch (e) {}
+};
+window.xrLevel = function (i) { safeSet('xrLevel', String(i)); xhKeep(document.getElementById('explosiveList'), renderExplosive); try { haptic('light'); } catch (e) {} };
 /* ---- المشغّل ---- */
 var ov = null, S = null, raf = 0, cur = null, wl = null;
 function build() {
@@ -19253,19 +19476,21 @@ function setPP() { var b = ov.querySelector('.xr-pp'); b.innerHTML = ico(S.pause
 function pause() { if (!S) return; if (!S.paused) { S.rem = S.end - Date.now(); S.paused = true; try { cvCancel(); } catch (e) {} } else { S.end = Date.now() + S.rem; S.paused = false; } setPP(); }
 function finish() {
   var mn = Math.max(1, Math.round((Date.now() - S.start) / 60000)), nm = S.name; clearInterval(S.tm); S.tm = 0; cancelAnimationFrame(raf); clearMedia();
+  try { xlogAdd(S.type, mn); LASTT = S.type; } catch (e) {}
   try { addWorkoutToHistory(S.type === 's' ? 'stretch' : 'explosive', nm, mn); } catch (e) {}
   ov.className = 'xr show done t-' + S.type;
   ov.querySelector('.xr-done').innerHTML = '<div class="xr-trophy">' + ico('trophy') + '</div><h2>أحسنت!</h2><p>أنهيت «' + nm + '» في ' + mn + ' د، وتم حفظ الجلسة في تقدمي.</p><button type="button" class="xr-go" onclick="xrClose()">إغلاق</button>';
+  try { var cf = ''; for (var k = 0; k < 30; k++) cf += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;background:hsl(' + Math.round(Math.random() * 360) + ',85%,60%);animation-delay:' + (Math.random() * .7).toFixed(2) + 's;animation-duration:' + (1.8 + Math.random() * 1.6).toFixed(2) + 's"></i>'; var cfe = document.createElement('div'); cfe.className = 'xh-conf'; cfe.innerHTML = cf; document.body.appendChild(cfe); setTimeout(function () { cfe.remove(); }, 4200); } catch (e) {}
   say(tx('goodJob') + '. ' + tx('done'), 1);
   try { navigator.vibrate && navigator.vibrate([60, 40, 60]); } catch (e) {}
 }
 window.xrStart = function (type, id) {
-  var s = id.indexOf('try:') === 0 ? { n: X[id.slice(4)].n, ex: [id.slice(4)], w: 30, r: 10 } : find(id); if (!s) return; build(); var lv = lvl();
+  xhHide(); var s = id.indexOf('try:') === 0 ? { n: X[id.slice(4)].n, ex: [id.slice(4)], w: 30, r: 10 } : find(id); if (!s) return; build(); var lv = lvl();
   var q = type === 's' ? seqS(s) : seqE(s, lv, id.indexOf('try:') === 0);
   nomed = {}; S = { type: type, lv: lv, q: q, name: s.n, tot: total(q), start: Date.now(), i: 0 };
   try { var seen = {}, ks = []; q.forEach(function (z) { if (!seen[z.ex]) { seen[z.ex] = 1; ks.push('xr_' + z.ex); } }); ExerciseMediaService.prefetch(ks); } catch (e) {}
   ov.hidden = false; ov.querySelector('.xr-ttl').textContent = s.n; ov.querySelector('.xr-done').innerHTML = '';
-  document.body.classList.add('xr-open'); if (!xrP) { xrP = true; try { history.pushState({ xr: 1 }, '', location.href); } catch (e) { xrP = false; } } try { playClick(); } catch (e) {}
+  document.body.classList.add('xr-open'); if (!xrP) { if (xsP) { xsP = false; xrP = true; } else { xrP = true; try { history.pushState({ xr: 1 }, '', location.href); } catch (e) { xrP = false; } } } try { playClick(); } catch (e) {}
   try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { wl = l; }).catch(function () {}); } catch (e) {}
   go(0);
 };
@@ -19275,12 +19500,14 @@ var hbk = window.handleBackButton;
 window.handleBackButton = function () {
   if (swl) { swl = false; return; }
   if (xrP && ov && !ov.hidden) { xrClose(true); return; }
+  if (xsP && document.body.classList.contains('xh-open')) { xrSheetClose(true); return; }
   return hbk ? hbk.apply(this, arguments) : undefined;
 };
 window.xrClose = function (fp) {
   if (!ov || ov.hidden) return; if (S) { clearInterval(S.tm); } S = null; cancelAnimationFrame(raf); clearMedia(); try { cvCancel(); } catch (e) {}
   try { wl && wl.release(); } catch (e) {} wl = null; ov.hidden = true; ov.className = 'xr'; document.body.classList.remove('xr-open');
   if (xrP) { xrP = false; if (fp !== true) { swl = true; setTimeout(function () { swl = false; }, 600); try { history.back(); } catch (e) { swl = false; } } }
+  if (LASTT) { var lt = LASTT; LASTT = ''; try { (lt === 's' ? window.renderStretch : window.renderExplosive)(); } catch (e) {} }
 };
 })();
 
